@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EdgeColliderSetting : MonoBehaviour
 {
-    //int level = 5;
-    // Start is called before the first frame update
     EdgeCollider2D edge;
+
+    public LevelStats stats;
+
     void Start()
     {
         AddCollider();
@@ -30,16 +31,31 @@ public class EdgeColliderSetting : MonoBehaviour
         edge.points = edgePoints;
 
     }
-    public void CollisionPanToNextLevel()
+
+    private void OnEnable()
+    {
+        stats.LevelChanged += CollisionAndCameraPanToNextLevel;
+    }
+
+    private void OnDisable()
+    {
+        stats.LevelChanged -= CollisionAndCameraPanToNextLevel;
+    }
+
+    void CollisionAndCameraPanToNextLevel(int level)
     {
         var cam = Camera.main;
 
         float halfHeight = cam.orthographicSize;
-        float width = halfHeight * cam.aspect * 2 - 2f;
+        float width = halfHeight * cam.aspect * 2 - stats.LevelPanningOffset;
         for (int i = 0; i < edge.points.Length; i++)
             edge.points[i].x += width;
         Vector3 pos = transform.position;
         pos.x += width;
         transform.position = pos;
+        // camera transition
+        Vector3 cam_pos = cam.gameObject.transform.position;
+        cam_pos.x += width;
+        LeanTween.moveX(cam.gameObject, cam_pos.x, 0.5f).setEase(LeanTweenType.easeInQuad);
     }
 }

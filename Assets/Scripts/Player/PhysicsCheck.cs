@@ -32,7 +32,7 @@ public class PhysicsCheck : MonoBehaviour
     {
         Vector2 size = new Vector2(0.2f, 1.7f);
         var check = Physics2D.OverlapCapsule((Vector2)transform.position + direction, size, CapsuleDirection2D.Vertical, 0);
-        return check != null && (check.CompareTag("Ground") || check.CompareTag("Headtile"));
+        return check != null && (check.CompareTag("Ground") || check.CompareTag("Headtile") || check.CompareTag("EdgeCollider"));
     }
 
     private void OnDrawGizmosSelected()

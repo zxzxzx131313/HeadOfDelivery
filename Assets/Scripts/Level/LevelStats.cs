@@ -9,7 +9,10 @@ public class LevelStats : ScriptableObject
     [Header("Level Setting")]
     [SerializeField] private int _total_level = 5;
     [SerializeField] private int[] _level_steps;
-
+    // potential different level width setting
+    [SerializeField] private int _levelPanningOffset = 2;
+    [SerializeField] private int _hookDropOffDistance = 15;
+    [SerializeField] private float _animationBeginTimeOffset = 0.7f;
 
     private int _current_level;
     private int _current_steps;
@@ -45,6 +48,11 @@ public class LevelStats : ScriptableObject
             }
         } 
     }
+
+    public int LevelPanningOffset { get { return _levelPanningOffset; } }
+    public int HookDropOffDistance { get { return _hookDropOffDistance; } }
+    public float AnimationBeginTimeOffset { get { return _animationBeginTimeOffset; } }
+
 
     public void InitStats()
     {

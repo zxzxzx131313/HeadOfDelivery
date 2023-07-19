@@ -153,8 +153,7 @@ public class CubeController : MonoBehaviour
         IsAttached = true;
         _sprite.enabled = false;
         transform.position = _detach_pos;
-        OnDisable();
-        
+        OnDisable();   
     }
 
     public void DetachHead()
@@ -227,7 +226,6 @@ public class CubeController : MonoBehaviour
 
     private void CheckStepLeft(int step)
     {
-        Debug.Log(step);
         if (step == 0)
         {
             OnDisable();

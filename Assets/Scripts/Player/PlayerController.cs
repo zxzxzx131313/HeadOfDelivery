@@ -6,12 +6,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerInputControl inputControl;
+    private PlayerInputControl inputControl;
 
     private Rigidbody2D rb;
     private PhysicsCheck physicsCheck;
+    private Vector2 inputDirection;
 
-    public Vector2 inputDirection;
+    public LevelStats stats;
 
 
     [Header("Basic Variable")]
@@ -30,14 +31,16 @@ public class PlayerController : MonoBehaviour
         inputControl.Gameplay.Jump.started += Jump;
     }
 
-    public void OnEnable()
+    void OnEnable()
     {
         inputControl.Enable();
+        stats.LevelChanged += OnChangeLevel;
     }
 
-    public void OnDisable()
+    void OnDisable()
     {
         inputControl.Disable();
+        stats.LevelChanged -= OnChangeLevel;
     }
 
 
@@ -52,19 +55,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    //private void LateUpdate()
-    //{
-    //    // for pixel perfect adjustment
-    //    if (!Keyboard.current.anyKey.wasPressedThisFrame && physicsCheck.IsGround())
-    //    {
-    //        Vector3 position = transform.position;
-             
-    //        position.x = Mathf.Round(transform.position.x * Graphics.PPU) / Graphics.PPU;
-    //        position.y = Mathf.Round(Mathf.Round(transform.position.y * Graphics.PPU) / Graphics.PPU);
-
-    //        rb.MovePosition(position);
-    //    }
-    //}
 
     private void FixedUpdate()
     {
@@ -87,11 +77,17 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(faceDir, 1, 1);
     }
 
-    public void AlignToGrid()
+    void AlignToGrid()
     {
         Vector3 pos = transform.position;
         pos.x = Mathf.Ceil(pos.x) - 0.5f;
         rb.MovePosition(pos);
+    }
+
+    void OnChangeLevel(int level)
+    {
+        OnDisable();
+        AlignToGrid();
     }
 
     private void Jump(InputAction.CallbackContext context)

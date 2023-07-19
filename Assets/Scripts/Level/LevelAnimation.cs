@@ -14,11 +14,13 @@ public class LevelAnimation : MonoBehaviour
     public PlayableDirector _director;
     public GameEvent OnLevelAnimationEnd;
 
+    public LevelStats stats;
+
     GameObject _player;
 
-    [Header("Animation Setting")]
-    [SerializeField]
-    float AnimationBeginTimeOffset = 0.7f;
+    //[Header("Animation Setting")]
+    //[SerializeField]
+    //float AnimationBeginTimeOffset = 0.7f;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,14 +50,14 @@ public class LevelAnimation : MonoBehaviour
         AnimationTrack track = Timeline.GetOutputTrack(0) as AnimationTrack;
         AnimationClip clip = new AnimationClip();
 
-        float hook_begain = 0.7f + AnimationBeginTimeOffset;
-        float head_begin = 1.2f + AnimationBeginTimeOffset;
-        float head_up = 1.5f + AnimationBeginTimeOffset;
-        float up_keep = 2f + AnimationBeginTimeOffset;
-        float up_again = 2.5f + AnimationBeginTimeOffset;
-        float down_keep = 3f + AnimationBeginTimeOffset;
-        float head_end = 3.5f + AnimationBeginTimeOffset;
-        float hook_end = 4f + AnimationBeginTimeOffset;
+        float hook_begain = 0.7f + stats.AnimationBeginTimeOffset;
+        float head_begin = 1.2f + stats.AnimationBeginTimeOffset;
+        float head_up = 1.5f + stats.AnimationBeginTimeOffset;
+        float up_keep = 2f + stats.AnimationBeginTimeOffset;
+        float up_again = 2.5f + stats.AnimationBeginTimeOffset;
+        float down_keep = 3f + stats.AnimationBeginTimeOffset;
+        float head_end = 3.5f + stats.AnimationBeginTimeOffset;
+        float hook_end = 4f + stats.AnimationBeginTimeOffset;
 
         var curve_y = new AnimationCurve();
             curve_y.AddKey(head_begin, _player.transform.position.y + 0.8f);
@@ -68,7 +70,7 @@ public class LevelAnimation : MonoBehaviour
         //curve_y.AddKey(4.5f, 2f);
         var curve_x = new AnimationCurve();
             curve_x.AddKey(up_again, posx);
-            curve_x.AddKey(down_keep, posx + 17f);
+            curve_x.AddKey(down_keep, posx + stats.HookDropOffDistance);
             clip.SetCurve("", typeof(Transform), "localPosition.y", curve_y);
             clip.SetCurve("", typeof(Transform), "localPosition.x", curve_x);
 
@@ -94,7 +96,7 @@ public class LevelAnimation : MonoBehaviour
         curve_y_hook.AddKey(hook_end, 8f);
         var curve_x_hook = new AnimationCurve();
         curve_x_hook.AddKey(up_again, posx);
-        curve_x_hook.AddKey(down_keep, posx + 17f);
+        curve_x_hook.AddKey(down_keep, posx + stats.HookDropOffDistance);
         clip_hook.SetCurve("", typeof(Transform), "localPosition.y", curve_y_hook);
         clip_hook.SetCurve("", typeof(Transform), "localPosition.x", curve_x_hook);
 
