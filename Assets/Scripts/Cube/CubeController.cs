@@ -9,10 +9,10 @@ using UnityEngine.Events;
 public class CubeController : MonoBehaviour
 {
     [Header("Setting")]
-    public CubeInputControl cubeControl;
-    public Animator anim;
-    public GameEvent OnAttachHead;
-    public float hintDisplayTimeInSec = 1f;
+    [SerializeField] private Animator anim;
+    [SerializeField] private GameEvent OnAttachHead;
+    [SerializeField] private float hintDisplayTimeInSec = 1f;
+    [SerializeField] private LevelStats stats;
 
     private Tilemap _platformTilemap;
     private Tilemap _headTilemap;
@@ -23,8 +23,8 @@ public class CubeController : MonoBehaviour
     private TileSpawner _spawner;
     private SpriteRenderer _sprite;
     private HeadDice _dice;
-    private GameObject _edge_collider;
 
+    CubeInputControl cubeControl;
     Vector2 dirCheck;
     Vector3 _detach_pos;
     Vector3 _begin_pos;
@@ -50,11 +50,13 @@ public class CubeController : MonoBehaviour
     public void OnEnable()
     {
         cubeControl.Enable();
+        stats.StepsLeftChanged += CheckStepLeft;
     }
 
     public void OnDisable()
     {
         cubeControl.Disable();
+        stats.StepsLeftChanged -= CheckStepLeft;
     }
 
     private void Start()
@@ -63,7 +65,6 @@ public class CubeController : MonoBehaviour
         _body = GameObject.FindGameObjectWithTag("Body");
         _spawner = GetComponent<TileSpawner>();
         _sprite = GetComponent<SpriteRenderer>();
-        _edge_collider = GameObject.FindGameObjectWithTag("EdgeCollider");
         _dice = GetComponent<HeadDice>();
         
         IsAttached = true;
@@ -123,6 +124,19 @@ public class CubeController : MonoBehaviour
             LeanTween.move(gameObject, _begin_pos, 0.5f).setEaseInOutQuad();
             transform.position = _begin_pos;
             _dice.Restart();
+            if (_dice.top_face.IsColored)
+            {
+
+                anim.SetBool("IsColored", true);
+            }
+            else
+            {
+                anim.SetBool("IsColored", false);
+            }
+            // might need additional animation for the restart transition
+            anim.SetTrigger("ChangeFace");
+            stats.RestartLevel();
+            OnEnable();
         }
     }
 
@@ -170,6 +184,9 @@ public class CubeController : MonoBehaviour
 
             _dice.HandleTurn(direction);
 
+            Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
+            Vector3Int detach = _platformTilemap.WorldToCell(_detach_pos);
+
             if (_dice.top_face.IsColored)
             {
 
@@ -181,7 +198,11 @@ public class CubeController : MonoBehaviour
             }
             if (_dice.top_face.opposite.IsColored)
             {
-                _spawner.SpawnTile(transform.position);
+                // do not spawn tile at body and original head location
+                if (pos != detach && pos != detach + Vector3Int.up)
+                {
+                    _spawner.SpawnTile(pos);
+                }
             }
 
             if (direction.x > 0)
@@ -192,14 +213,24 @@ public class CubeController : MonoBehaviour
 
             anim.SetTrigger("Moving");
 
-            Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
-            Vector3Int detach = _platformTilemap.WorldToCell(_detach_pos);
+
             if (pos == detach)
             {
                 OnAttachHead.Raise();
             }
 
             OnShowHint.Raise();
+
+            stats.StepsLeft--;
+        }
+    }
+
+    private void CheckStepLeft(int step)
+    {
+        Debug.Log(step);
+        if (step == 0)
+        {
+            OnDisable();
         }
     }
 

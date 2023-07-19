@@ -8,14 +8,9 @@ public class TileSpawner : MonoBehaviour
     [SerializeField]
     private Tile _tile;
     private Tilemap _headTile;
-    private HeadDice _dice;
-    private GameObject _body;
     // Start is called before the first frame update
     void Start()
     {
-        _dice = GetComponent<HeadDice>();
-        _body = GameObject.FindGameObjectWithTag("Body");
-        //_tile = Resources.Load<Tile>("TilePalette/Platform/tile_normal");
         foreach (var tm in GameObject.FindObjectsOfType<Tilemap>())
         {
             if (tm.CompareTag("Headtile"))
@@ -25,16 +20,14 @@ public class TileSpawner : MonoBehaviour
 
     /**
      * <summary>Spawn a platform tile at the given position</summary>
-     * <param name="position">the position to spawn the tile</param>
+     * <param name="position">the position to spawn the tile in cell space</param>
      */
-    public void SpawnTile(Vector3 position)
+    public void SpawnTile(Vector3Int position)
     {
-        var pos = _headTile.WorldToCell(position);
-        var body_pos = _headTile.WorldToCell(_body.transform.position);
-        var head_pos = _headTile.WorldToCell(_body.transform.position + Vector3.up);
-        if (!_headTile.HasTile(pos) && pos != body_pos && pos != head_pos)
+
+        if (!_headTile.HasTile(position))
         {
-            _headTile.SetTile(pos, _tile);
+            _headTile.SetTile(position, _tile);
         }
     }
 

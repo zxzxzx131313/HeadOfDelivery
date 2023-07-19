@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private PhysicsCheck physicsCheck;
-    private CubeController _head;
 
     public Vector2 inputDirection;
 
@@ -23,7 +22,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         physicsCheck = GetComponent<PhysicsCheck>();
-        _head = GameObject.FindGameObjectWithTag("Head").GetComponent<CubeController>();
     }
 
     private void Awake()

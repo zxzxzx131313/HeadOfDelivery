@@ -15,7 +15,6 @@ public class LevelAnimation : MonoBehaviour
     public GameEvent OnLevelAnimationEnd;
 
     GameObject _player;
-    GameObject _head;
 
     [Header("Animation Setting")]
     [SerializeField]
@@ -24,7 +23,6 @@ public class LevelAnimation : MonoBehaviour
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Body");
-        _head = GameObject.FindGameObjectWithTag("Head");
         //_director.playableAsset = Timeline;
 
         //TimelineAsset asset = _director.playableAsset as TimelineAsset;
