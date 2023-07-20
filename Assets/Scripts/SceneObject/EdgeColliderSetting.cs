@@ -49,7 +49,7 @@ public class EdgeColliderSetting : MonoBehaviour
         float halfHeight = cam.orthographicSize;
         float width = halfHeight * cam.aspect * 2 - stats.LevelPanningOffset;
         for (int i = 0; i < edge.points.Length; i++)
-            edge.points[i].x += width;
+            edge.points[i].x += width - stats.LevelPanningOffset;
         Vector3 pos = transform.position;
         pos.x += width;
         transform.position = pos;

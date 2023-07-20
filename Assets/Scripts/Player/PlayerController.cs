@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(faceDir, 1, 1);
     }
 
+
     void AlignToGrid()
     {
         Vector3 pos = transform.position;
@@ -88,6 +89,12 @@ public class PlayerController : MonoBehaviour
     {
         OnDisable();
         AlignToGrid();
+    }
+
+    public void OnRestartLevel(Vector3 init_pos)
+    {
+        OnDisable();
+        LeanTween.move(gameObject, init_pos, 0.5f).setEaseInOutQuad();
     }
 
     private void Jump(InputAction.CallbackContext context)

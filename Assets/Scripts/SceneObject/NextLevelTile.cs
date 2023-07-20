@@ -42,9 +42,9 @@ public class NextLevelTile : MonoBehaviour
             {
                 stats.Level++;
 
-                OnChangeLevel.Raise();
+                //OnChangeLevel.Raise();
                 // show animation a bit later
-                Invoke("RaiseNextLevelEvent", 0.5f);
+                Invoke("RaiseNextLevelEvent", 1f);
 
                 _last_exit_tile = _exit_on_tile;
             }

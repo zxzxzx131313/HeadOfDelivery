@@ -39,7 +39,6 @@ public class CubeController : MonoBehaviour
     [Header("Head Event")]
     public GameEvent OnShowHint;
     public GameEvent OnHideHint;
-    public float LevelAnimationLength = 4.6f;
 
     private void Awake()
     {
@@ -62,7 +61,7 @@ public class CubeController : MonoBehaviour
     private void Start()
     {
 
-        _body = GameObject.FindGameObjectWithTag("Body");
+        _body = transform.parent.gameObject;
         _spawner = GetComponent<TileSpawner>();
         _sprite = GetComponent<SpriteRenderer>();
         _dice = GetComponent<HeadDice>();
@@ -87,8 +86,13 @@ public class CubeController : MonoBehaviour
 
         AutoOffFaceHint();
 
-        if (Keyboard.current.rKey.wasPressedThisFrame && !IsAttached)
+        if (Keyboard.current.rKey.wasPressedThisFrame)
         {
+            if (IsAttached)
+            {
+                RestartDetach();
+                _body.GetComponent<PlayerController>().OnRestartLevel(_detach_pos - Vector3.up);
+            }
             Restart();
         }
     }
@@ -140,6 +144,7 @@ public class CubeController : MonoBehaviour
         }
     }
 
+
     /**
  * <summary>
  * Attach head back to its body if head is close enough to its body.
@@ -162,6 +167,13 @@ public class CubeController : MonoBehaviour
         // show sprite after detached from body
         _sprite.enabled = true;
         _detach_pos = _body.transform.position + Vector3.up;
+    }
+
+    public void RestartDetach()
+    {
+        IsAttached = false;
+        // show sprite after detached from body
+        _sprite.enabled = true;
     }
 
     public void SetBeginState()
