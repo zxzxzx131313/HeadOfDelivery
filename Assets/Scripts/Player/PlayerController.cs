@@ -91,6 +91,12 @@ public class PlayerController : MonoBehaviour
         AlignToGrid();
     }
 
+    public void OnPaused()
+    {
+        if (inputControl.Gameplay.enabled) OnDisable();
+        else OnEnable();
+    }
+
     public void OnRestartLevel(Vector3 init_pos)
     {
         OnDisable();

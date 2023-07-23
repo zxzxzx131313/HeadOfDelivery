@@ -144,6 +144,18 @@ public class CubeController : MonoBehaviour
         }
     }
 
+    public void OnPaused()
+    {
+        if (IsAttached)
+        {
+            _body.GetComponent<PlayerController>().OnPaused();
+        }
+        else
+        {
+            if (cubeControl.Gameplay.enabled) OnDisable();
+            else OnEnable();
+        }
+    }
 
     /**
  * <summary>
