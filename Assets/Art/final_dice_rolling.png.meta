@@ -343,7 +343,7 @@ TextureImporter:
         serializedVersion: 2
         x: 64
         y: 96
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -359,33 +359,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: final_dice_rolling_10
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 96
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c399961a63785934cb3f65607fd175ec
-      internalID: -2022920191
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: final_dice_rolling_11
       rect:
         serializedVersion: 2
         x: 96
         y: 96
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -401,36 +380,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: final_dice_rolling_12
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 96
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5eb2bba8c4a2fbb438f2ff05547ad8b9
-      internalID: -1816720569
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: final_dice_rolling_13
       rect:
         serializedVersion: 2
         x: 32
         y: 80
-        width: 16
+        width: 32
         height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.6, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -443,36 +401,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: final_dice_rolling_14
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 80
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d5cbb692915da9746bfd84587ea6a2dd
-      internalID: 1673981433
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: final_dice_rolling_15
       rect:
         serializedVersion: 2
         x: 64
         y: 80
-        width: 16
+        width: 32
         height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.8, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -485,36 +422,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: final_dice_rolling_16
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 80
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ad82964931ccb3b48abe7992b2b01349
-      internalID: 525407818
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: final_dice_rolling_17
       rect:
         serializedVersion: 2
         x: 96
         y: 80
-        width: 16
+        width: 32
         height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -522,27 +438,6 @@ TextureImporter:
       bones: []
       spriteID: 30968151a84b20e438a7078a78666a1c
       internalID: 113799237
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: final_dice_rolling_18
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 80
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c612c13e8cc7ea4988b600b27a45f98
-      internalID: -303816057
       vertices: []
       indices: 
       edges: []

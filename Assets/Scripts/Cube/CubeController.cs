@@ -13,6 +13,7 @@ public class CubeController : MonoBehaviour
     [SerializeField] private GameEvent OnAttachHead;
     [SerializeField] private float hintDisplayTimeInSec = 1f;
     [SerializeField] private LevelStats stats;
+    [SerializeField] private DropPoints beginPoints;
 
     private Tilemap _platformTilemap;
     private Tilemap _headTilemap;
@@ -44,18 +45,19 @@ public class CubeController : MonoBehaviour
     {
         cubeControl = new CubeInputControl();
         cubeControl.Gameplay.Move.started += ctx => Move(ctx.ReadValue<Vector2>());
+
     }
 
     public void OnEnable()
     {
         cubeControl.Enable();
-        stats.StepsLeftChanged += CheckStepLeft;
+        //stats.StepsLeftChanged += CheckStepLeft;
     }
 
     public void OnDisable()
     {
         cubeControl.Disable();
-        stats.StepsLeftChanged -= CheckStepLeft;
+        //stats.StepsLeftChanged -= CheckStepLeft;
     }
 
     private void Start()
@@ -78,11 +80,6 @@ public class CubeController : MonoBehaviour
 
     private void Update()
     {
-        dirCheck = cubeControl.Gameplay.Move.ReadValue<Vector2>();
-
-        anim.SetFloat("Horizontal", dirCheck.x);
-        anim.SetFloat("Vertical", dirCheck.y);
-        anim.SetFloat("Speed", dirCheck.sqrMagnitude);
 
         AutoOffFaceHint();
 
@@ -191,7 +188,18 @@ public class CubeController : MonoBehaviour
     public void SetBeginState()
     {
         animation_stopped = true;
-        _begin_pos = transform.position;
+        _begin_pos = beginPoints.GetDropPointInLevel(stats.Level);
+        _dice.SetInitialState(stats.Level);
+        //if (_dice.top_face.IsColored)
+        //{
+
+        //    anim.SetBool("IsColored", true);
+        //}
+        //else
+        //{
+        //    anim.SetBool("IsColored", false);
+        //}
+        //anim.SetTrigger("ChangeFace");
     }
 
     public void SetAnimationBegin()
@@ -203,13 +211,18 @@ public class CubeController : MonoBehaviour
     {
         if (IsMoveable(direction) && !IsAttached)
         {
+
+
+            anim.SetFloat("Horizontal", direction.x);
+            anim.SetFloat("Vertical", direction.y);
+            anim.SetFloat("Speed", direction.sqrMagnitude);
+
             transform.position += (Vector3)direction;
 
             _dice.HandleTurn(direction);
 
             Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
             Vector3Int detach = _platformTilemap.WorldToCell(_detach_pos);
-
             if (_dice.top_face.IsColored)
             {
 
@@ -219,12 +232,14 @@ public class CubeController : MonoBehaviour
             {
                 anim.SetBool("IsColored", false);
             }
-            if (_dice.top_face.opposite.IsColored)
+
+            if (_dice.top_face.opposite.IsColored && stats.StepsLeft > 0)
             {
                 // do not spawn tile at body and original head location
                 if (pos != detach && pos != detach + Vector3Int.up)
                 {
-                    _spawner.SpawnTile(pos);
+                    // for turning animation to complete;
+                    Invoke("Spawntile", 0.6f);
                 }
             }
 
@@ -248,12 +263,10 @@ public class CubeController : MonoBehaviour
         }
     }
 
-    private void CheckStepLeft(int step)
+    private void Spawntile()
     {
-        if (step == 0)
-        {
-            OnDisable();
-        }
+        Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
+        _spawner.SpawnTile(pos, (float)stats.StepsLeft / stats.LevelSteps[stats.Level]);
     }
 
     private bool IsMoveable(Vector2 direction)

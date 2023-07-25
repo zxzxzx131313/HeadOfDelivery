@@ -36,10 +36,10 @@ public class CubeHint : MonoBehaviour
 
     public void ShowAllHint()
     {
-        ShowFace(_dice.GetFaceByPosition(DiceFaceIndex.Left), LeftImage);
-        ShowFace(_dice.GetFaceByPosition(DiceFaceIndex.Right), RightImage);
-        ShowFace(_dice.GetFaceByPosition(DiceFaceIndex.Bottom), DownImage);
-        ShowFace(_dice.GetFaceByPosition(DiceFaceIndex.Top), UpImage);
+        ShowFace(_dice.GetFaceByPosition(DiceFaceCode.Left), LeftImage);
+        ShowFace(_dice.GetFaceByPosition(DiceFaceCode.Right), RightImage);
+        ShowFace(_dice.GetFaceByPosition(DiceFaceCode.Bottom), DownImage);
+        ShowFace(_dice.GetFaceByPosition(DiceFaceCode.Above), UpImage);
 
     }
 

@@ -9,6 +9,7 @@ public class LevelStats : ScriptableObject
     [Header("Level Setting")]
     [SerializeField] private int _total_level = 5;
     [SerializeField] private int[] _level_steps;
+    [SerializeField] private DiceFaceCode[] _begin_level_color_face_position;
     // potential different level width setting
     [SerializeField] private int _levelPanningOffset = 2;
 
@@ -46,6 +47,16 @@ public class LevelStats : ScriptableObject
             }
         } 
     }
+
+    public int[] LevelSteps
+    {
+        get
+        {
+            return _level_steps;
+        }
+    }
+
+    public DiceFaceCode LevelBeginColorFacePosition(int level) { return _begin_level_color_face_position[level]; }
 
     public int LevelPanningOffset { get { return _levelPanningOffset; } }
 

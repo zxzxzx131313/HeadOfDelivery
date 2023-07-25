@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DiceFaceIndex { Left, Right, Top, Bottom }
+public enum DiceFaceCode { Left, Right, Above, Bottom, Opposite, Top }
 
 public class Diceface
 {
@@ -20,6 +20,8 @@ public class HeadDice : MonoBehaviour
     public Diceface left_face { get; private set; }
     public Diceface right_face { get; private set; }
 
+    public LevelStats stats;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,20 +30,25 @@ public class HeadDice : MonoBehaviour
             Dicefaces[i] = new Diceface();
             Dicefaces[i].Index = i;
         }
-        // Default right face is colored
-        Dicefaces[1].IsUp = true;
-        Dicefaces[1].IsColored = true;
+        SetInitialState(0);
+    }
 
+    public void SetInitialState(int level)
+    {
         top_face = Dicefaces[0];
         above_face = Dicefaces[4];
         down_face = Dicefaces[5];
         left_face = Dicefaces[3];
         right_face = Dicefaces[1];
+        top_face.IsColored = true;
+        top_face.IsUp = true;
 
         // set opposite faces;
         SetOpposite(Dicefaces[0], Dicefaces[2]);
         SetOpposite(Dicefaces[1], Dicefaces[3]);
         SetOpposite(Dicefaces[4], Dicefaces[5]);
+
+        ColorDiceTo(stats.LevelBeginColorFacePosition(level));
     }
 
     public void Restart()
@@ -52,15 +59,15 @@ public class HeadDice : MonoBehaviour
             Dicefaces[i].IsColored = false;
         }
 
-        // Default right face is colored
-        Dicefaces[1].IsUp = true;
-        Dicefaces[1].IsColored = true;
-
         top_face = Dicefaces[0];
         above_face = Dicefaces[4];
         down_face = Dicefaces[5];
         left_face = Dicefaces[3];
         right_face = Dicefaces[1];
+        top_face.IsColored = true;
+        top_face.IsUp = true;
+
+        ColorDiceTo(stats.LevelBeginColorFacePosition(stats.Level));
     }
 
     void SetOpposite(Diceface d1, Diceface d2)
@@ -69,18 +76,37 @@ public class HeadDice : MonoBehaviour
         d2.opposite = d1;
     }
 
-    public Diceface GetFaceByPosition(DiceFaceIndex index)
+    void ColorDiceTo(DiceFaceCode face)
+    {
+        if (face == DiceFaceCode.Above)
+            TurnUp();
+        if (face == DiceFaceCode.Right)
+            TurnRight();
+        if (face == DiceFaceCode.Left)
+            TurnLeft();
+        if (face == DiceFaceCode.Bottom)
+            TurnDown();
+        if (face == DiceFaceCode.Opposite)
+        {
+            TurnUp();
+            TurnUp();
+        }
+            
+    }
+
+
+    public Diceface GetFaceByPosition(DiceFaceCode index)
     {
         // Up = 0; Right = 1; Down = 2; Left = 3;
         switch (index)
         {
-            case DiceFaceIndex.Top:
+            case DiceFaceCode.Above:
                 return above_face;
-            case DiceFaceIndex.Right:
+            case DiceFaceCode.Right:
                 return right_face;
-            case DiceFaceIndex.Bottom:
+            case DiceFaceCode.Bottom:
                 return down_face;
-            case DiceFaceIndex.Left:
+            case DiceFaceCode.Left:
                 return left_face;
             default:
                 return null;
@@ -121,6 +147,7 @@ public class HeadDice : MonoBehaviour
         top_face = right_face;
         right_face = opp;
         top_face.IsUp = true;
+
     }
 
     void TurnRight()
