@@ -40,6 +40,7 @@ public class NextLevelTile : MonoBehaviour
             Vector3Int _exit_on_tile = _tiles.WorldToCell(collision.transform.position);
             if (_last_exit_tile.x < _exit_on_tile.x && _exit_on_tile.x - _enter_on_tile.x > 0)
             {
+
                 stats.Level++;
 
                 //OnChangeLevel.Raise();
@@ -55,6 +56,7 @@ public class NextLevelTile : MonoBehaviour
 
     void RaiseNextLevelEvent()
     {
+
         OnNextLevelStart.Raise();
     }
 }

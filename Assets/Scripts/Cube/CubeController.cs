@@ -32,6 +32,7 @@ public class CubeController : MonoBehaviour
     bool animation_stopped = false;
 
     float time = 0f;
+    int current_step = 0;
 
 
     [Header("Head Movement")]
@@ -44,8 +45,8 @@ public class CubeController : MonoBehaviour
     private void Awake()
     {
         cubeControl = new CubeInputControl();
-        cubeControl.Gameplay.Move.started += ctx => Move(ctx.ReadValue<Vector2>());
-
+        cubeControl.Gameplay.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
+        _begin_pos = transform.position;
     }
 
     public void OnEnable()
@@ -123,21 +124,24 @@ public class CubeController : MonoBehaviour
         {
             _spawner.Restart();
             LeanTween.move(gameObject, _begin_pos, 0.5f).setEaseInOutQuad();
-            transform.position = _begin_pos;
-            _dice.Restart();
-            if (_dice.top_face.IsColored)
-            {
 
-                anim.SetBool("IsColored", true);
-            }
-            else
+            if (stats.Level > 0)
             {
-                anim.SetBool("IsColored", false);
+                _dice.Restart();
+                if (_dice.top_face.IsColored)
+                {
+
+                    anim.SetBool("IsColored", true);
+                }
+                else
+                {
+                    anim.SetBool("IsColored", false);
+                }
+                // might need additional animation for the restart transition
+                anim.SetTrigger("ChangeFace");
+                stats.RestartLevel();
+                OnEnable();
             }
-            // might need additional animation for the restart transition
-            anim.SetTrigger("ChangeFace");
-            stats.RestartLevel();
-            OnEnable();
         }
     }
 
@@ -209,6 +213,7 @@ public class CubeController : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
+        Debug.Log("curb controll: " + direction);
         if (IsMoveable(direction) && !IsAttached)
         {
 
@@ -239,7 +244,8 @@ public class CubeController : MonoBehaviour
                 if (pos != detach && pos != detach + Vector3Int.up)
                 {
                     // for turning animation to complete;
-                    Invoke("Spawntile", 0.6f);
+                    current_step = stats.StepsLeft;
+                    Invoke("Spawntile", 0.2f);
                 }
             }
 
@@ -266,7 +272,7 @@ public class CubeController : MonoBehaviour
     private void Spawntile()
     {
         Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
-        _spawner.SpawnTile(pos, (float)stats.StepsLeft / stats.LevelSteps[stats.Level]);
+        _spawner.SpawnTile(pos, (float)current_step / stats.LevelSteps[stats.Level]);
     }
 
     private bool IsMoveable(Vector2 direction)

@@ -29,29 +29,29 @@ public partial class @CubeInputControl: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""09ada6bc-55ad-4a46-9aae-d5914745b3c4"",
                     ""expectedControlType"": ""Button"",
-                    ""processors"": ""NormalizeVector2"",
-                    ""interactions"": ""Press(pressPoint=1)"",
-                    ""initialStateCheck"": false
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": ""IJKL"",
-                    ""id"": ""6124beeb-d8a7-493d-859d-6775762e2a0d"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": ""Press"",
-                    ""processors"": ""NormalizeVector2"",
+                    ""name"": ""WASD"",
+                    ""id"": ""b8f17cf2-6581-4d96-9d13-4098cff515bb"",
+                    ""path"": ""WASD"",
+                    ""interactions"": """",
+                    ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""d61cd417-586a-4c77-99d4-dddac775c873"",
+                    ""name"": ""Up"",
+                    ""id"": ""ed7cd5bb-b2a6-4970-9eb9-74dbe937e171"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -61,8 +61,8 @@ public partial class @CubeInputControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""83241cde-0548-46f1-b4b9-d42652f7757f"",
+                    ""name"": ""Down"",
+                    ""id"": ""6077e5f6-b729-457a-a2ab-3749d635be10"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -72,8 +72,8 @@ public partial class @CubeInputControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""531e7feb-6c9b-4a09-a2ec-a59d519dfac2"",
+                    ""name"": ""Left"",
+                    ""id"": ""8d3a7c8b-3a6d-40d9-a4a5-0f34d0dbc770"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -83,8 +83,8 @@ public partial class @CubeInputControl: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""right"",
-                    ""id"": ""bc7355c2-397f-4887-9e6d-abd959e7dcce"",
+                    ""name"": ""Right"",
+                    ""id"": ""f2205e16-f360-40c6-82c5-f3f31ef67bb7"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",

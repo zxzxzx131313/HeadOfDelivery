@@ -10,22 +10,29 @@ public class LevelUI : MonoBehaviour
     [SerializeField] private TMP_Text levelCount;
     void Start()
     {
-        stepCount.text = stats.StepsLeft.ToString();
-        levelCount.text = "Level " + stats.Level.ToString();
+        if (stats.Level > 0)
+        {
+            stepCount.text = stats.StepsLeft.ToString();
+            levelCount.text = "Level " + stats.Level.ToString();
+        }
     }
 
     private void OnEnable()
     {
+
         stats.StepsLeftChanged += UpdateStepDisplay;
         stats.LevelChanged += UpdateLevelDisplay;
         stats.LevelChanged += UpdateStepDisplay;
+        
     }
 
     private void OnDisable()
     {
+
         stats.StepsLeftChanged -= UpdateStepDisplay;
         stats.LevelChanged -= UpdateLevelDisplay;
         stats.LevelChanged -= UpdateStepDisplay;
+        
     }
 
     void UpdateStepDisplay(int step)

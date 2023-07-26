@@ -14,10 +14,14 @@ public class Cutscene : MonoBehaviour
 
     GameObject _head;
 
+    private void Start()
+    {
+        
+        _head = GameObject.FindGameObjectWithTag("Head");
+    }
     public void PlayAnimation()
     {
         _director.Play();
-        _head = GameObject.FindGameObjectWithTag("Head");
     }
 
     private void OnEnable()

@@ -27,7 +27,7 @@ public class EdgeColliderSetting : MonoBehaviour
         // add or use existing EdgeCollider2D
         edge = GetComponent<EdgeCollider2D>() == null ? gameObject.AddComponent<EdgeCollider2D>() : GetComponent<EdgeCollider2D>();
 
-        var edgePoints = new[] { bottomLeft, topLeft, topRight, bottomRight };
+        var edgePoints = new[] {topLeft, bottomLeft, bottomRight, topRight,  };
         edge.points = edgePoints;
 
     }
@@ -51,11 +51,11 @@ public class EdgeColliderSetting : MonoBehaviour
         for (int i = 0; i < edge.points.Length; i++)
             edge.points[i].x += width - stats.LevelPanningOffset;
         Vector3 pos = transform.position;
-        pos.x += width;
+        pos.x = width * level;
         transform.position = pos;
         // camera transition
         Vector3 cam_pos = cam.gameObject.transform.position;
-        cam_pos.x += width;
+        cam_pos.x = width * level;
         LeanTween.moveX(cam.gameObject, cam_pos.x, 0.5f).setEase(LeanTweenType.easeInQuad);
     }
 }
