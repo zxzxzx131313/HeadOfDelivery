@@ -19,6 +19,8 @@ public class CubeController : MonoBehaviour
     private Tilemap _headTilemap;
 
     public bool IsAttached { get; private set; }
+    public UnityAction TileSpawned;
+    public UnityAction<Vector2> SendDirection;
 
     private GameObject _body;
     private TileSpawner _spawner;
@@ -94,28 +96,33 @@ public class CubeController : MonoBehaviour
             Restart();
         }
     }
+
+    public CubeInputControl GetCubeInputControl()
+    {
+        return cubeControl;
+    }
     void AutoOffFaceHint()
     {
         // for auto off hint dice faces
-        if (cubeControl.Gameplay.Move.triggered)
+        //if (cubeControl.Gameplay.Move.triggered)
+        if (time > 0)
         {
-            time = hintDisplayTimeInSec;
+            time -= Time.deltaTime;
         }
         else
         {
-            if (time > 0)
-            {
-                time -= Time.deltaTime;
-            }
-            else
-            {
-                OnHideHint.Raise();
-            }
+            OnHideHint.Raise();
         }
+        
         if (IsAttached)
         {
             OnHideHint.Raise();
         }
+    }
+
+    public void ResetHintTimer()
+    {
+        time = hintDisplayTimeInSec;
     }
 
     void Restart()
@@ -213,10 +220,11 @@ public class CubeController : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
-        Debug.Log("curb controll: " + direction);
+
         if (IsMoveable(direction) && !IsAttached)
         {
 
+            SendDirection?.Invoke(direction);
 
             anim.SetFloat("Horizontal", direction.x);
             anim.SetFloat("Vertical", direction.y);
@@ -241,11 +249,12 @@ public class CubeController : MonoBehaviour
             if (_dice.top_face.opposite.IsColored && stats.StepsLeft > 0)
             {
                 // do not spawn tile at body and original head location
-                if (pos != detach && pos != detach + Vector3Int.up)
+                if (pos != detach && pos != detach + Vector3Int.up && !_spawner.HasHeadTile(pos))
                 {
                     // for turning animation to complete;
                     current_step = stats.StepsLeft;
                     Invoke("Spawntile", 0.2f);
+                    TileSpawned?.Invoke();
                 }
             }
 
@@ -264,10 +273,16 @@ public class CubeController : MonoBehaviour
             }
 
             OnShowHint.Raise();
+            ResetHintTimer();
 
             stats.StepsLeft--;
         }
     }
+
+    public bool IsOnHeadTile() {
+        Vector3Int pos = _platformTilemap.WorldToCell(transform.position); 
+        return _spawner.HasHeadTile(pos); 
+    } 
 
     private void Spawntile()
     {

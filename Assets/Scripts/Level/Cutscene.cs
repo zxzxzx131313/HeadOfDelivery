@@ -9,6 +9,8 @@ public class Cutscene : MonoBehaviour
 {
     public PlayableDirector _director;
     public GameEvent OnLevelAnimationEnd;
+    public GameEvent OnShowHint;
+    public GameEvent OnHideHint;
     public DropPoints points;
     public LevelStats stats;
 
@@ -60,5 +62,15 @@ public class Cutscene : MonoBehaviour
         _head.transform.position = new Vector2(point.x, _head.transform.position.y);
 
         LeanTween.move(_head, point, 0.7f).setEaseInCubic();
+
+        Invoke("ShowInitialHint", 0.7f);
     }
+
+    void ShowInitialHint()
+    {
+
+        OnShowHint.Raise();
+        _head.GetComponent<CubeController>().ResetHintTimer();
+    }
+
 }

@@ -91,8 +91,6 @@ public class WASDComposite : InputBindingComposite<Vector2>
         leftPressedLastFrame = leftPressed;
         rightPressedLastFrame = rightPressed;
 
-        Debug.Log(x + " " + y);
-        Debug.Log("leftPressTimestamp: " + leftPressTimestamp);
         return new Vector2(x, y);
     }
 

@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 
 public class TileSpawner : MonoBehaviour
 {
     [SerializeField]
     private Tile _tile;
     private Tilemap _headTile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +27,16 @@ public class TileSpawner : MonoBehaviour
     public void SpawnTile(Vector3Int position, float inkLeft)
     {
 
-        if (!_headTile.HasTile(position))
-        {
+        //if (!_headTile.HasTile(position))
+        //{
             _tile.color = new Vector4(1, 1, 1, 1f*inkLeft);
             _headTile.SetTile(position, _tile);
-        }
+        //}
+    }
+
+    public bool HasHeadTile(Vector3Int position)
+    {
+        return _headTile.HasTile(position);
     }
 
     public void Restart()

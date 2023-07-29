@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d301c113a548c864ca19a3a0d533847b, type: 3}
-  m_Name: LevelStats
+  m_Script: {fileID: 11500000, guid: 59eea9d04ea3f0342b4cbb96a160cc8c, type: 3}
+  m_Name: OnShowNote
   m_EditorClassIdentifier: 
-  _total_level: 5
-  _level_steps: 0a0000000200000014000000190000001e000000
-  _begin_level_color_face_position: 05000000020000000300000005000000
-  _levelPanningOffset: 2

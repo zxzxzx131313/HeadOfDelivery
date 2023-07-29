@@ -14,7 +14,7 @@ public class NextLevelTile : MonoBehaviour
     Vector3Int _enter_on_tile;
     Vector3Int _last_exit_tile;
 
-    // Note: Tiles are made 2 units high to prevent player jump and enter into the collision area which results in initial starting position offset.
+    // note: Tiles are made 2 units high to prevent player jump and enter into the collision area which results in initial starting position offset.
     private void Start()
     {
         _tiles = GetComponent<Tilemap>();

@@ -9,8 +9,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int _beginAtLevel = 1;
     public LevelStats stats;
     public Cutscene Scene;
-    public GameEvent OnDetachHead;
-    public GameEvent OnAnimationEnd;
+    public GameEvent OnNextLevelStart;
     void Start()
     {
         
@@ -19,11 +18,17 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (stats.Level != _beginAtLevel && _beginAtLevel > 0)
+        if (stats.Level < _beginAtLevel && _beginAtLevel > 0)
         {
             stats.Level = _beginAtLevel;
-            OnDetachHead.Raise();
-            OnAnimationEnd.Raise();
+            Scene.PlayAnimation();
+            Invoke("RaiseNextLevelEvent", 1f);
         }
+    }
+
+    void RaiseNextLevelEvent()
+    {
+
+        OnNextLevelStart.Raise();
     }
 }

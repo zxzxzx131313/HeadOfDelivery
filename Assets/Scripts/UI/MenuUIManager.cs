@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class MenuUIManager : MonoBehaviour
 {
     public GameEvent OnPaused;
+    public Canvas steps;
     Canvas Menu;
 
     private void Start()
@@ -24,5 +25,6 @@ public class MenuUIManager : MonoBehaviour
     public void MenuOnPaused()
     {
         Menu.enabled = !Menu.enabled;
+        steps.enabled = !steps.enabled;
     }
 }

@@ -29,7 +29,7 @@
 //        //_director.playableAsset = Timeline;
 
 //        //TimelineAsset asset = _director.playableAsset as TimelineAsset;
-//        //// Note - we're deleting the track if it exists already, since we want to generate everything on the spot for this example
+//        //// note - we're deleting the track if it exists already, since we want to generate everything on the spot for this example
 //        //foreach (TrackAsset track in asset.GetOutputTracks())
 //        //    asset.DeleteTrack(track);
 
