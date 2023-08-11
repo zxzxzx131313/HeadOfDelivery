@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DetachHead : MonoBehaviour
+public class HookDetachHead : MonoBehaviour
 {
     public GameEvent OnDetachHead;
 

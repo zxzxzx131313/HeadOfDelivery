@@ -19,8 +19,7 @@ public class CubeController : MonoBehaviour
     private Tilemap _headTilemap;
 
     public bool IsAttached { get; private set; }
-    public UnityAction TileSpawned;
-    public UnityAction<Vector2> SendDirection;
+    public UnityAction<Vector2,bool> SendDirection;
 
     private GameObject _body;
     private TileSpawner _spawner;
@@ -88,11 +87,6 @@ public class CubeController : MonoBehaviour
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            if (IsAttached)
-            {
-                RestartDetach();
-                _body.GetComponent<PlayerController>().OnRestartLevel(_detach_pos - Vector3.up);
-            }
             Restart();
         }
     }
@@ -127,6 +121,12 @@ public class CubeController : MonoBehaviour
 
     void Restart()
     {
+        if (IsAttached)
+        {
+            RestartDetach();
+            _body.GetComponent<PlayerController>().OnRestartLevel(_detach_pos - Vector3.up);
+        }
+
         if (animation_stopped)
         {
             _spawner.Restart();
@@ -223,8 +223,7 @@ public class CubeController : MonoBehaviour
 
         if (IsMoveable(direction) && !IsAttached)
         {
-
-            SendDirection?.Invoke(direction);
+            bool stamped = false;
 
             anim.SetFloat("Horizontal", direction.x);
             anim.SetFloat("Vertical", direction.y);
@@ -254,7 +253,7 @@ public class CubeController : MonoBehaviour
                     // for turning animation to complete;
                     current_step = stats.StepsLeft;
                     Invoke("Spawntile", 0.2f);
-                    TileSpawned?.Invoke();
+                    stamped = true;
                 }
             }
 
@@ -275,6 +274,7 @@ public class CubeController : MonoBehaviour
             OnShowHint.Raise();
             ResetHintTimer();
 
+            SendDirection?.Invoke(direction, stamped);
             stats.StepsLeft--;
         }
     }

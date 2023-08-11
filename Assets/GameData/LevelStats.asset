@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LevelStats
   m_EditorClassIdentifier: 
   _total_level: 5
-  _level_steps: 0a0000000200000014000000190000001e000000
+  _level_steps: 0a0000000200000028000000190000001e000000
   _begin_level_color_face_position: 05000000020000000300000001000000
   _levelPanningOffset: 2

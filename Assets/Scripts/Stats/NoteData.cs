@@ -13,6 +13,9 @@ public class NoteData : ScriptableObject
     [SerializeField] private GameObject _rightArrow;
 
     [SerializeField] private GameObject _stampFace;
+    [SerializeField] private GameObject _panel;
+    [SerializeField] private GameObject _button;
+    [SerializeField] private GameObject _stepContainer;
     public string _dirpath;
 
     public GameObject UpArrow { get => _upArrow; }
@@ -20,6 +23,9 @@ public class NoteData : ScriptableObject
     public GameObject LeftArrow { get => _leftArrow; }
     public GameObject RightArrow { get => _rightArrow; }
     public GameObject StampFace { get => _stampFace; }
+    public GameObject Panel { get => _panel; }
+    public GameObject Button { get => _button; }
+    public GameObject StepContainer { get => _stepContainer; }
     public string SaveDataDirname { get => _dirpath; }
 
 }

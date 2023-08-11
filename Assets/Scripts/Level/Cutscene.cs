@@ -59,7 +59,7 @@ public class Cutscene : MonoBehaviour
     {
         Vector2 point = points.GetDropPointInLevel(stats.Level);
 
-        _head.transform.position = new Vector2(point.x, _head.transform.position.y);
+        _head.transform.position = new Vector3(point.x, _head.transform.position.y, _head.transform.position.z);
 
         LeanTween.move(_head, point, 0.7f).setEaseInCubic();
 

@@ -9,18 +9,22 @@ TagManager:
   - Head
   - Body
   - EdgeCollider
+  - StepContainer
+  - PanelButton
+  - Note
+  - PreviewCamera
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - NotePreview
   - Water
   - UI
   - Ground
   - Head
   - Body
   - Starttile
-  - 
+  - Note
   - 
   - 
   - 
