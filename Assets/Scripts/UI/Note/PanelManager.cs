@@ -9,7 +9,7 @@ public class PanelManager : MonoBehaviour
     public Canvas canvas;
 
     public bool visible = false;
-    bool canvasState = false;
+    //bool canvasState = false;
     bool noteCanvas = false;
     bool activated = false;
     NoteUIManager note;
@@ -54,11 +54,12 @@ public class PanelManager : MonoBehaviour
     public void SetActive()
     {
         //ameObject.SetActive(true);
-        canvasState = true;
+        //canvasState = true;
         GetButton().ActivateSprite();
         canvas.sortingOrder = 3;
         visible = true;
         activated = true;
+        canvas.enabled = true;
     }
 
     public void Deactivate()
@@ -67,7 +68,7 @@ public class PanelManager : MonoBehaviour
         canvas.sortingOrder = 0;
         visible = false;
         //gameObject.SetActive(false);
-        canvasState = false;
+        //canvasState = false;
         canvas.enabled = false;
         activated = false;
     }
@@ -75,10 +76,11 @@ public class PanelManager : MonoBehaviour
     public void WaitForActivation()
     {
         //gameObject.SetActive(true);
-        canvasState = true;
+        //canvasState = true;
         GetButton().DeactivateSprite();
         canvas.sortingOrder = 2;
-        visible = false;
+        activated = true;
+        canvas.enabled = true;
     }
 
     public void SetToBackLayer()
@@ -110,7 +112,7 @@ public class PanelManager : MonoBehaviour
         //trigger repaint
         canvas.enabled = false;
         canvas.enabled = true;
-        if (noteCanvas && canvasState)
+        if (noteCanvas && activated)
             canvas.enabled = true;
         else
             canvas.enabled = false;

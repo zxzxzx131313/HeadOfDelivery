@@ -41,8 +41,6 @@ public class NoteUIManager : MonoBehaviour
         if (Keyboard.current.mKey.wasPressedThisFrame)
         {
             ToggleNote();
-            content.ToggleContent();
-            OnShowNote?.Invoke();
         }
 
         if (active)
@@ -71,6 +69,8 @@ public class NoteUIManager : MonoBehaviour
         {
             LeanTween.move(transform.GetChild(0).GetComponent<RectTransform>(), new Vector2(65, 0), 0.5f).setEaseOutBounce();
         }
+        content.ToggleContent();
+        OnShowNote?.Invoke();
     }
 
     void NotePanToNextLevel(int level)

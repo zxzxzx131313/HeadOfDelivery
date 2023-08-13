@@ -61,22 +61,22 @@ public class RecordManager : MonoBehaviour
 
             Panels[record_pointer].SetActive();
 
-            if (record_pointer + 1 < Panels.Count )
-            {
-                Panels[record_pointer + 1].WaitForActivation();
-            }
+            //if (record_pointer + 1 < Panels.Count )
+            //{
+            //    Panels[record_pointer + 1].WaitForActivation();
+            //}
         }
         else
         {
-            if (record_pointer + 1 < Panels.Count)
-            {
-                Panels[record_pointer + 1].SetToBackLayer();
-            }
+            //if (record_pointer + 1 < Panels.Count)
+            //{
+            //    Panels[record_pointer + 1].SetToBackLayer();
+            //}
             Panels[record_pointer].SetToFrontLayer();
         }
         foreach (PanelManager panel in Panels)
         {
-            if (panel.Index != index && panel.Index != index+1)
+            if (panel.Index != index)
             {
                 panel.SetToBackLayer();
             }
@@ -158,12 +158,19 @@ public class RecordManager : MonoBehaviour
             Panels[i].SetActive();
             Panels[i].SetToBackLayer();
         }
-        record_pointer = Mathf.Max(0, allRecords.Records.Count - 1);
-        if (record_pointer + 1 < Panels.Count)
+        record_pointer = allRecords.Records.Count - 1;
+        if (record_pointer >= 0)
         {
-            Panels[record_pointer].SetActive();
-            Panels[record_pointer + 1].WaitForActivation();
+            if (record_pointer + 1 < Panels.Count)
+            {
+                Panels[record_pointer + 1].WaitForActivation();
+            }
         }
+        else
+        {
+            Panels[0].SetActive();
+        }
+        record_pointer = Mathf.Max(0, record_pointer);
         UpdatePreviewSize();
     }
 
@@ -201,47 +208,58 @@ public class RecordManager : MonoBehaviour
         {
             allRecords.Records.Remove(allRecords.Records[record_pointer]);
             //record_pointer++;
+            if (allRecords.Records.Count > 0)
+                Panels[record_pointer].WaitForActivation();
         }
         else
         {
             SaveToJson();
+            if (record_pointer + 1 < Panels.Count)
+            {
+
+                Panels[record_pointer+1].WaitForActivation();
+                //Panels[record_pointer+1].UpdateCanvasVisibility();
+            }
+
 
         }
     }
 
     void DeleteRecord(int index)
     {
-        if (!IsPanelEmpty(index))
+        if (recording)
         {
-            if (recording)
-            {
-                recording = false;
-                RecordEntry entry = new();
-                GetStepRecorderFromPanel(index).EndRecord(ref entry);
-                Panels[index].GetStepRecorder().OnNewStep -= UpdatePreviewSize;
-            }
-
-            Destroy(Panels[index].GetStepRecorder().gameObject);
-            for (int i = index; i < allRecords.Records.Count - 1; i++)
-            {
-                Panels[i + 1].GetStepRecorder().gameObject.transform.SetParent(Panels[i].transform);
-            }
-            //Panels[allRecords.Records.Count - 1].WaitForActivation();
-            Instantiate(data.StepContainer, Panels[allRecords.Records.Count - 1].transform);
-            if (allRecords.Records.Count < Panels.Count)
-            {
-                Panels[allRecords.Records.Count].Deactivate();
-            }
-            allRecords.Records.Remove(allRecords.Records[index]);
-            UpdateRecordPointer(record_pointer);
-            //if (allRecords.Records.Count < Panels.Count)
-            //{
-            //    //Destroy(Panels[allRecords.Records.Count - 1].GetStepRecorder().gameObject);
-            //    Instantiate(data.StepContainer, Panels[allRecords.Records.Count - 1].transform);
-            //    Panels[allRecords.Records.Count - 1].WaitForActivation();
-            //}
-            SaveToJson();
+            recording = false;
+            RecordEntry entry = new();
+            GetStepRecorderFromPanel(index).EndRecord(ref entry);
+            Panels[index].GetStepRecorder().OnNewStep -= UpdatePreviewSize;
         }
+
+        Destroy(Panels[index].GetStepRecorder().gameObject);
+        for (int i = index; i < allRecords.Records.Count - 1; i++)
+        {
+            Panels[i + 1].GetStepRecorder().gameObject.transform.SetParent(Panels[i].transform);
+        }
+        //Panels[allRecords.Records.Count - 1].WaitForActivation();
+        Instantiate(data.StepContainer, Panels[Mathf.Max(index, allRecords.Records.Count - 1)].transform);
+        if (allRecords.Records.Count > 0 && allRecords.Records.Count < Panels.Count)
+        {
+            Panels[allRecords.Records.Count].Deactivate();
+        }
+
+        Panels[ Mathf.Max(index, allRecords.Records.Count-1)].WaitForActivation();
+        if (allRecords.Records.Count > index) 
+            allRecords.Records.Remove(allRecords.Records[index]);
+        if (allRecords.Records.Count == 0)
+            Panels[0].SetActive();
+        //if (allRecords.Records.Count < Panels.Count)
+        //{
+        //    //Destroy(Panels[allRecords.Records.Count - 1].GetStepRecorder().gameObject);
+        //    Instantiate(data.StepContainer, Panels[allRecords.Records.Count - 1].transform);
+        //    Panels[allRecords.Records.Count - 1].WaitForActivation();
+        //}
+        SaveToJson();
+        
     }
 
 

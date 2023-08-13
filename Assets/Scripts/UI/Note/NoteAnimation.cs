@@ -8,6 +8,7 @@ public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     public RawImage NotePreview;
     public Canvas Sticker;
+    public GameObject Board;
 
     private void Start()
     {
@@ -26,7 +27,7 @@ public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         //Vector2 pos = GetComponent<RectTransform>().anchoredPosition;
         //pos += new Vector2(-60, 70);
-        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
+        LeanTween.move(Board.GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
         NotePreview.GetComponent<Canvas>().enabled = false;
         Sticker.enabled = false;
     }
@@ -37,7 +38,7 @@ public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         //pos -= new Vector2(-60, 60);
 
 
-        LeanTween.move(GetComponent<RectTransform>(), Vector2.zero, 0.5f).setEaseOutBounce();
+        LeanTween.move(Board.GetComponent<RectTransform>(), Vector2.zero, 0.5f).setEaseOutBounce();
         NotePreview.GetComponent<Canvas>().enabled = true;
         Sticker.enabled = true;
     }
