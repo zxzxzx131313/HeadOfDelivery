@@ -1,0 +1,247 @@
+{
+  "Records": [
+    {
+      "Steps": [
+        {
+          "Key": {
+            "x": 48,
+            "y": -16,
+            "z": 4,
+            "magnitude": 50.75431,
+            "sqrMagnitude": 2576
+          },
+          "Value": 8
+        },
+        {
+          "Key": {
+            "x": 48,
+            "y": -8,
+            "z": 2,
+            "magnitude": 48.7031822,
+            "sqrMagnitude": 2372
+          },
+          "Value": 9
+        },
+        {
+          "Key": {
+            "x": 56,
+            "y": 0,
+            "z": 0,
+            "magnitude": 56.0,
+            "sqrMagnitude": 3136
+          },
+          "Value": 10
+        },
+        {
+          "Key": {
+            "x": 64,
+            "y": -8,
+            "z": 3,
+            "magnitude": 64.5677948,
+            "sqrMagnitude": 4169
+          },
+          "Value": 11
+        },
+        {
+          "Key": {
+            "x": 64,
+            "y": -16,
+            "z": 4,
+            "magnitude": 66.09084,
+            "sqrMagnitude": 4368
+          },
+          "Value": 12
+        }
+      ],
+      "Stamps": {
+        "Item1": {
+          "x": 48,
+          "y": -16,
+          "magnitude": 50.5964432,
+          "sqrMagnitude": 2560
+        },
+        "Item2": {
+          "x": 64,
+          "y": -16,
+          "magnitude": 65.96969,
+          "sqrMagnitude": 4352
+        }
+      },
+      "Bounds": {
+        "Item1": {
+          "x": 48.0,
+          "y": -16.0,
+          "normalized": {
+            "x": 0.948683262,
+            "y": -0.316227764,
+            "normalized": {
+              "x": 0.9486833,
+              "y": -0.3162278,
+              "magnitude": 1.0,
+              "sqrMagnitude": 1.00000012
+            },
+            "magnitude": 0.99999994,
+            "sqrMagnitude": 0.99999994
+          },
+          "magnitude": 50.5964432,
+          "sqrMagnitude": 2560.0
+        },
+        "Item2": {
+          "x": 64.0,
+          "y": 0.0,
+          "normalized": {
+            "x": 1.0,
+            "y": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 64.0,
+          "sqrMagnitude": 4096.0
+        }
+      },
+      "PanelAnchorPoint": {
+        "x": -56.0,
+        "y": 8.0,
+        "normalized": {
+          "x": -0.989949465,
+          "y": 0.141421363,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 56.5685425,
+        "sqrMagnitude": 3200.0
+      }
+    },
+    {
+      "Steps": [
+        {
+          "Key": {
+            "x": 16,
+            "y": 0,
+            "z": 4,
+            "magnitude": 16.4924221,
+            "sqrMagnitude": 272
+          },
+          "Value": 1
+        },
+        {
+          "Key": {
+            "x": 16,
+            "y": 8,
+            "z": 2,
+            "magnitude": 18.0,
+            "sqrMagnitude": 324
+          },
+          "Value": 2
+        },
+        {
+          "Key": {
+            "x": 8,
+            "y": 16,
+            "z": 1,
+            "magnitude": 17.9164734,
+            "sqrMagnitude": 321
+          },
+          "Value": 3
+        },
+        {
+          "Key": {
+            "x": 0,
+            "y": 24,
+            "z": 2,
+            "magnitude": 24.083189,
+            "sqrMagnitude": 580
+          },
+          "Value": 4
+        },
+        {
+          "Key": {
+            "x": 8,
+            "y": 32,
+            "z": 0,
+            "magnitude": 32.9848442,
+            "sqrMagnitude": 1088
+          },
+          "Value": 5
+        },
+        {
+          "Key": {
+            "x": 16,
+            "y": 24,
+            "z": 3,
+            "magnitude": 29.0,
+            "sqrMagnitude": 841
+          },
+          "Value": 6
+        },
+        {
+          "Key": {
+            "x": 24,
+            "y": 16,
+            "z": 0,
+            "magnitude": 28.84441,
+            "sqrMagnitude": 832
+          },
+          "Value": 7
+        },
+        {
+          "Key": {
+            "x": 32,
+            "y": 16,
+            "z": 4,
+            "magnitude": 36.0,
+            "sqrMagnitude": 1296
+          },
+          "Value": 8
+        }
+      ],
+      "Stamps": {
+        "Item1": {
+          "x": 16,
+          "y": 0,
+          "magnitude": 16.0,
+          "sqrMagnitude": 256
+        },
+        "Item2": {
+          "x": 32,
+          "y": 16,
+          "magnitude": 35.77709,
+          "sqrMagnitude": 1280
+        }
+      },
+      "Bounds": {
+        "Item1": {
+          "x": 0.0,
+          "y": 0.0,
+          "magnitude": 0.0,
+          "sqrMagnitude": 0.0
+        },
+        "Item2": {
+          "x": 32.0,
+          "y": 32.0,
+          "normalized": {
+            "x": 0.707106769,
+            "y": 0.707106769,
+            "magnitude": 1.0,
+            "sqrMagnitude": 0.99999994
+          },
+          "magnitude": 45.2548332,
+          "sqrMagnitude": 2048.0
+        }
+      },
+      "PanelAnchorPoint": {
+        "x": -16.0,
+        "y": -16.0,
+        "normalized": {
+          "x": -0.707106769,
+          "y": -0.707106769,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 22.6274166,
+        "sqrMagnitude": 512.0
+      }
+    }
+  ],
+  "SaveID": 0
+}

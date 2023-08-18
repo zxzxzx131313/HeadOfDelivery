@@ -16,11 +16,12 @@ public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         enabled = false;
     }
 
-    public void ToggleContent()
+
+    public void ToggleContent(bool IsOpen)
     {
         //if (gameObject.activeInHierarchy) gameObject.SetActive(false);
         //else gameObject.SetActive(true);
-        enabled = !enabled;
+        enabled = IsOpen;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -23,6 +23,18 @@ public class Cutscene : MonoBehaviour
     }
     public void PlayAnimation()
     {
+        TimelineAsset timeline = _director.playableAsset as TimelineAsset;
+        foreach (var track in timeline.GetOutputTracks())
+        {
+            try
+            {
+                AnimationTrack animation_track = (AnimationTrack)track;
+                animation_track.trackOffset = TrackOffset.ApplySceneOffsets;
+
+                Debug.Log(animation_track.name);
+            }
+            catch (Exception e) { Debug.LogWarning(e); }
+        }
         _director.Play();
     }
 
@@ -41,20 +53,12 @@ public class Cutscene : MonoBehaviour
 
         if (_director == aDirector)
         {
+
             OnLevelAnimationEnd.Raise();
-            TimelineAsset timeline = _director.playableAsset as TimelineAsset;
-            foreach (var track in timeline.GetOutputTracks())
-            {
-                try
-                {
-                    AnimationTrack animation_track = (AnimationTrack)track;
-                    animation_track.trackOffset = TrackOffset.ApplySceneOffsets;
-                }
-                catch (Exception e) { Debug.LogWarning(e); }   
-            }  
         }
     }
 
+    // called by signal object in cutscene timeline
     public void MoveToDropPoint()
     {
         Vector2 point = points.GetDropPointInLevel(stats.Level);
@@ -70,7 +74,8 @@ public class Cutscene : MonoBehaviour
     {
 
         OnShowHint.Raise();
-        _head.GetComponent<CubeController>().ResetHintTimer();
+        //_head.GetComponent<CubeController>().ResetHintTimer();
+        // keep showing hint until made the first move
     }
 
 }

@@ -31,6 +31,7 @@ public class CubeController : MonoBehaviour
     Vector3 _detach_pos;
     Vector3 _begin_pos;
     bool animation_stopped = false;
+    bool moved = false;
 
     float time = 0f;
     int current_step = 0;
@@ -83,7 +84,7 @@ public class CubeController : MonoBehaviour
     private void Update()
     {
 
-        AutoOffFaceHint();
+        if (moved) AutoOffFaceHint();
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
@@ -126,7 +127,7 @@ public class CubeController : MonoBehaviour
             RestartDetach();
             _body.GetComponent<PlayerController>().OnRestartLevel(_detach_pos - Vector3.up);
         }
-
+        // prevent restart in transitional animation 
         if (animation_stopped)
         {
             _spawner.Restart();
@@ -149,6 +150,9 @@ public class CubeController : MonoBehaviour
                 stats.RestartLevel();
                 OnEnable();
             }
+
+            OnShowHint.Raise();
+            moved = false;
         }
     }
 
@@ -220,7 +224,11 @@ public class CubeController : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
-
+        if (!moved)
+        {
+            moved = true;
+            OnHideHint.Raise();
+        }
         if (IsMoveable(direction) && !IsAttached)
         {
             bool stamped = false;

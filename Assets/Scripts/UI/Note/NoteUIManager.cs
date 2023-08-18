@@ -11,7 +11,7 @@ public class NoteUIManager : MonoBehaviour
     bool active;
     public GameEvent OnBeginRecord;
     public GameEvent OnRestartLevel;
-    public UnityAction OnShowNote;
+    public UnityAction<bool> OnShowNote;
     [SerializeField] private NoteData data;
     [SerializeField] private LevelStats stats;
     [SerializeField] private NoteAnimation content;
@@ -22,7 +22,7 @@ public class NoteUIManager : MonoBehaviour
         //note.enabled = false;
         active = false;
 
-
+        transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition = new Vector3(65, 0, 0.5f);
     }
 
     private void OnEnable()
@@ -69,8 +69,15 @@ public class NoteUIManager : MonoBehaviour
         {
             LeanTween.move(transform.GetChild(0).GetComponent<RectTransform>(), new Vector2(65, 0), 0.5f).setEaseOutBounce();
         }
-        content.ToggleContent();
-        OnShowNote?.Invoke();
+        SetNoteState(active);
+    }
+
+    public void SetNoteState(bool IsOpen)
+    {
+        active = IsOpen;
+
+        content.ToggleContent(active);
+        OnShowNote?.Invoke(active);
     }
 
     void NotePanToNextLevel(int level)

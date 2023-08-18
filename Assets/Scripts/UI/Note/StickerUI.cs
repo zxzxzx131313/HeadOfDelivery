@@ -25,8 +25,8 @@ public class StickerUI : MonoBehaviour
         note.OnShowNote -= ToggleSticker;
     }
 
-    void ToggleSticker()
+    void ToggleSticker(bool IsOpen)
     {
-        canvas.enabled = !canvas.enabled;
+        canvas.enabled = IsOpen;
     }
 }

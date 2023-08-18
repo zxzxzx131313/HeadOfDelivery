@@ -231,6 +231,7 @@ public class StepRecorder : MonoBehaviour
 
         Debug.Log("spawn stamp");
         GameObject stamp = Instantiate(data.StampFace, transform);
+        stamp.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.5f);
         SetAnchor(stamp);
         RectTransform rt = stamp.GetComponent<RectTransform>();
         rt.anchoredPosition = pos;
@@ -276,6 +277,7 @@ public class StepRecorder : MonoBehaviour
             GameObject spawned = Instantiate(GetPrefab(prefabType), transform);
             SetAnchor(spawned);
             spawned.GetComponent<RectTransform>().anchoredPosition = position;
+            spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
         }
 
         GetComponent<RectTransform>().anchoredPosition = entry.PanelAnchorPoint;
@@ -308,7 +310,10 @@ public class StepRecorder : MonoBehaviour
             // if can still add step
             step.Index = steps.Count;
 
+            //if (steps.Count > 0)
+            //    previous = steps[steps.Count - 1];
             if (step.Index == 0 || (step.Index == 1 && previous == null))
+            //if (step.Index == 0)
             {
                 step.Position = step.PrefabType * StepRectSize;
             }
@@ -339,13 +344,14 @@ public class StepRecorder : MonoBehaviour
                 OnNewStep?.Invoke();
                 MoveRecordCenter();
             }
-            steps.Add(step);
 
             // set active arrow color
             step.Spawned.GetComponent<Image>().color = Vector4.one;
-            if (steps.Count > 1) 
-                previous.Spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.5f);
+            //if (steps.Count > 1 && previous != null) 
+            if (steps.Count > 0 && previous != null)
+                previous.Spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
 
+            steps.Add(step);
             if (stamped)
             {
                 Vector2Int stamp_pos = GetStampLocationByStep(step);

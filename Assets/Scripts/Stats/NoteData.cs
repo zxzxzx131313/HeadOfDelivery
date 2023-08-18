@@ -16,7 +16,12 @@ public class NoteData : ScriptableObject
     [SerializeField] private GameObject _panel;
     [SerializeField] private GameObject _button;
     [SerializeField] private GameObject _stepContainer;
-    public string _dirpath;
+    [SerializeField] private string _dirname;
+
+    [Header("Game State")]
+    private int _save_id;
+    [SerializeField] private int _save_slots;
+    public UnityAction SaveChanged;
 
     public GameObject UpArrow { get => _upArrow; }
     public GameObject DownArrow { get => _downArrow; }
@@ -26,6 +31,18 @@ public class NoteData : ScriptableObject
     public GameObject Panel { get => _panel; }
     public GameObject Button { get => _button; }
     public GameObject StepContainer { get => _stepContainer; }
-    public string SaveDataDirname { get => _dirpath; }
+    public string SaveDataDirname { get => _dirname; }
+
+    public int SaveID { 
+        get { return _save_id; }
+        set { 
+            if (value < _save_slots)
+            {
+                _save_id = value;
+
+                SaveChanged?.Invoke();
+            }
+        }
+    }
 
 }

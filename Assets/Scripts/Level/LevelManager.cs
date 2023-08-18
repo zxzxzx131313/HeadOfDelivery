@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour
         if (stats.Level < _beginAtLevel && _beginAtLevel > 0)
         {
             stats.Level = _beginAtLevel;
-            Scene.PlayAnimation();
+            //Scene.PlayAnimation();
             Invoke("RaiseNextLevelEvent", 1f);
         }
     }

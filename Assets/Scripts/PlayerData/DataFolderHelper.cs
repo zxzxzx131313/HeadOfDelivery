@@ -24,4 +24,9 @@ public class DataFolderHelper : MonoBehaviour
         return Path.Join(GetRootPath(), DataDirName);
     }
 
+    public string GetLocalData()
+    {
+        return Path.Join(Application.dataPath, "GameData/Records");
+    }
+
 }

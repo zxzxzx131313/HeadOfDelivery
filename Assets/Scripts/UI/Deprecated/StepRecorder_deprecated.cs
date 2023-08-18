@@ -40,7 +40,7 @@
 
 //    CubeController cubeController;
 //    bool recording = false;
-//    // AllRecords allRecords;
+//    // AllRecords currentRecords;
 //    RecordEntry currentEntry;
 //    List<GameObject> spawnedArrow;
 //    int stampCount = 0;

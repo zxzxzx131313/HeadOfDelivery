@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
+using System;
 using Newtonsoft.Json;
+
 
 [System.Serializable]
 public class AllRecords
 {
     public List<RecordEntry> Records = new();
+    public int SaveID = 0;
 }
 
 
@@ -20,15 +21,16 @@ public class RecordManager : MonoBehaviour
     [SerializeField] private PreviewCameraSetting NotePreview;
 
     DataFolderHelper folder;
-    AllRecords allRecords;
+    AllRecords currentRecords;
     List<PanelManager> Panels;
     int record_pointer = 0;
     bool recording = false;
-    Vector3 selectedRecordSize = Vector3.one;
+    NoteUIManager note;
 
     // Start is called before the first frame update
     void Start()
     {
+
         folder = GetComponent<DataFolderHelper>();
         Panels = new();
         for (int i = 0; i < PanelsCount; i++)
@@ -38,15 +40,91 @@ public class RecordManager : MonoBehaviour
             Panels[i].GetButton().Clicked += UpdateRecordPointer;
             Panels[i].GetStepRecorder().OnNewStep += UpdatePreviewSize;
         }
-
+        
         string[] files = Directory.GetFiles(folder.GetOrCreateDirFullPath(data.SaveDataDirname));
         if (files.Length > 0)
         {
-            allRecords = LoadJson(files[0]);
-            if (allRecords == null) allRecords = new();
+            int index = 0;
+            for(int f = 0; f < files.Length; f++)
+            {
+                int id = Int32.Parse(Path.GetFileNameWithoutExtension(files[f]));
+                if(data.SaveID == id)
+                {
+                    index = f;
+                }
+            }
+            
+            AllRecords saved = LoadJson(files[index]);
+            if (saved != null)
+            {
+                currentRecords = saved;
+            }
+            else
+            {
+                CopyInitialRecords();
+            }
+            currentRecords.SaveID = index;
         }
-        else allRecords = new();
-        LoadRecords();
+        else
+        {
+            CopyInitialRecords();
+        }
+        FillPanels();
+    }
+
+    private void Awake()
+    {
+        note = GameObject.FindGameObjectWithTag("Note").GetComponentInParent<NoteUIManager>();
+
+    }
+
+    private void OnEnable()
+    {
+        data.SaveChanged += ChangeSave;
+        note.OnShowNote += SaveCurrentProgress;
+    }
+
+    private void OnDisable()
+    {
+        data.SaveChanged -= ChangeSave;
+        note.OnShowNote -= SaveCurrentProgress;
+    }
+
+    void CleanAllPanels()
+    {
+        foreach (PanelManager panel in Panels)
+        {
+            Destroy(panel.GetStepRecorder().gameObject);
+            Instantiate(data.StepContainer, panel.transform);
+        }
+    }
+
+    AllRecords GetFileByID(int index)
+    {
+        return LoadJson(Path.Join(folder.GetOrCreateDirFullPath(data.SaveDataDirname), index.ToString() + ".txt"));
+    }
+
+
+    void CopyInitialRecords()
+    {
+        currentRecords = new();
+        string[] files = Directory.GetFiles(folder.GetLocalData());
+        try
+        {
+            currentRecords = LoadJson(files[0]);
+        }catch(Exception e)
+        {
+            Debug.LogWarning("Cannot find preset step data with: " + e);
+        }
+    }
+
+
+    void ChangeSave()
+    {
+        SaveToJson(currentRecords.SaveID);
+        currentRecords = GetFileByID(data.SaveID);
+        CleanAllPanels();
+        FillPanels();
     }
 
 
@@ -110,11 +188,11 @@ public class RecordManager : MonoBehaviour
                 GetStepRecorderFromPanel(record_pointer).GetCurrentEntry().Bounds.min + new Vector2(16, 16);
         }
         // case when loading from save
-        else if (record_pointer < allRecords.Records.Count)
+        else if (record_pointer < currentRecords.Records.Count)
         {
             Debug.Log("case2 ");
 
-            bounds = allRecords.Records[record_pointer].Bounds.max - allRecords.Records[record_pointer].Bounds.min + new Vector2(16, 16);
+            bounds = currentRecords.Records[record_pointer].Bounds.max - currentRecords.Records[record_pointer].Bounds.min + new Vector2(16, 16);
         }
         // case when selected a new panel but haven't record anything 
         else
@@ -149,44 +227,56 @@ public class RecordManager : MonoBehaviour
     }
 
 
-    public void LoadRecords()
+    public void FillPanels()
     {
-        for(int i = 0; i < allRecords.Records.Count; i++)
+        for(int i = 0; i < currentRecords.Records.Count; i++)
         {
-            RecordEntry entry = allRecords.Records[i];
+            RecordEntry entry = currentRecords.Records[i];
             GetStepRecorderFromPanel(i).DrawAllSteps(entry);
             Panels[i].SetActive();
             Panels[i].SetToBackLayer();
         }
-        record_pointer = allRecords.Records.Count - 1;
-        if (record_pointer >= 0)
+        record_pointer = currentRecords.Records.Count - 1;
+        //if (record_pointer >= 0)
+        //{
+        //    if (record_pointer + 1 < Panels.Count)
+        //    {
+        //        Panels[record_pointer + 1].SetActive();
+        //    }
+        //}
+        //else
+        //{
+        //    Panels[0].SetActive();
+        //}
+        if (record_pointer < 0)
         {
-            if (record_pointer + 1 < Panels.Count)
-            {
-                Panels[record_pointer + 1].WaitForActivation();
-            }
+            Panels[0].SetActive();
+            record_pointer = 0;
         }
         else
         {
-            Panels[0].SetActive();
+            record_pointer = Mathf.Min(Panels.Count - 1, record_pointer+1);
+            Panels[record_pointer].SetActive();
         }
-        record_pointer = Mathf.Max(0, record_pointer);
         UpdatePreviewSize();
     }
 
     public void RestartCurrentRecord()
     {
+        // dont delete current record if its a complete one
         if (recording)
         {
             recording = false;
             RecordEntry entry = new();
             GetStepRecorderFromPanel(record_pointer).EndRecord(ref entry);
             Panels[record_pointer].GetStepRecorder().OnNewStep -= UpdatePreviewSize;
-        }
 
-        Destroy(Panels[record_pointer].GetStepRecorder().gameObject);
-        Instantiate(data.StepContainer, Panels[record_pointer].transform);
-        //BeginRecord();
+            Destroy(Panels[record_pointer].GetStepRecorder().gameObject);
+            Instantiate(data.StepContainer, Panels[record_pointer].transform);
+            //BeginRecord();
+
+            Invoke("BeginRecord", 0.5f);
+        }
     }
 
     public void DeleteCurrentRecord()
@@ -202,26 +292,24 @@ public class RecordManager : MonoBehaviour
         RecordEntry entry = new();
         GetStepRecorderFromPanel(record_pointer).EndRecord(ref entry);
         Panels[record_pointer].GetStepRecorder().OnNewStep -= UpdatePreviewSize;
-        allRecords.Records.Add(entry);
+        currentRecords.Records.Add(entry);
         UpdatePreviewSize();
-        if (allRecords.Records[record_pointer].Stamps.end.Equals(Vector2Int.zero))
+        if (currentRecords.Records[record_pointer].Stamps.end.Equals(Vector2Int.zero))
         {
-            allRecords.Records.Remove(allRecords.Records[record_pointer]);
+            currentRecords.Records.Remove(currentRecords.Records[record_pointer]);
             //record_pointer++;
-            if (allRecords.Records.Count > 0)
+            if (currentRecords.Records.Count > 0)
                 Panels[record_pointer].WaitForActivation();
         }
         else
         {
-            SaveToJson();
+            SaveToJson(data.SaveID);
             if (record_pointer + 1 < Panels.Count)
             {
 
                 Panels[record_pointer+1].WaitForActivation();
                 //Panels[record_pointer+1].UpdateCanvasVisibility();
             }
-
-
         }
     }
 
@@ -236,47 +324,56 @@ public class RecordManager : MonoBehaviour
         }
 
         Destroy(Panels[index].GetStepRecorder().gameObject);
-        for (int i = index; i < allRecords.Records.Count - 1; i++)
+        for (int i = index; i < currentRecords.Records.Count - 1; i++)
         {
             Panels[i + 1].GetStepRecorder().gameObject.transform.SetParent(Panels[i].transform);
         }
-        //Panels[allRecords.Records.Count - 1].WaitForActivation();
-        Instantiate(data.StepContainer, Panels[Mathf.Max(index, allRecords.Records.Count - 1)].transform);
-        if (allRecords.Records.Count > 0 && allRecords.Records.Count < Panels.Count)
+        //Panels[currentRecords.Records.Count - 1].WaitForActivation();
+        Instantiate(data.StepContainer, Panels[Mathf.Max(index, currentRecords.Records.Count - 1)].transform);
+        if (currentRecords.Records.Count > 0 && currentRecords.Records.Count < Panels.Count)
         {
-            Panels[allRecords.Records.Count].Deactivate();
+            Panels[currentRecords.Records.Count].Deactivate();
         }
 
-        Panels[ Mathf.Max(index, allRecords.Records.Count-1)].WaitForActivation();
-        if (allRecords.Records.Count > index) 
-            allRecords.Records.Remove(allRecords.Records[index]);
-        if (allRecords.Records.Count == 0)
+        Panels[ Mathf.Max(index, currentRecords.Records.Count-1)].WaitForActivation();
+        if (currentRecords.Records.Count > index) 
+            currentRecords.Records.Remove(currentRecords.Records[index]);
+        if (currentRecords.Records.Count == 0)
             Panels[0].SetActive();
-        //if (allRecords.Records.Count < Panels.Count)
+        //if (currentRecords.Records.Count < Panels.Count)
         //{
-        //    //Destroy(Panels[allRecords.Records.Count - 1].GetStepRecorder().gameObject);
-        //    Instantiate(data.StepContainer, Panels[allRecords.Records.Count - 1].transform);
-        //    Panels[allRecords.Records.Count - 1].WaitForActivation();
+        //    //Destroy(Panels[currentRecords.Records.Count - 1].GetStepRecorder().gameObject);
+        //    Instantiate(data.StepContainer, Panels[currentRecords.Records.Count - 1].transform);
+        //    Panels[currentRecords.Records.Count - 1].WaitForActivation();
         //}
-        SaveToJson();
+        SaveToJson(data.SaveID);
         
     }
 
 
     bool IsPanelEmpty(int index)
     {
-        Debug.Log(index + " recordcount " + allRecords.Records.Count + " entr" + Panels[index].GetStepRecorder().GetCurrentEntry());
-        return index >= allRecords.Records.Count && Panels[index].GetStepRecorder().GetCurrentEntry() == null;
+        Debug.Log(index + " recordcount " + currentRecords.Records.Count + " entr" + Panels[index].GetStepRecorder().GetCurrentEntry());
+        return index >= currentRecords.Records.Count && Panels[index].GetStepRecorder().GetCurrentEntry() == null;
     }
 
-    public void SaveToJson()
+    void SaveCurrentProgress(bool IsOpen)
+    {
+        // we save every time when the note is closed
+        if (!IsOpen)
+        {
+            SaveToJson(data.SaveID);
+        }
+    }
+
+    public void SaveToJson(int dataID)
     {
         //check directory exist, check file exist 
-        string all = JsonConvert.SerializeObject(allRecords, Formatting.Indented, new JsonSerializerSettings
+        string all = JsonConvert.SerializeObject(currentRecords, Formatting.Indented, new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
-        File.WriteAllText(Path.Join( folder.GetOrCreateDirFullPath(data.SaveDataDirname), "save.txt"), all);
+        File.WriteAllText(Path.Join( folder.GetOrCreateDirFullPath(data.SaveDataDirname), dataID + ".txt"), all);
     }
 
     public AllRecords LoadJson(string filepath)

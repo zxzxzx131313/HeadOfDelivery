@@ -100,10 +100,10 @@ public class PanelManager : MonoBehaviour
         return activated;
     }
 
-    public void TogglePanelCannvas()
+    public void TogglePanelCannvas(bool IsOpen)
     {
 
-        noteCanvas = !noteCanvas;
+        noteCanvas = IsOpen;
         UpdateCanvasVisibility();
     }
 
