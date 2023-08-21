@@ -27,12 +27,12 @@ public class NoteUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        stats.LevelChanged += NotePanToNextLevel;
+        //stats.LevelChanged += NotePanToNextLevel;
     }
 
     private void OnDisable()
     {
-        stats.LevelChanged -= NotePanToNextLevel;
+        //stats.LevelChanged -= NotePanToNextLevel;
     }
 
     // Update is called once per frame

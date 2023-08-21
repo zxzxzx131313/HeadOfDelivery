@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public RawImage NotePreview;
     public Canvas Sticker;
@@ -24,13 +24,22 @@ public class NoteAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         enabled = IsOpen;
     }
 
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+
+        LeanTween.move(Board.GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
+        NotePreview.GetComponent<Canvas>().enabled = false;
+        Sticker.enabled = false;
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Vector2 pos = GetComponent<RectTransform>().anchoredPosition;
         //pos += new Vector2(-60, 70);
-        LeanTween.move(Board.GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
-        NotePreview.GetComponent<Canvas>().enabled = false;
-        Sticker.enabled = false;
+        //LeanTween.move(Board.GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
+        //NotePreview.GetComponent<Canvas>().enabled = false;
+        //Sticker.enabled = false;
     }
 
     public void OnPointerExit(PointerEventData eventData)

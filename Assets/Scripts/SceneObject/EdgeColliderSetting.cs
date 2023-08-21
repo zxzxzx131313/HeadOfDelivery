@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class EdgeColliderSetting : MonoBehaviour
 {
     EdgeCollider2D edge;
 
     public LevelStats stats;
+    public GameObject Cam;
 
     void Start()
     {
@@ -27,35 +29,45 @@ public class EdgeColliderSetting : MonoBehaviour
         // add or use existing EdgeCollider2D
         edge = GetComponent<EdgeCollider2D>() == null ? gameObject.AddComponent<EdgeCollider2D>() : GetComponent<EdgeCollider2D>();
 
-        var edgePoints = new[] {topLeft, bottomLeft, bottomRight, topRight,  };
+        var edgePoints = new[] {topLeft, bottomLeft };
         edge.points = edgePoints;
+
+
+        edge = gameObject.AddComponent<EdgeCollider2D>();
+        edgePoints = new[] { topRight, bottomRight };
+        edge.points = edgePoints;
+
+
 
     }
 
     private void OnEnable()
     {
-        stats.LevelChanged += CollisionAndCameraPanToNextLevel;
+        //stats.LevelChanged += CollisionAndCameraPanToNextLevel;
     }
 
     private void OnDisable()
     {
-        stats.LevelChanged -= CollisionAndCameraPanToNextLevel;
+        //stats.LevelChanged -= CollisionAndCameraPanToNextLevel;
     }
 
-    void CollisionAndCameraPanToNextLevel(int level)
+    public void CollisionAndCameraPanToNextLevel(Vector2 direction)
     {
         var cam = Camera.main;
 
         float halfHeight = cam.orthographicSize;
         float width = halfHeight * cam.aspect * 2 - stats.LevelPanningOffset;
-        for (int i = 0; i < edge.points.Length; i++)
-            edge.points[i].x += width - stats.LevelPanningOffset;
+        //for (int i = 0; i < edge.points.Length; i++)
+        //    edge.points[i].x += width - stats.LevelPanningOffset;
         Vector3 pos = transform.position;
-        pos.x = width * level;
+        pos.x += width * direction.x;
+        pos.y += halfHeight * 2 * direction.y;
         transform.position = pos;
         // camera transition
-        Vector3 cam_pos = cam.gameObject.transform.position;
-        cam_pos.x = width * level;
-        LeanTween.moveX(cam.gameObject, cam_pos.x, 0.5f).setEase(LeanTweenType.easeInQuad);
+        //Cam.GetComponent<CinemachineVirtualCamera>().AddCinemachineComponent<cinemachine>
+        Vector3 cam_pos = Cam.transform.position;
+        cam_pos.x += width * direction.x;
+        cam_pos.y += halfHeight * 2 * direction.y;
+        LeanTween.moveX(Cam, cam_pos.x, 0.5f).setEase(LeanTweenType.easeInQuad);
     }
 }

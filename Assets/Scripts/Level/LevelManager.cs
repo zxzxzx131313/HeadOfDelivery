@@ -7,9 +7,10 @@ public class LevelManager : MonoBehaviour
 
     // testing
     [SerializeField] private int _beginAtLevel = 1;
-    public LevelStats stats;
-    public Cutscene Scene;
-    public GameEvent OnNextLevelStart;
+    [SerializeField] private LevelStats stats;
+    [SerializeField] private GameStateSave state;
+    [SerializeField] private Cutscene Scene;
+    [SerializeField] private GameEvent OnNextLevelStart;
     void Start()
     {
         
@@ -30,5 +31,10 @@ public class LevelManager : MonoBehaviour
     {
 
         OnNextLevelStart.Raise();
+    }
+
+    public void SetCurrentLevelAnimationPlayed()
+    {
+        state.SetLevelAnimationPlayed(stats.Level);
     }
 }

@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 inputDirection;
 
     public LevelStats stats;
+    public GameStateSave state;
 
 
     [Header("Basic Variable")]
@@ -87,8 +88,11 @@ public class PlayerController : MonoBehaviour
 
     void OnChangeLevel(int level)
     {
-        OnDisable();
-        AlignToGrid();
+        if (!state.IsLevelAnimationPlayed(level))
+        {
+            OnDisable();
+            AlignToGrid();
+        }
     }
 
     public void OnPaused()

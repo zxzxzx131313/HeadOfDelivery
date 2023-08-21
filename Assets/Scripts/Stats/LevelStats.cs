@@ -20,13 +20,16 @@ public class LevelStats : ScriptableObject
     public UnityAction<int> LevelChanged;
     public UnityAction<int> StepsLeftChanged;
 
+
+    public int TotalLevel { get { return _total_level; } }
+
     public int Level { get
         {
             return _current_level;
         }
         set
         {
-            if (value <= _total_level)
+            if (value <= _total_level && value != _current_level)
             {
                 _current_level = value;
                 _current_steps = _level_steps[_current_level];
