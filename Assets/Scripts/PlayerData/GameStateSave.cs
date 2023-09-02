@@ -19,7 +19,6 @@ public class GameStateSave : ScriptableObject
 
         _level_animation_state = new bool[levels];
         Array.Fill<bool>(_level_animation_state, false);
-        _level_animation_state[0] = true;
     }
 
     public bool IsLevelComplete(int level)

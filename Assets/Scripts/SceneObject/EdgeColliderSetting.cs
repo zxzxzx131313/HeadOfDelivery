@@ -59,15 +59,17 @@ public class EdgeColliderSetting : MonoBehaviour
         float width = halfHeight * cam.aspect * 2 - stats.LevelPanningOffset;
         //for (int i = 0; i < edge.points.Length; i++)
         //    edge.points[i].x += width - stats.LevelPanningOffset;
-        Vector3 pos = transform.position;
-        pos.x += width * direction.x;
-        pos.y += halfHeight * 2 * direction.y;
-        transform.position = pos;
+        //Vector3 pos = transform.position;
+        //pos.x += width * direction.x;
+        //pos.y += halfHeight * 2 * direction.y;
+        //transform.position = pos;
         // camera transition
         //Cam.GetComponent<CinemachineVirtualCamera>().AddCinemachineComponent<cinemachine>
         Vector3 cam_pos = Cam.transform.position;
         cam_pos.x += width * direction.x;
         cam_pos.y += halfHeight * 2 * direction.y;
-        LeanTween.moveX(Cam, cam_pos.x, 0.5f).setEase(LeanTweenType.easeInQuad);
+        LeanTween.move(Cam, cam_pos, 0.5f).setEase(LeanTweenType.easeInQuad);
+
+        transform.position = cam_pos;
     }
 }

@@ -8,6 +8,6 @@ public class DropPoints : MonoBehaviour
 
     public Vector2 GetDropPointInLevel(int level)
     {
-        return (Vector2)DropPointsInLevel[level-1].transform.position;
+        return (Vector2)DropPointsInLevel[level].transform.position;
     }
 }

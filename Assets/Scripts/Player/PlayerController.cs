@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private PhysicsCheck physicsCheck;
-    private Vector2 inputDirection;
+    //private Vector2 inputDirection;
 
     public LevelStats stats;
     public GameStateSave state;
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [Header("Basic Variable")]
     public float speed;
     public float thrust;
+    public float maxSpeed;
 
     void Start()
     {
@@ -29,7 +30,8 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         inputControl = new PlayerInputControl();
-        inputControl.Gameplay.Jump.started += Jump;
+        inputControl.Gameplay.Jump.started += ctx => Jump(ctx);
+        //inputControl.Gameplay.Move. += ctx => Move(ctx.ReadValue<Vector2>());
     }
 
     void OnEnable()
@@ -47,35 +49,53 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        inputDirection = inputControl.Gameplay.Move.ReadValue<Vector2>();
+        //inputDirection = inputControl.Gameplay.Move.ReadValue<Vector2>();
         // resolving clutching to wall while falling problem
 
-        if (!physicsCheck.IsGround() && physicsCheck.IsBlockFacing(inputDirection.x))
-        {
-            inputDirection = new Vector2(0, inputDirection.y);
-        }
+        if (inputControl.Gameplay.Move.IsPressed())
+            Move(inputControl.Gameplay.Move.ReadValue<Vector2>());
 
     }
 
     private void FixedUpdate()
     {
-        Move();
+        //Move();
     }
 
-    public void Move()
+    // jumping not as high while moving was due to not using input system trigger ispressed but using values in fixedupdate and changing velocity
+    public void Move(Vector2 inputDirection)
     {
 
-        rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
-
-        int faceDir = (int)transform.localScale.x;
+        bool faceDir = false;
 
         if (inputDirection.x > 0)
-            faceDir = 1;
+            faceDir = false;
         if (inputDirection.x < 0)
-            faceDir = -1;
+            faceDir = true;
 
         // Flip
-        transform.localScale = new Vector3(faceDir, 1, 1);
+        //transform.localScale = new Vector3(faceDir, 1, 1);
+        GetComponent<SpriteRenderer>().flipX = faceDir;
+
+        if (!physicsCheck.IsBlockFacing(inputDirection.x))
+        {
+
+            Vector2 velocity = rb.velocity;
+            rb.velocity = new Vector2(inputDirection.x * speed , velocity.y);
+        }
+        //rb.AddForce(new Vector2( inputDirection.x * speed, 0), ForceMode2D.Impulse);
+
+        //if (inputDirection.x > 0)
+        //{
+        //    velocity.x = MathF.Min(velocity.x, maxSpeed);
+        //}
+        //if (inputDirection.x < 0)
+        //{
+        //    velocity.x = Mathf.Max(velocity.x, -maxSpeed);
+        //}
+        //rb.velocity = velocity;
+
+
     }
 
 
@@ -86,10 +106,12 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(pos);
     }
 
-    void OnChangeLevel(int level)
+    public void OnChangeLevel(int level)
     {
         if (!state.IsLevelAnimationPlayed(level))
         {
+            // stops player moving in scene changing, due to acceleration
+            rb.velocity = new Vector2(0, rb.velocity.y);
             OnDisable();
             AlignToGrid();
         }

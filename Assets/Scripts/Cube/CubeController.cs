@@ -86,10 +86,10 @@ public class CubeController : MonoBehaviour
 
         if (moved) AutoOffFaceHint();
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            Restart();
-        }
+        //if (Keyboard.current.rKey.wasPressedThisFrame)
+        //{
+        //    Restart();
+        //}
     }
 
     public CubeInputControl GetCubeInputControl()
@@ -120,7 +120,7 @@ public class CubeController : MonoBehaviour
         time = hintDisplayTimeInSec;
     }
 
-    void Restart()
+    public void Restart()
     {
         if (IsAttached)
         {
@@ -133,23 +133,20 @@ public class CubeController : MonoBehaviour
             _spawner.Restart();
             LeanTween.move(gameObject, _begin_pos, 0.5f).setEaseInOutQuad();
 
-            if (stats.Level > 0)
+            _dice.Restart();
+            if (_dice.top_face.IsColored)
             {
-                _dice.Restart();
-                if (_dice.top_face.IsColored)
-                {
 
-                    anim.SetBool("IsColored", true);
-                }
-                else
-                {
-                    anim.SetBool("IsColored", false);
-                }
-                // might need additional animation for the restart transition
-                anim.SetTrigger("ChangeFace");
-                stats.RestartLevel();
-                OnEnable();
+                anim.SetBool("IsColored", true);
             }
+            else
+            {
+                anim.SetBool("IsColored", false);
+            }
+            // might need additional animation for the restart transition
+            anim.SetTrigger("ChangeFace");
+            OnEnable();
+            
 
             OnShowHint.Raise();
             moved = false;
@@ -191,6 +188,8 @@ public class CubeController : MonoBehaviour
         // show sprite after detached from body
         _sprite.enabled = true;
         _detach_pos = _body.transform.position + Vector3.up;
+
+        Debug.Log(_detach_pos);
     }
 
     public void RestartDetach()
@@ -284,6 +283,8 @@ public class CubeController : MonoBehaviour
 
             SendDirection?.Invoke(direction, stamped);
             stats.StepsLeft--;
+
+            Debug.Log("step--");
         }
     }
 

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PanelManager : MonoBehaviour
 {
 
     public int Index { get; private set;}
     public Canvas canvas;
+    public TMP_Text steps;
 
     public bool visible = false;
     //bool canvasState = false;
@@ -44,6 +46,11 @@ public class PanelManager : MonoBehaviour
     public PanelButton GetButton()
     {
         return GetComponentInChildren<PanelButton>();
+    }
+
+    public void SetStepDisplay(int stepsCount)
+    {
+        steps.text = stepsCount.ToString();
     }
 
     public StepRecorder GetStepRecorder()

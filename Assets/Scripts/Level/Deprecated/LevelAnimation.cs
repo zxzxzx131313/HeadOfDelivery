@@ -11,14 +11,14 @@
 //    public Animator HookAnimator;
 
 //    public TimelineAsset Timeline;
-//    public PlayableDirector _director;
+//    public PlayableDirector first;
 //    public GameEvent OnLevelAnimationEnd;
 
 //    public LevelStats stats;
 
 //    GameObject _player;
 
-//    //[Header("Animation Setting")]
+//    //[Header("End Setting")]
 //    //[SerializeField]
 //    //float AnimationBeginTimeOffset = 0.7f;
 //    // Start is called before the first frame update
@@ -26,17 +26,17 @@
 //    {
 //        _player = GameObject.FindGameObjectWithTag("Body");
 
-//        //_director.playableAsset = Timeline;
+//        //first.playableAsset = Timeline;
 
-//        //TimelineAsset asset = _director.playableAsset as TimelineAsset;
+//        //TimelineAsset asset = first.playableAsset as TimelineAsset;
 //        //// note - we're deleting the track if it exists already, since we want to generate everything on the spot for this example
 //        //foreach (TrackAsset track in asset.GetOutputTracks())
 //        //    asset.DeleteTrack(track);
 
 //        //AnimationTrack new_track = Timeline.CreateTrack<AnimationTrack>("AnimationTrack");
 //        //new_track.CreateRecordableClip()
-//        //_director.SetGenericBinding(new_track, AnimatorObject);
-//        //Timeline = _director.playableAsset as TimelineAsset;
+//        //first.SetGenericBinding(new_track, AnimatorObject);
+//        //Timeline = first.playableAsset as TimelineAsset;
 //    }
 
 //    public void UpdateGrabPlayerKeyframe()
@@ -79,7 +79,7 @@
 //        tc.start = 0f;
 //        tc.timeScale = 1f;
 
-//        _director.SetGenericBinding(track, HeadAnimator);
+//        first.SetGenericBinding(track, HeadAnimator);
 
 //        // update track for hook
 //        var track_hook = Timeline.GetOutputTrack(1) as AnimationTrack;
@@ -107,7 +107,7 @@
 //        tc_hook.start = 0f;
 //        tc_hook.timeScale = 1f;
 
-//        _director.SetGenericBinding(track_hook, HookAnimator);
+//        first.SetGenericBinding(track_hook, HookAnimator);
 
 //    }
 
@@ -124,23 +124,23 @@
 //        //_player.GetComponent<PlayerController>().AlignToGrid();
 
 //        UpdateGrabPlayerKeyframe();
-//        _director.Play();
+//        first.Play();
 //        CleanupTrack();
 //    }
 
 //    private void OnEnable()
 //    {
-//        _director.stopped += OnPlayableDirectorStopped;
+//        first.stopped += OnPlayableDirectorStopped;
 //    }
 
 //    private void OnDisable()
 //    {
-//        _director.stopped -= OnPlayableDirectorStopped;
+//        first.stopped -= OnPlayableDirectorStopped;
 //    }
 
 //    void OnPlayableDirectorStopped(PlayableDirector aDirector)
 //    {
-//        if (_director == aDirector)
+//        if (first == aDirector)
 //            OnLevelAnimationEnd.Raise();
 //    }
 //}

@@ -46,10 +46,17 @@ public class CubeHint : MonoBehaviour
     void ShowFace(Diceface face, Image image)
     {
         if (face.IsColored)
+        {
 
             image.sprite = _colored;
+            image.color = new Vector4(1f, 1f, 1f, 0.3f);
+        }
         else
+        {
+
             image.sprite = _base;
+            image.color = new Vector4(1f, 1f, 1f, 0.08f);
+        }
 
         image.enabled = true;
     }

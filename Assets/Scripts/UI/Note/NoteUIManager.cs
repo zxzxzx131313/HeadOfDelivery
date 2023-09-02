@@ -15,6 +15,7 @@ public class NoteUIManager : MonoBehaviour
     [SerializeField] private NoteData data;
     [SerializeField] private LevelStats stats;
     [SerializeField] private NoteAnimation content;
+    [SerializeField] private Canvas help;
 
     private void Start()
     {
@@ -49,10 +50,12 @@ public class NoteUIManager : MonoBehaviour
             {
                 OnBeginRecord.Raise();
             }
-            if (Keyboard.current.rKey.wasPressedThisFrame)
-            {
-                OnRestartLevel.Raise();
-            }
+        }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            OnRestartLevel.Raise();
+            stats.RestartLevel();
         }
     }
 
@@ -68,6 +71,7 @@ public class NoteUIManager : MonoBehaviour
         else
         {
             LeanTween.move(transform.GetChild(0).GetComponent<RectTransform>(), new Vector2(65, 0), 0.5f).setEaseOutBounce();
+            help.enabled = false;
         }
         SetNoteState(active);
     }
