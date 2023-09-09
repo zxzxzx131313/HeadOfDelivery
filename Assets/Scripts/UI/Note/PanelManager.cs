@@ -6,9 +6,10 @@ using TMPro;
 public class PanelManager : MonoBehaviour
 {
 
-    public int Index { get; private set;}
+    public int Index;
     public Canvas canvas;
     public TMP_Text steps;
+    public NoteData data;
 
     public bool visible = false;
     //bool canvasState = false;
@@ -39,8 +40,8 @@ public class PanelManager : MonoBehaviour
         Index = index;
         GetButton().GetComponent<PanelButton>().Index = index;
         RectTransform rt = GetButton().GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, rt.anchoredPosition.y - index * 16);
-        gameObject.GetComponent<RectTransform>().anchoredPosition += new Vector2(1, -1) * index;
+        rt.anchoredPosition = new Vector2(-6f, -8f - index * 16);
+        gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(1, -1) * index;
     }
 
     public PanelButton GetButton()
@@ -50,13 +51,37 @@ public class PanelManager : MonoBehaviour
 
     public void SetStepDisplay(int stepsCount)
     {
-        steps.text = stepsCount.ToString();
+        if (stepsCount < 0)
+        {
+            steps.enabled = false;
+        }
+        else
+        {
+            steps.enabled = true;
+            steps.text = stepsCount.ToString();
+
+        }
     }
 
-    public StepRecorder GetStepRecorder()
+    public GameObject GetStepContainer()
     {
-        return GetComponentInChildren<StepRecorder>();
+        return GetComponentInChildren<StepCanvas>().gameObject;
     }
+
+
+    public void ClearStepContainer()
+    {
+        Destroy(GetStepContainer());
+    }
+
+    public void AddStepContainer()
+    {
+        Instantiate(data.StepContainer, transform);
+    }
+    //public StepRecorder GetStepRecorder()
+    //{
+    //    return GetComponentInChildren<StepRecorder>();
+    //}
 
     public void SetActive()
     {

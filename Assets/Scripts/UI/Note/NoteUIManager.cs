@@ -64,7 +64,13 @@ public class NoteUIManager : MonoBehaviour
         //note.enabled = !note.enabled;
         active = !active;
 
-        if (active)
+        SetNote(active);
+    }
+
+    public void SetNote(bool state)
+    {
+        active = state;
+        if (state)
         {
             LeanTween.move(transform.GetChild(0).GetComponent<RectTransform>(), new Vector2(0, 0), 0.5f).setEaseOutCirc();
         }
@@ -73,16 +79,10 @@ public class NoteUIManager : MonoBehaviour
             LeanTween.move(transform.GetChild(0).GetComponent<RectTransform>(), new Vector2(65, 0), 0.5f).setEaseOutBounce();
             help.enabled = false;
         }
-        SetNoteState(active);
-    }
-
-    public void SetNoteState(bool IsOpen)
-    {
-        active = IsOpen;
-
         content.ToggleContent(active);
         OnShowNote?.Invoke(active);
     }
+
 
     void NotePanToNextLevel(int level)
     {

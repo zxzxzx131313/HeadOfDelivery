@@ -65,7 +65,7 @@ public class LevelUI : MonoBehaviour
 
     public void FillAnimation(float from, float to)
     {
-        Debug.Log(bucketFill.fillAmount + "  percent " + to);
+        //Debug.Log(bucketFill.fillAmount + "  percent " + to);
         LeanTween.value(bucketFill.gameObject, SetFillAmount, from, to, 0.5f);
         Vector2 pos = bucket.GetComponent<RectTransform>().anchoredPosition;
         LeanTween.move(bucket.GetComponent<RectTransform>(), new Vector2(pos.x-2f, pos.y), 0.2f).setEaseShake();

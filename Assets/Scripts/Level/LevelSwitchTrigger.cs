@@ -54,20 +54,25 @@ public class LevelSwitchTrigger : MonoBehaviour
             Vector2 direction = ((Vector2Int)(_exit_on_tile - _enter_on_tile)) * TriggerDirectionVector(TriggerType);
             direction.Normalize();
             Debug.Log(direction + " " + Time.time);
-            edgeCollider.CollisionAndCameraPanToNextLevel(direction);
 
-
-            if (direction.x > 0 || direction.y > 0)
+            if (state.IsLevelComplete(stats.Level) || LevelConnection != LevelRelation.Independent)
             {
-                if (LevelConnection == LevelRelation.Independent)
-                    stats.Level = PositiveDirectionLevel;
-            }
-            else if (direction.x < 0 || direction.y < 0)
-            {
-                if (LevelConnection == LevelRelation.Independent)
-                    stats.Level = NegativeDirectionLevel;
-            }
 
+
+                edgeCollider.CollisionAndCameraPanToNextLevel(direction);
+
+
+                if (direction.x > 0 || direction.y > 0)
+                {
+                    if (LevelConnection == LevelRelation.Independent)
+                        stats.Level = PositiveDirectionLevel;
+                }
+                else if (direction.x < 0 || direction.y < 0)
+                {
+                    if (LevelConnection == LevelRelation.Independent)
+                        stats.Level = NegativeDirectionLevel;
+                }
+            }
 
             if (!state.IsLevelAnimationPlayed(stats.Level) && LevelConnection == LevelRelation.Independent)
             {

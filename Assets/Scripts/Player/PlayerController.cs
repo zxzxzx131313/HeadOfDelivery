@@ -76,12 +76,18 @@ public class PlayerController : MonoBehaviour
         // Flip
         //transform.localScale = new Vector3(faceDir, 1, 1);
         GetComponent<SpriteRenderer>().flipX = faceDir;
-
+        Vector2 velocity = rb.velocity;
         if (!physicsCheck.IsBlockFacing(inputDirection.x))
         {
 
-            Vector2 velocity = rb.velocity;
-            rb.velocity = new Vector2(inputDirection.x * speed , velocity.y);
+
+            rb.velocity = new Vector2(inputDirection.x * speed, velocity.y);
+        }
+        else
+        {
+
+
+            rb.velocity = new Vector2(0, velocity.y);
         }
         //rb.AddForce(new Vector2( inputDirection.x * speed, 0), ForceMode2D.Impulse);
 

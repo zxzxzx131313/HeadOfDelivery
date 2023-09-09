@@ -4,14 +4,19 @@ using UnityEngine;
 using PixelCrushers.DialogueSystem;
 using UnityEngine.InputSystem;
 
+
 public class OnKeyDownEvent : MonoBehaviour
 {
 
     private void Update()
     {
-        if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame)
+        if (DialogueManager.IsConversationActive)
         {
-            CloseSubtitle();
+            Debug.Log("active");
+            if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame)
+            {
+                CloseSubtitle();
+            }
         }
     }
 

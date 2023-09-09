@@ -44,21 +44,41 @@ public class StepRecorder : MonoBehaviour
     int stampCount;
     Vector2 moveOffset;
     Dictionary<Vector3Int, int> StepsDict;
+    GameObject container;
 
     private void Awake()
     {
+        container = Instantiate(data.StepContainer, transform);
         cubeController = GameObject.FindGameObjectWithTag("Head").GetComponent<CubeController>();
         if (!cubeController) Debug.LogError("Cannot find cube controller.");
         InistializeData();
         previewCam = GameObject.FindGameObjectWithTag("PreviewCamera").GetComponent<Camera>();
     }
 
+
     void InistializeData()
     {
-        previous = null;
+        previous = new Step();
         stampCount = 0;
         moveOffset = Vector2.zero;
         StepsDict = new Dictionary<Vector3Int, int>();
+        container.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+    }
+
+    void CleanStepsGameObjects()
+    {
+        Destroy(container);
+        container = Instantiate(data.StepContainer, transform);
+    }
+
+    public GameObject GetContainer()
+    {
+        return container;
+    }
+
+    public void AddContainer()
+    {
+        Instantiate(data.StepContainer, transform);
     }
 
     public Vector3Int EncodeStepKey(Vector2Int position, Vector2Int prefabType)
@@ -99,6 +119,15 @@ public class StepRecorder : MonoBehaviour
     }
 
 
+    public void RestartRecord()
+    {
+        InistializeData();
+        CleanStepsGameObjects();
+        cubeController.SendDirection -= RecordSteps;
+        Invoke("BeginRecord", 0.1f);
+    }
+
+
     public void BeginRecord()
     {
         Debug.Log("record" + Time.time);
@@ -108,11 +137,12 @@ public class StepRecorder : MonoBehaviour
             steps = new List<Step>();
             currentEntry = new();
             // begin recording with a stamp at current position
+            cubeController.SendDirection += RecordSteps;
             if (cubeController.IsOnHeadTile())
             {   
                 PrintandAddStampToRecord(Vector2Int.zero);
             }
-            cubeController.SendDirection += RecordSteps;
+            //cubeController.SendDirection += RecordSteps;
             //return entry;
         }
         else
@@ -127,42 +157,55 @@ public class StepRecorder : MonoBehaviour
     {
         Debug.Log("endrecord");
 
-        //TODO: add fading, sand transition, earsing kind of effect
-        Vector3Int key = EncodeStepKey(currentEntry.Stamps.start, new Vector2Int(-1, -1));
-        int stamp_index;
-        if (StepsDict.ContainsKey(key))
+        if (currentEntry != null)
         {
-            stamp_index = StepsDict[key];
-        }
-        else
-        {
-            // remove everything if there is no stamp down?
-            stamp_index = steps.Count;
-        }
-        for (int i  = 0; i < steps.Count; i++)
-        {
-            if (i >= stamp_index) break;
-            GameObject go = steps[i].Spawned;
-            if (go != null)
+            //TODO: add fading, sand transition, earsing kind of effect
+            Vector3Int key = EncodeStepKey(currentEntry.Stamps.start, new Vector2Int(-1, -1));
+            int stamp_index;
+            if (StepsDict.ContainsKey(key))
             {
-                Destroy(go);
-                steps[i].Spawned = null;
+                stamp_index = StepsDict[key];
             }
-        }
-        if (stamp_index > 0)
+            else
+            {
+                // remove everything if there is no stamp down?
+                stamp_index = steps.Count;
+            }
+            for (int i = 0; i < steps.Count; i++)
+            {
+                if (i >= stamp_index) break;
+                GameObject go = steps[i].Spawned;
+                if (go != null)
+                {
+                    Destroy(go);
+                    steps[i].Spawned = null;
+                }
+            }
+
             AdjustAnchorOnEnd();
 
-
-        currentEntry.PanelAnchorPoint = GetComponent<RectTransform>().anchoredPosition;
-        cubeController.SendDirection -= RecordSteps;
-        currentEntry.Steps = StepsDict.ToList();
+            currentEntry.PanelAnchorPoint = container.GetComponent<RectTransform>().anchoredPosition;
+            //cubeController.SendDirection -= RecordSteps;
+            currentEntry.Steps = StepsDict.ToList();
+        }
         entry = currentEntry;
+        cubeController.SendDirection -= RecordSteps;
+        InistializeData();
+        // container will be moved to others
+        BeginRecord();
+    }
+
+    public void StopRecord()
+    {
+        InistializeData();
+        CleanStepsGameObjects();
+        //cubeController.SendDirection -= RecordSteps;
     }
 
 
     void AdjustAnchorOnEnd()
     {
-        RectTransform rt = GetComponent<RectTransform>();
+        RectTransform rt = container.GetComponent<RectTransform>();
         currentEntry.Bounds.min = new Vector2(5000, 5000);
         currentEntry.Bounds.max = new Vector2(-5000,  -5000);
         for (int i = 0; i < steps.Count; i++)
@@ -175,23 +218,22 @@ public class StepRecorder : MonoBehaviour
             }
         }
         MoveRecordCenter();
-
     }
 
 
     void AutoScale()
     {
-        RectTransform rt = GetComponent<RectTransform>();
+        RectTransform rt = container.GetComponent<RectTransform>();
         //Debug.Log(rt.sizeDelta);
         Vector2 size = currentEntry.Bounds.max - currentEntry.Bounds.min + new Vector2(16, 16);
         float scale = Mathf.Max(size.x / previewCam.pixelWidth, size.y / previewCam.pixelHeight);
         if (scale > 1)
         {
             float down_scale = 1 / scale;
-            gameObject.transform.localScale = down_scale * Vector3.one;
+            container.transform.localScale = down_scale * Vector3.one;
         }else 
         {
-            gameObject.transform.localScale = Vector3.one;
+            container.transform.localScale = Vector3.one;
         }
     }
 
@@ -199,12 +241,12 @@ public class StepRecorder : MonoBehaviour
     {
 
         AutoScale();
-        RectTransform rt = GetComponent<RectTransform>();
+        RectTransform rt = container.GetComponent<RectTransform>();
         //Debug.Log(rt.sizeDelta);
-        GetComponent<RectTransform>().sizeDelta = currentEntry.Bounds.max - currentEntry.Bounds.min;
+        container.GetComponent<RectTransform>().sizeDelta = currentEntry.Bounds.max - currentEntry.Bounds.min;
         ////rt.sizeDelta = new Vector2(rt.sizeDelta.x,(currentEntry.Bounds.max - currentEntry.Bounds.min).y);
 
-        Vector2 center_offset = (currentEntry.Bounds.max + currentEntry.Bounds.min ) / 2f * transform.localScale;
+        Vector2 center_offset = (currentEntry.Bounds.max + currentEntry.Bounds.min ) / 2f * container.transform.localScale;
         center_offset -= moveOffset;
         Debug.Log("offset" + center_offset);
         moveOffset += center_offset;
@@ -230,7 +272,7 @@ public class StepRecorder : MonoBehaviour
     {
 
         Debug.Log("spawn stamp");
-        GameObject stamp = Instantiate(data.StampFace, transform);
+        GameObject stamp = Instantiate(data.StampFace, container.transform);
         stamp.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.5f);
         SetAnchor(stamp);
         RectTransform rt = stamp.GetComponent<RectTransform>();
@@ -261,11 +303,11 @@ public class StepRecorder : MonoBehaviour
 
     public bool IsInBound(Vector2 position)
     {
-        RectTransform rt = GetComponent<RectTransform>();
+        RectTransform rt = container.GetComponent<RectTransform>();
         return rt.rect.Contains(position);
     }
 
-    public void DrawAllSteps(RecordEntry entry)
+    public void DrawAllSteps(RecordEntry entry, GameObject drawContainer)
     {
         foreach (KeyValuePair<Vector3Int, int> pair in entry.Steps)
         {
@@ -274,13 +316,25 @@ public class StepRecorder : MonoBehaviour
             (position, prefabType) = DecodeStepKey(key);
 
 
-            GameObject spawned = Instantiate(GetPrefab(prefabType), transform);
+            GameObject spawned = Instantiate(GetPrefab(prefabType), drawContainer.transform);
             SetAnchor(spawned);
             spawned.GetComponent<RectTransform>().anchoredPosition = position;
             spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
         }
 
-        GetComponent<RectTransform>().anchoredPosition = entry.PanelAnchorPoint;
+        Vector2 size = entry.Bounds.max - entry.Bounds.min + new Vector2(16, 16);
+        float scale = Mathf.Max(size.x / previewCam.pixelWidth, size.y / previewCam.pixelHeight);
+        if (scale > 1)
+        {
+            float down_scale = 1 / scale;
+            drawContainer.transform.localScale = down_scale * Vector3.one;
+        }
+        else
+        {
+            drawContainer.transform.localScale = Vector3.one;
+        }
+
+        drawContainer.GetComponent<RectTransform>().anchoredPosition = entry.PanelAnchorPoint;
     }
 
     public bool IsEmpty()
@@ -312,7 +366,7 @@ public class StepRecorder : MonoBehaviour
 
             //if (steps.Count > 0)
             //    previous = steps[steps.Count - 1];
-            if (step.Index == 0 || (step.Index == 1 && previous == null))
+            if (step.Index == 0 || (step.Index == 1 && previous.Index == -1))
             //if (step.Index == 0)
             {
                 step.Position = step.PrefabType * StepRectSize;
@@ -337,7 +391,7 @@ public class StepRecorder : MonoBehaviour
                 // discard any steps that happened before the first stamp
                 if (stampCount > 0)
                     StepsDict[stepKey] = step.Index;
-                GameObject spawned = Instantiate(arrow, transform);
+                GameObject spawned = Instantiate(arrow, container.transform);
                 SetAnchor(spawned);
                 spawned.GetComponent<RectTransform>().anchoredPosition = step.Position;
                 step.Spawned = spawned;
@@ -348,10 +402,12 @@ public class StepRecorder : MonoBehaviour
             // set active arrow color
             step.Spawned.GetComponent<Image>().color = Vector4.one;
             //if (steps.Count > 1 && previous != null) 
-            if (steps.Count > 0 && previous != null)
+            if (steps.Count > 0 && previous.Index != -1)
                 previous.Spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
 
             steps.Add(step);
+            previous = step;
+
             if (stamped)
             {
                 Vector2Int stamp_pos = GetStampLocationByStep(step);
@@ -361,7 +417,6 @@ public class StepRecorder : MonoBehaviour
             }
                 
 
-            previous = step;
         }
     }
 

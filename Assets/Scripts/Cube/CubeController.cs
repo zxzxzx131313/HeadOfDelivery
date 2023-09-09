@@ -20,6 +20,7 @@ public class CubeController : MonoBehaviour
 
     public bool IsAttached { get; private set; }
     public UnityAction<Vector2,bool> SendDirection;
+    public UnityAction TileSpawned;
 
     private GameObject _body;
     private TileSpawner _spawner;
@@ -230,13 +231,15 @@ public class CubeController : MonoBehaviour
         }
         if (IsMoveable(direction) && !IsAttached)
         {
+            dirCheck = direction;
+
             bool stamped = false;
 
             anim.SetFloat("Horizontal", direction.x);
             anim.SetFloat("Vertical", direction.y);
             anim.SetFloat("Speed", direction.sqrMagnitude);
 
-            transform.position += (Vector3)direction;
+             transform.position += (Vector3)direction;
 
             _dice.HandleTurn(direction);
 
@@ -259,15 +262,17 @@ public class CubeController : MonoBehaviour
                 {
                     // for turning animation to complete;
                     current_step = stats.StepsLeft;
-                    Invoke("Spawntile", 0.2f);
+                    Spawntile();
+                    //Invoke("Spawntile", 0.2f);
+                    Invoke("ShowTileAfterAnimation", 0.2f);
                     stamped = true;
                 }
             }
 
-            if (direction.x > 0)
-                _sprite.flipX = false;
-            if (direction.x < 0)
-                _sprite.flipX = true;
+            //if (direction.x > 0)
+            //    _sprite.flipX = false;
+            //if (direction.x < 0)
+            //    _sprite.flipX = true;
 
 
             anim.SetTrigger("Moving");
@@ -284,8 +289,14 @@ public class CubeController : MonoBehaviour
             SendDirection?.Invoke(direction, stamped);
             stats.StepsLeft--;
 
-            Debug.Log("step--");
+            //Debug.Log("step--");
         }
+    }
+
+    public bool MoveFromHeadTile()
+    {
+        Vector3Int pos = _platformTilemap.WorldToCell(transform.position - (Vector3)dirCheck);
+        return _spawner.HasHeadTile(pos);
     }
 
     public bool IsOnHeadTile() {
@@ -297,6 +308,14 @@ public class CubeController : MonoBehaviour
     {
         Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
         _spawner.SpawnTile(pos, (float)current_step / stats.LevelSteps[stats.Level]);
+        _spawner.HideTile(pos);
+        TileSpawned?.Invoke();
+    }
+
+    private void ShowTileAfterAnimation()
+    {
+        Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
+        _spawner.ShowTile(pos);
     }
 
     private bool IsMoveable(Vector2 direction)

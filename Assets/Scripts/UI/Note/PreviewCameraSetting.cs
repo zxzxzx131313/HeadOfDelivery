@@ -17,7 +17,7 @@ public class PreviewCameraSetting : MonoBehaviour
         //Debug.Log(cam.pixelHeight);
         Debug.Log("panel" + panelScale + " scale" + Mathf.Min(scale * 1 / 3, 1f) + "size " + size);
         s = new Vector2(size.x, size.y) * scale / 3;
-        //Debug.Log(new Vector2(size.x, size.y) * scale/3);
+        Debug.Log(new Vector2(size.x, size.y) * scale/3);
         GetComponent<RectTransform>().localScale = panelScale * Mathf.Min( scale*1/3, 1f);
     }
 

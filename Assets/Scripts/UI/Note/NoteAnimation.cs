@@ -28,9 +28,7 @@ public class NoteAnimation : MonoBehaviour, IPointerClickHandler, IPointerExitHa
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        LeanTween.move(Board.GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
-        NotePreview.GetComponent<Canvas>().enabled = false;
-        Sticker.enabled = false;
+        BoardOut();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -50,6 +48,13 @@ public class NoteAnimation : MonoBehaviour, IPointerClickHandler, IPointerExitHa
         NotePreview.GetComponent<Canvas>().enabled = true;
         Sticker.enabled = true;
 
+    }
+
+    public void BoardOut()
+    {
+        LeanTween.move(Board.GetComponent<RectTransform>(), new Vector2(-160, 90), 0.5f).setEaseOutBounce();
+        NotePreview.GetComponent<Canvas>().enabled = false;
+        Sticker.enabled = false;
     }
 
     //public void OnDeselect(BaseEventData eventData)

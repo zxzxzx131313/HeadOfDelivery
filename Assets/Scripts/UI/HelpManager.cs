@@ -49,11 +49,10 @@ public class HelpManager : MonoBehaviour, IDeselectHandler
 
         for (int i = 0; i < pages.Length; i++)
         {
-            if (i == curr_page)
-                pages[i].SetActive(true);
-            else
-                pages[i].SetActive(false);
+            pages[i].SetActive(false);
         }
+        pages[curr_page].SetActive(true);
+
         if (curr_page == pages.Length - 1)
         {
             NextButton.SetActive(false);
@@ -72,11 +71,9 @@ public class HelpManager : MonoBehaviour, IDeselectHandler
 
         for (int i = 0; i < pages.Length; i++)
         {
-            if (i == curr_page)
-                pages[i].SetActive(true);
-            else
-                pages[i].SetActive(false);
+            pages[i].SetActive(false);
         }
+        pages[curr_page].SetActive(true);
 
         if (curr_page == 0)
         {
