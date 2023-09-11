@@ -55,7 +55,7 @@ public class TutotialManager : MonoBehaviour
 
     void CheckForHideHint(int step)
     {
-        if (stats.StepsLeft == 0 && stats.Level == 0)
+        if (stats.StepsLeft == 0 && (stats.Level == 0 || stats.Level == 1))
         {
             restartHint.SetActive(true);
             Invoke("HideHint", 3f);

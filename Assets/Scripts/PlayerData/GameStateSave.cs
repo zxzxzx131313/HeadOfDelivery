@@ -11,6 +11,13 @@ public class GameStateSave : ScriptableObject
     [Header("Game States")]
     private bool[] _level_complete_state;
     private bool[] _level_animation_state;
+    private List<Pickupable> _items;
+    private int _money;
+
+    [SerializeField]
+    private UnityAction<int> OnMoneyChanged;
+    [SerializeField]
+    private GameEvent OnEndingLevelComplete;
 
     public void InitState(int levels)
     {
@@ -19,6 +26,9 @@ public class GameStateSave : ScriptableObject
 
         _level_animation_state = new bool[levels];
         Array.Fill<bool>(_level_animation_state, false);
+
+        _items = new();
+        _money = 0;
     }
 
     public bool IsLevelComplete(int level)
@@ -28,6 +38,8 @@ public class GameStateSave : ScriptableObject
 
     public void SetLevelComplete(int level)
     {
+        if (level == _level_complete_state.Length - 1)
+            OnEndingLevelComplete.Raise();
         _level_complete_state[level] = true;
     }
 
@@ -39,5 +51,21 @@ public class GameStateSave : ScriptableObject
     public void SetLevelAnimationPlayed(int level)
     {
         _level_animation_state[level] = true;
+    }
+
+    public void AddPickupables(Pickupable item)
+    {
+        _items.Add(item);
+    }
+
+    public int Money { 
+        get { return _money; }
+        set { 
+            if (value != _money)
+            {
+                _money = value;
+                OnMoneyChanged?.Invoke(_money);
+            }
+        }
     }
 }

@@ -4,20 +4,19 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class LevelUI : MonoBehaviour
+public class BucketUI : MonoBehaviour
 {
     [SerializeField] private LevelStats stats;
     [SerializeField] private TMP_Text stepCount;
-    [SerializeField] private TMP_Text levelCount;
+    //[SerializeField] private TMP_Text levelCount;
     [SerializeField] private Image bucketFill;
     [SerializeField] private GameObject bucket;
-    [SerializeField] private float fillSpeed;
     void Start()
     {
         if (stats.Level > 0)
         {
             stepCount.text = stats.StepsLeft.ToString();
-            levelCount.text = "Level " + stats.Level.ToString();
+            //levelCount.text = "Level " + stats.Level.ToString();
         }
     }
 
@@ -25,7 +24,8 @@ public class LevelUI : MonoBehaviour
     {
 
         stats.StepsLeftChanged += UpdateStepDisplay;
-        stats.LevelChanged += UpdateLevelDisplay;
+        stats.ExtraStepsLeftChanged += UpdateExtraStepDisplay;
+        //stats.LevelChanged += UpdateLevelDisplay;
         // level passed in here as well
         stats.LevelChanged += UpdateStepDisplay;
         
@@ -35,30 +35,61 @@ public class LevelUI : MonoBehaviour
     {
 
         stats.StepsLeftChanged -= UpdateStepDisplay;
-        stats.LevelChanged -= UpdateLevelDisplay;
+        stats.ExtraStepsLeftChanged -= UpdateExtraStepDisplay;
+        //stats.LevelChanged -= UpdateLevelDisplay;
         stats.LevelChanged -= UpdateStepDisplay;
         
     }
 
     void UpdateStepDisplay(int step)
     {
-        stepCount.text = stats.StepsLeft.ToString();
+        stepCount.text = (stats.StepsLeft - stats.ExtraStepLeftOnBegin).ToString();
         UpdateFillAmount();
     }
 
-    void UpdateLevelDisplay(int level)
+    void UpdateExtraStepDisplay(int step)
     {
-        levelCount.text = "Level " + level.ToString();
+        if (stats.ExtraStepLeftOnBegin > 0)
+        {
+            bucket.GetComponent<Canvas>().enabled = true;
+            stepCount.text = stats.ExtraStepsLeft.ToString();
+            UpdateFillAmount();
+        }
+        else
+        {
+            bucket.GetComponent<Canvas>().enabled = false;
+        }
     }
+
+    //void UpdateLevelDisplay(int level)
+    //{
+    //    levelCount.text = "Level " + level.ToString();
+    //}
 
     public void UpdateFillAmount()
     {
-        float percent = (float)stats.StepsLeft / stats.LevelSteps[stats.Level];
+        float percent = (float)stats.StepsLeft-stats.ExtraStepLeftOnBegin / stats.LevelSteps[stats.Level];
         float current_fill = bucketFill.fillAmount;
         FillAnimation(current_fill, percent);
     }
 
     public void SetFillAmount(float percent)
+    {
+        bucketFill.fillAmount = percent;
+    }
+
+    public void UpdateExtraFillAmount()
+    {
+        if (stats.ExtraStepLeftOnBegin > 0)
+        {
+            float percent = (float)stats.ExtraStepsLeft / stats.ExtraStepLeftOnBegin;
+            float current_fill = bucketFill.fillAmount;
+            FillAnimation(current_fill, percent);
+        }
+        
+    }
+
+    public void SetExtraFillAmount(float percent)
     {
         bucketFill.fillAmount = percent;
     }

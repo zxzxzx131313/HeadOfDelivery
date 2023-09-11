@@ -67,8 +67,8 @@ public class StepRecorder : MonoBehaviour
 
     void CleanStepsGameObjects()
     {
-        Destroy(container);
-        container = Instantiate(data.StepContainer, transform);
+        foreach (Transform child in container.transform)
+            Destroy(child);
     }
 
     public GameObject GetContainer()
@@ -320,6 +320,18 @@ public class StepRecorder : MonoBehaviour
             SetAnchor(spawned);
             spawned.GetComponent<RectTransform>().anchoredPosition = position;
             spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
+
+            GameObject outline = Instantiate(data.StepOutline, drawContainer.transform);
+            SetAnchor(outline);
+            outline.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.25f);
+            if (GetPrefab(prefabType) == data.StampFace)
+            {
+                outline.GetComponent<RectTransform>().anchoredPosition = position;
+            }
+            else
+            {
+                outline.GetComponent<RectTransform>().anchoredPosition = position + prefabType * StepRectSize;
+            }
         }
 
         Vector2 size = entry.Bounds.max - entry.Bounds.min + new Vector2(16, 16);

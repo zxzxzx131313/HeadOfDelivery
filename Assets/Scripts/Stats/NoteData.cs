@@ -16,6 +16,7 @@ public class NoteData : ScriptableObject
     [SerializeField] private GameObject _panel;
     [SerializeField] private GameObject _button;
     [SerializeField] private GameObject _stepContainer;
+    [SerializeField] private GameObject _stepOutline;
     [SerializeField] private string _dirname;
 
     [Header("Game State")]
@@ -31,6 +32,7 @@ public class NoteData : ScriptableObject
     public GameObject Panel { get => _panel; }
     public GameObject Button { get => _button; }
     public GameObject StepContainer { get => _stepContainer; }
+    public GameObject StepOutline { get => _stepOutline; }
     public string SaveDataDirname { get => _dirname; }
 
     public int SaveID { 

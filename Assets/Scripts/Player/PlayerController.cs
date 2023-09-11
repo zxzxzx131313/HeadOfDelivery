@@ -34,13 +34,13 @@ public class PlayerController : MonoBehaviour
         //inputControl.Gameplay.Move. += ctx => Move(ctx.ReadValue<Vector2>());
     }
 
-    void OnEnable()
+    public void OnEnable()
     {
         inputControl.Enable();
         stats.LevelChanged += OnChangeLevel;
     }
 
-    void OnDisable()
+    public void OnDisable()
     {
         inputControl.Disable();
         stats.LevelChanged -= OnChangeLevel;

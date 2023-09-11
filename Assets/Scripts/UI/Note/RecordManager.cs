@@ -277,7 +277,7 @@ public class RecordManager : MonoBehaviour
         {
             Debug.Log("case2 ");
 
-            bounds = currentRecords.Records[record_pointer].Bounds.max - currentRecords.Records[record_pointer].Bounds.min + new Vector2(16, 16);
+            bounds = currentRecords.Records[record_pointer].Bounds.max - currentRecords.Records[record_pointer].Bounds.min + new Vector2(48, 48);
             scale = Panels[record_pointer].GetStepContainer().transform.localScale;
         }
         // case when selected a new panel but haven't record anything 

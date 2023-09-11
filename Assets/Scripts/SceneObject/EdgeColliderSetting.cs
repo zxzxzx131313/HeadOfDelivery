@@ -72,4 +72,14 @@ public class EdgeColliderSetting : MonoBehaviour
 
         transform.position = cam_pos;
     }
+
+    public void MoveCameraUpOneScreen()
+    {
+        CollisionAndCameraPanToNextLevel(Vector2.up);
+    }
+
+    public void MoveCameraDownOneScreen()
+    {
+        CollisionAndCameraPanToNextLevel(Vector2.down);
+    }
 }

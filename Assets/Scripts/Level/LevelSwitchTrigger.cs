@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+using UnityEngine.Events;
 
 public enum LevelRelation { PosIncludeNeg, NegIncludePos, Independent};
-public enum TriggerDirection { Horizontal, Vertical };
+public enum TriggerDirection { Horizontal, Vertical, Diagonal };
 public class LevelSwitchTrigger : MonoBehaviour
 {
     [Header("Trigger stats")]
@@ -13,6 +13,8 @@ public class LevelSwitchTrigger : MonoBehaviour
     [SerializeField] private int PositiveDirectionLevel;
     [SerializeField] private TriggerDirection TriggerType;
     [SerializeField] private LevelRelation LevelConnection;
+    [SerializeField] private Vector2 LevelOffset;
+    [SerializeField] private UnityEvent OnLevelSwitch;
 
     [Header("Game States")]
     [SerializeField] private LevelStats stats;
@@ -58,8 +60,7 @@ public class LevelSwitchTrigger : MonoBehaviour
             if (state.IsLevelComplete(stats.Level) || LevelConnection != LevelRelation.Independent)
             {
 
-
-                edgeCollider.CollisionAndCameraPanToNextLevel(direction);
+                
 
 
                 if (direction.x > 0 || direction.y > 0)
@@ -72,14 +73,15 @@ public class LevelSwitchTrigger : MonoBehaviour
                     if (LevelConnection == LevelRelation.Independent)
                         stats.Level = NegativeDirectionLevel;
                 }
+                edgeCollider.CollisionAndCameraPanToNextLevel(direction + LevelOffset * direction);
             }
 
             if (!state.IsLevelAnimationPlayed(stats.Level) && LevelConnection == LevelRelation.Independent)
             {
                 Invoke("RaiseNextLevelEvent", 1f);
             }
-            
 
+            OnLevelSwitch?.Invoke();
         }
 
     }
@@ -94,10 +96,21 @@ public class LevelSwitchTrigger : MonoBehaviour
     Vector2 TriggerDirectionVector(TriggerDirection direction)
     {
         //while (!_player.IsGround()) { }
-        if (direction == TriggerDirection.Horizontal)
-            return new Vector2(1, 0);
-        else
-            return new Vector2(0, 1);
+        //if (direction == TriggerDirection.Horizontal)
+        //    return new Vector2(1, 0);
+        //else
+        //    return new Vector2(0, 1);
+
+        switch (direction)
+        {
+            case TriggerDirection.Horizontal:
+                return new Vector2(1, 0);
+            case TriggerDirection.Vertical:
+                return new Vector2(0, 1);
+            default :
+                return new Vector2(1, 1);
+
+        }
     }
 
 

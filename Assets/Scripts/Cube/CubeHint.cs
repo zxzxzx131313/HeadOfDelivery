@@ -49,13 +49,13 @@ public class CubeHint : MonoBehaviour
         {
 
             image.sprite = _colored;
-            image.color = new Vector4(1f, 1f, 1f, 0.3f);
+            image.color = new Vector4(1f, 1f, 1f, 0.8f);
         }
         else
         {
 
             image.sprite = _base;
-            image.color = new Vector4(1f, 1f, 1f, 0.08f);
+            image.color = new Vector4(1f, 1f, 1f, 0.5f);
         }
 
         image.enabled = true;

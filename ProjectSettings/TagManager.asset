@@ -25,7 +25,7 @@ TagManager:
   - Body
   - Starttile
   - Note
-  - 
+  - NotLight
   - 
   - 
   - 
@@ -58,6 +58,9 @@ TagManager:
     locked: 0
   - name: platform
     uniqueID: 39067173
+    locked: 0
+  - name: UIBehindPlayer
+    uniqueID: 61833297
     locked: 0
   - name: player
     uniqueID: 3368512077
