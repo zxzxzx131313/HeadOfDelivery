@@ -24,7 +24,6 @@ public class BucketUI : MonoBehaviour
     {
 
         stats.StepsLeftChanged += UpdateStepDisplay;
-        stats.ExtraStepsLeftChanged += UpdateExtraStepDisplay;
         //stats.LevelChanged += UpdateLevelDisplay;
         // level passed in here as well
         stats.LevelChanged += UpdateStepDisplay;
@@ -35,7 +34,6 @@ public class BucketUI : MonoBehaviour
     {
 
         stats.StepsLeftChanged -= UpdateStepDisplay;
-        stats.ExtraStepsLeftChanged -= UpdateExtraStepDisplay;
         //stats.LevelChanged -= UpdateLevelDisplay;
         stats.LevelChanged -= UpdateStepDisplay;
         
@@ -43,23 +41,10 @@ public class BucketUI : MonoBehaviour
 
     void UpdateStepDisplay(int step)
     {
-        stepCount.text = (stats.StepsLeft - stats.ExtraStepLeftOnBegin).ToString();
+        stepCount.text = Mathf.Max(0, stats.StepsLeft - stats.ExtraStepLeftOnBegin).ToString();
         UpdateFillAmount();
     }
 
-    void UpdateExtraStepDisplay(int step)
-    {
-        if (stats.ExtraStepLeftOnBegin > 0)
-        {
-            bucket.GetComponent<Canvas>().enabled = true;
-            stepCount.text = stats.ExtraStepsLeft.ToString();
-            UpdateFillAmount();
-        }
-        else
-        {
-            bucket.GetComponent<Canvas>().enabled = false;
-        }
-    }
 
     //void UpdateLevelDisplay(int level)
     //{
@@ -68,7 +53,7 @@ public class BucketUI : MonoBehaviour
 
     public void UpdateFillAmount()
     {
-        float percent = (float)stats.StepsLeft-stats.ExtraStepLeftOnBegin / stats.LevelSteps[stats.Level];
+        float percent = (float)(Mathf.Max(0, stats.StepsLeft - stats.ExtraStepLeftOnBegin)) / stats.LevelSteps[stats.Level];
         float current_fill = bucketFill.fillAmount;
         FillAnimation(current_fill, percent);
     }
@@ -78,21 +63,6 @@ public class BucketUI : MonoBehaviour
         bucketFill.fillAmount = percent;
     }
 
-    public void UpdateExtraFillAmount()
-    {
-        if (stats.ExtraStepLeftOnBegin > 0)
-        {
-            float percent = (float)stats.ExtraStepsLeft / stats.ExtraStepLeftOnBegin;
-            float current_fill = bucketFill.fillAmount;
-            FillAnimation(current_fill, percent);
-        }
-        
-    }
-
-    public void SetExtraFillAmount(float percent)
-    {
-        bucketFill.fillAmount = percent;
-    }
 
     public void FillAnimation(float from, float to)
     {

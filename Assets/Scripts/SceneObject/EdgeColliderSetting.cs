@@ -9,10 +9,16 @@ public class EdgeColliderSetting : MonoBehaviour
 
     public LevelStats stats;
     public GameObject Cam;
+    CinemachineVirtualCamera vcam;
+    CinemachineFramingTransposer vcam_follow;
 
     void Start()
     {
-        AddCollider();
+        //AddCollider();
+        var camera = Camera.main;
+        var brain = (camera == null) ? null : camera.GetComponent<CinemachineBrain>();
+        vcam = (brain == null) ? null : brain.ActiveVirtualCamera as CinemachineVirtualCamera;
+        //vcam_follow = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
     }
 
     void AddCollider()
@@ -57,20 +63,20 @@ public class EdgeColliderSetting : MonoBehaviour
 
         float halfHeight = cam.orthographicSize;
         float width = halfHeight * cam.aspect * 2 - stats.LevelPanningOffset;
-        //for (int i = 0; i < edge.points.Length; i++)
-        //    edge.points[i].x += width - stats.LevelPanningOffset;
-        //Vector3 pos = transform.position;
-        //pos.x += width * direction.x;
-        //pos.y += halfHeight * 2 * direction.y;
-        //transform.position = pos;
-        // camera transition
-        //Cam.GetComponent<CinemachineVirtualCamera>().AddCinemachineComponent<cinemachine>
+
         Vector3 cam_pos = Cam.transform.position;
         cam_pos.x += width * direction.x;
         cam_pos.y += halfHeight * 2 * direction.y;
         LeanTween.move(Cam, cam_pos, 0.5f).setEase(LeanTweenType.easeInQuad);
 
         transform.position = cam_pos;
+
+        //vcam_follow.m_TrackedObjectOffset = new Vector3(width * direction.x, halfHeight * 2 * direction.y, 0);
+    }
+
+    public void SetFramingOffsetBack()
+    {
+       //vcam_follow.m_TrackedObjectOffset = Vector3.zero;
     }
 
     public void MoveCameraUpOneScreen()

@@ -32,7 +32,7 @@ public class StepCanvas : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogWarning("SteoCanvas Not attached to panel yet.");
+            //Debug.LogWarning("SteoCanvas Not attached to panel yet.");
         }
         
     }

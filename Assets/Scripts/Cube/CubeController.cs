@@ -14,6 +14,7 @@ public class CubeController : MonoBehaviour
     [SerializeField] private float hintDisplayTimeInSec = 1f;
     [SerializeField] private LevelStats stats;
     [SerializeField] private DropPoints beginPoints;
+    [SerializeField] private AudioRandomPlayer tile_sound;
 
     private Tilemap _platformTilemap;
     private Tilemap _headTilemap;
@@ -229,7 +230,8 @@ public class CubeController : MonoBehaviour
             moved = true;
             OnHideHint.Raise();
         }
-        if (IsMoveable(direction) && !IsAttached)
+
+        if (IsMoveable(direction, transform.position, _body.transform.position) && !IsAttached)
         {
             dirCheck = direction;
 
@@ -239,11 +241,13 @@ public class CubeController : MonoBehaviour
             anim.SetFloat("Vertical", direction.y);
             anim.SetFloat("Speed", direction.sqrMagnitude);
 
-             transform.position += (Vector3)direction;
+            transform.position += (Vector3)direction;
+            Vector3 world_pos = transform.position;
 
             _dice.HandleTurn(direction);
+            anim.SetTrigger("Moving");
 
-            Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
+            Vector3Int pos = _platformTilemap.WorldToCell(world_pos);
             Vector3Int detach = _platformTilemap.WorldToCell(_detach_pos);
             if (_dice.top_face.IsColored)
             {
@@ -262,10 +266,10 @@ public class CubeController : MonoBehaviour
                 {
                     // for turning animation to complete;
                     current_step = stats.StepsLeft;
-                    Spawntile();
+                    Spawntile(pos);
                     //Invoke("Spawntile", 0.2f);
-                    Invoke("ShowTileAfterAnimation", 0.2f);
                     stamped = true;
+                    tile_sound.PlaySingle();
                 }
             }
 
@@ -273,9 +277,9 @@ public class CubeController : MonoBehaviour
             //    _sprite.flipX = false;
             //if (direction.x < 0)
             //    _sprite.flipX = true;
+            if (!stamped)
+                tile_sound.PlayRandom();
 
-
-            anim.SetTrigger("Moving");
 
 
             if (pos == detach)
@@ -293,38 +297,33 @@ public class CubeController : MonoBehaviour
         }
     }
 
-    public bool MoveFromHeadTile()
-    {
-        Vector3Int pos = _platformTilemap.WorldToCell(transform.position - (Vector3)dirCheck);
-        return _spawner.HasHeadTile(pos);
-    }
 
-    public bool IsOnHeadTile() {
-        Vector3Int pos = _platformTilemap.WorldToCell(transform.position); 
-        return _spawner.HasHeadTile(pos); 
+    public bool IsOnHeadTile(Vector3 pos)
+    {
+        Vector3Int cell_pos = _platformTilemap.WorldToCell(pos);
+        return _spawner.HasHeadTile(cell_pos); 
     } 
 
-    private void Spawntile()
+    private void Spawntile(Vector3Int cell_pos)
     {
-        Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
-        _spawner.SpawnTile(pos, (float)current_step / stats.LevelSteps[stats.Level]);
-        _spawner.HideTile(pos);
+        _spawner.SpawnTile(cell_pos, (float)current_step / stats.LevelSteps[stats.Level]);
+        _spawner.HideTile(cell_pos);
         TileSpawned?.Invoke();
+        ShowTileAfterAnimation(cell_pos);
     }
 
-    private void ShowTileAfterAnimation()
+    private void ShowTileAfterAnimation(Vector3Int cell_pos)
     {
-        Vector3Int pos = _platformTilemap.WorldToCell(transform.position);
-        _spawner.ShowTile(pos);
+        _spawner.ShowTileDelay(cell_pos);
     }
 
-    private bool IsMoveable(Vector2 direction)
+    private bool IsMoveable(Vector2 direction, Vector3 pos, Vector3 body_pos)
     {
 
-        Vector3Int gridPosition = _platformTilemap.WorldToCell(transform.position + (Vector3)direction);
-        Vector3Int bodyPosition = _platformTilemap.WorldToCell(_body.transform.position);
+        Vector3Int gridPosition = _platformTilemap.WorldToCell(pos + (Vector3)direction);
+        Vector3Int bodyPosition = _platformTilemap.WorldToCell(body_pos);
         if (!_platformTilemap.HasTile(gridPosition) && !_headTilemap.HasTile(gridPosition) && 
-            IsInBounds(transform.position + (Vector3)direction) && gridPosition != bodyPosition)
+            IsInBounds(pos + (Vector3)direction) && gridPosition != bodyPosition)
             return true;
         return false;
     }

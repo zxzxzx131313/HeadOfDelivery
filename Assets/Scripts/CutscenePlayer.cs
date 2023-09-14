@@ -12,11 +12,13 @@ public class CutscenePlayer : MonoBehaviour
     private UnityEvent OnSceneEnd;
     PlayerController player;
     Collider2D collider;
+    public GameStateSave state;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Body").GetComponent<PlayerController>();
         collider = GetComponent<Collider2D>();
+        collider.enabled = true;
     }
 
     private void OnEnable()
@@ -35,6 +37,7 @@ public class CutscenePlayer : MonoBehaviour
         {
             player.OnDisable();
             director.Play();
+            state.IsPlaying = true;
         }
     }
 
@@ -45,6 +48,7 @@ public class CutscenePlayer : MonoBehaviour
             player.OnEnable();
             collider.enabled = false;
             OnSceneEnd?.Invoke();
+            state.IsPlaying = false;
         }
     }
 }

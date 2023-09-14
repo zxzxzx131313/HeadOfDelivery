@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 public class NoteUIManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class NoteUIManager : MonoBehaviour
     public UnityAction<bool> OnShowNote;
     [SerializeField] private NoteData data;
     [SerializeField] private LevelStats stats;
+    [SerializeField] private GameStateSave state;
     [SerializeField] private NoteAnimation content;
     [SerializeField] private Canvas help;
 
@@ -39,24 +41,8 @@ public class NoteUIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Keyboard.current.mKey.wasPressedThisFrame)
-        {
-            ToggleNote();
-        }
 
-        if (active)
-        {
-            if (Keyboard.current.nKey.wasPressedThisFrame)
-            {
-                OnBeginRecord.Raise();
-            }
-        }
-
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            OnRestartLevel.Raise();
-            stats.RestartLevel();
-        }
+        
     }
 
     public void ToggleNote()

@@ -13,6 +13,7 @@ public class Cutscene : MonoBehaviour
     public GameEvent OnHideHint;
     public DropPoints points;
     public LevelStats stats;
+    public GameStateSave state;
 
     GameObject _head;
 
@@ -36,6 +37,7 @@ public class Cutscene : MonoBehaviour
             catch (Exception e) { Debug.LogWarning(e); }
         }
         _director.Play();
+        state.IsPlaying = true;
     }
 
     private void OnEnable()
@@ -55,6 +57,7 @@ public class Cutscene : MonoBehaviour
         {
 
             OnLevelAnimationEnd.Raise();
+            state.IsPlaying = false;
         }
     }
 

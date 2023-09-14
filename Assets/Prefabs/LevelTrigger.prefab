@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7658712226539581952}
   - component: {fileID: 910082238135021150}
   - component: {fileID: 4038668624209758230}
+  - component: {fileID: 1384779306135866425}
   m_Layer: 0
   m_Name: LevelTrigger
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &910082238135021150
 BoxCollider2D:
@@ -93,6 +94,57 @@ MonoBehaviour:
   NegativeDirectionLevel: 0
   PositiveDirectionLevel: 0
   TriggerType: 0
+  LevelConnection: 0
+  LevelOffset: {x: 0, y: 0}
+  OnLevelSwitch:
+    m_PersistentCalls:
+      m_Calls: []
+  Blocker: {fileID: 1384779306135866425}
   stats: {fileID: 11400000, guid: ea47d8a2af21d34489611d98fc8a8fad, type: 2}
   state: {fileID: 11400000, guid: 7feffe9d9a33d384eb1a9a1e847c3a91, type: 2}
   OnLevelBegin: {fileID: 11400000, guid: a89c1f88db5e2a04e81599ff524f58b1, type: 2}
+--- !u!61 &1384779306135866425
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8143156791558434440}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -2, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

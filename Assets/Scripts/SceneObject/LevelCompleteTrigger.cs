@@ -32,6 +32,7 @@ public class LevelCompleteTrigger : MonoBehaviour
 
             //_enter_on_tile = _tile;
             state.SetLevelComplete(stats.Level);
+            stats.ClearCurrentLevelSteps();
 
         }
     }

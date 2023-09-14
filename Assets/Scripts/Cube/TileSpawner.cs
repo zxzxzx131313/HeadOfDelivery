@@ -7,9 +7,11 @@ using UnityEngine.Events;
 
 public class TileSpawner : MonoBehaviour
 {
-    [SerializeField]
-    private RuleTile _tile;
+    [SerializeField] private RuleTile _tile;
+    [SerializeField] private LevelStats stats;
+    [SerializeField] private GameStateSave states;
     private Tilemap _headTile;
+    private int tiles_count;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +22,16 @@ public class TileSpawner : MonoBehaviour
                 _headTile = tm;
         }
 
+    }
+
+    private void OnEnable()
+    {
+        stats.LevelChanged += AddTileCount;
+    }
+
+    private void OnDisable()
+    {
+        stats.LevelChanged -= AddTileCount;
     }
 
     /**
@@ -33,6 +45,7 @@ public class TileSpawner : MonoBehaviour
         {
             //_tile.color = new Vector4(1, 1, 1, 1f*inkLeft);
             _headTile.SetTile(position, _tile);
+            tiles_count++;
         }
     }
 
@@ -47,15 +60,28 @@ public class TileSpawner : MonoBehaviour
         _headTile.SetColor(position, hide);
     }
 
-    public void ShowTile(Vector3Int position)
+    public void ShowTileDelay(Vector3Int position)
     {
+        StartCoroutine("ShowTile", position);
+    }
+
+    IEnumerator ShowTile(Vector3Int position)
+    {
+        yield return new WaitForSeconds(0.2f);
+
         Color hide = new Color(1f, 1f, 1f, 1f);
         _headTile.SetColor(position, hide);
     }
 
-
     public void Restart()
     {
         _headTile.ClearAllTiles();
+        tiles_count = 0;
+    }
+
+    void AddTileCount(int level)
+    {
+        states.StampCount += tiles_count;
+        tiles_count = 0;
     }
 }

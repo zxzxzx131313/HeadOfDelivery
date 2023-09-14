@@ -12,19 +12,14 @@ public class TokenUtiles : MonoBehaviour
     {
         display.text = "2 Token to ride\n";
         display.text += "You have " + states.Money;
-        if (states.Money == 0)
+        if (states.Money < 2)
         {
             display.text += "\nDraw from pay? ( E )";
         }
         else
         {
-            display.text += "\nUse one? ( E )";
+            display.text += "\nUse token? ( E )";
         }
-    }
-
-    public void UseToken(int value)
-    {
-        states.Money -= value;
     }
 
 }

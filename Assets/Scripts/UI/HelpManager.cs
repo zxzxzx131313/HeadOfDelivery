@@ -89,7 +89,7 @@ public class HelpManager : MonoBehaviour, IDeselectHandler
     public void ShowHelp()
     {
         GetComponent<Canvas>().enabled = true;
-        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-220f+65f, 83f), 0.5f).setEaseOutCirc();
+        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-220f, 83f), 0.5f).setEaseOutCirc();
         pageCount.text = (curr_page + 1) + "/" + pages.Length;
         previousButton.SetActive(false);
         NextButton.SetActive(true);

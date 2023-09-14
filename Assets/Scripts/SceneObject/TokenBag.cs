@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TokenBag : Pickupable
+public class TokenBag : Interactable
 {
     [SerializeField]
     private int value;
 
-    public override void OnPickup()
+    public override void OnInteract()
     {
-        base.OnPickup();
-        states.Money += value;
+        base.OnInteract();
+        states.AddTransaction(ExpenseType.Token, value);
     }
 }

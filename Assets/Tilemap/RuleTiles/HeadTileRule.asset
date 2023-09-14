@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: HeadTileRule
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 0}
+  m_DefaultSprite: {fileID: 72176865, guid: 5a0cbf4f179edd244969b73ef7d6e115, type: 3}
+  m_DefaultGameObject: {fileID: 8749909732081211676, guid: 7882f815313fc85409f16ec8e1645a37, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0

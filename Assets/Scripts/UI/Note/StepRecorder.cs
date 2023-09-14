@@ -25,7 +25,7 @@ public class Step
     public Vector2Int Position = Vector2Int.zero;
     // if a stamp is made at Position + PrefabType * StepRectSize, ie. after the step is made
     //public bool Stamped = false;
-    public GameObject Spawned = null;
+    //public GameObject Spawned = null;
 }
 
 
@@ -122,7 +122,7 @@ public class StepRecorder : MonoBehaviour
     public void RestartRecord()
     {
         InistializeData();
-        CleanStepsGameObjects();
+        //CleanStepsGameObjects();
         cubeController.SendDirection -= RecordSteps;
         Invoke("BeginRecord", 0.1f);
     }
@@ -138,7 +138,7 @@ public class StepRecorder : MonoBehaviour
             currentEntry = new();
             // begin recording with a stamp at current position
             cubeController.SendDirection += RecordSteps;
-            if (cubeController.IsOnHeadTile())
+            if (cubeController.IsOnHeadTile(cubeController.transform.position))
             {   
                 PrintandAddStampToRecord(Vector2Int.zero);
             }
@@ -165,22 +165,28 @@ public class StepRecorder : MonoBehaviour
             if (StepsDict.ContainsKey(key))
             {
                 stamp_index = StepsDict[key];
+                steps.RemoveRange(0, stamp_index);
             }
             else
             {
-                // remove everything if there is no stamp down?
-                stamp_index = steps.Count;
+                Debug.LogWarning("StepRecorder cannot find a starting stamp.");
             }
-            for (int i = 0; i < steps.Count; i++)
-            {
-                if (i >= stamp_index) break;
-                GameObject go = steps[i].Spawned;
-                if (go != null)
-                {
-                    Destroy(go);
-                    steps[i].Spawned = null;
-                }
-            }
+            //else
+            //{
+            //    // remove everything if there is no stamp down?
+            //    //stamp_index = steps.Count;
+            //    currentEntry = null;
+            //}
+            //for (int i = 0; i < steps.Count; i++)
+            //{
+            //    if (i >= stamp_index) break;
+            //    GameObject go = steps[i].Spawned;
+            //    if (go != null)
+            //    {
+            //        Destroy(go);
+            //        steps[i].Spawned = null;
+            //    }
+            //}
 
             AdjustAnchorOnEnd();
 
@@ -210,12 +216,8 @@ public class StepRecorder : MonoBehaviour
         currentEntry.Bounds.max = new Vector2(-5000,  -5000);
         for (int i = 0; i < steps.Count; i++)
         {
-            if (steps[i].Spawned != null)
-            {
-                currentEntry.Bounds.min = Vector2.Min(currentEntry.Bounds.min, steps[i].Position);
-                currentEntry.Bounds.max = Vector2.Max(currentEntry.Bounds.max, steps[i].Position);
-
-            }
+            currentEntry.Bounds.min = Vector2.Min(currentEntry.Bounds.min, steps[i].Position);
+            currentEntry.Bounds.max = Vector2.Max(currentEntry.Bounds.max, steps[i].Position);
         }
         MoveRecordCenter();
     }
@@ -371,7 +373,7 @@ public class StepRecorder : MonoBehaviour
             Step step = new();
 
             step.PrefabType = Vector2Int.RoundToInt(input);
-            GameObject arrow = GetPrefab(step.PrefabType);
+            //GameObject arrow = GetPrefab(step.PrefabType);
 
             // if can still add step
             step.Index = steps.Count;
@@ -396,26 +398,26 @@ public class StepRecorder : MonoBehaviour
             Vector3Int stepKey = EncodeStepKey(step.Position, step.PrefabType);
             if (StepsDict.ContainsKey(stepKey))
             {
-                step.Spawned = steps[StepsDict[stepKey]].Spawned;
+                //step.Spawned = steps[StepsDict[stepKey]].Spawned;
             }
             else
             {
                 // discard any steps that happened before the first stamp
                 if (stampCount > 0)
                     StepsDict[stepKey] = step.Index;
-                GameObject spawned = Instantiate(arrow, container.transform);
-                SetAnchor(spawned);
-                spawned.GetComponent<RectTransform>().anchoredPosition = step.Position;
-                step.Spawned = spawned;
+                //GameObject spawned = Instantiate(arrow, container.transform);
+                //SetAnchor(spawned);
+                //spawned.GetComponent<RectTransform>().anchoredPosition = step.Position;
+                //step.Spawned = spawned;
                 OnNewStep?.Invoke();
                 MoveRecordCenter();
             }
 
             // set active arrow color
-            step.Spawned.GetComponent<Image>().color = Vector4.one;
+            //step.Spawned.GetComponent<Image>().color = Vector4.one;
             //if (steps.Count > 1 && previous != null) 
-            if (steps.Count > 0 && previous.Index != -1)
-                previous.Spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
+            //if (steps.Count > 0 && previous.Index != -1)
+            //    previous.Spawned.GetComponent<Image>().color = new Vector4(1, 1, 1, 0.7f);
 
             steps.Add(step);
             previous = step;
@@ -438,7 +440,16 @@ public class StepRecorder : MonoBehaviour
         stamp_step.Index = steps.Count;
         stamp_step.Position = stamp_pos;
         stamp_step.PrefabType = new Vector2Int(-1, -1);
-        stamp_step.Spawned = PrintStamp(stamp_pos);
+        //stamp_step.Spawned = PrintStamp(stamp_pos);
+
+        stampCount++;
+        if (stampCount == 1)
+            currentEntry.Stamps.start = stamp_pos;
+        else if (stampCount == 2)
+        {
+            currentEntry.Stamps.end = stamp_pos;
+        }
+
         steps.Add(stamp_step);
         StepsDict[EncodeStepKey(stamp_pos, stamp_step.PrefabType)] = stamp_step.Index;
     }

@@ -484,7 +484,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "Why don't you open the lights? \u21B5"
+        value: Why don't you open the lights? [ENTER]
         type: 0
         typeString: 
       - title: Sequence
@@ -542,7 +542,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "You are early. \u21B5"
+        value: You are early. [ENTER]
         type: 0
         typeString: 
       - title: Sequence
@@ -600,7 +600,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "I guess you are excited for your first day. \u21B5"
+        value: I guess you are excited for your first day. [ENTER]
         type: 0
         typeString: 
       - title: Sequence
@@ -658,7 +658,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "Alright, here is your job sheet and your ink fuel. \u21B5"
+        value: Alright, here is your job sheet and your ink fuel. [ENTER]
         type: 0
         typeString: 
       - title: Sequence
@@ -716,7 +716,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Try to save the ink where possible. \u21B5"
+        value: Try to save the ink where possible. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -748,7 +748,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 80
-        y: 470
+        y: 468.73413
         width: 160
         height: 30
     - id: 9
@@ -774,7 +774,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Now for your onbording, I'm sure it's all nature to you. \u21B5"
+        value: Now for your onbording, I'm sure it's all nature to you. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -832,7 +832,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "First, I'll take off your head. \u21B5"
+        value: First, I'll take off your head. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -890,7 +890,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "You may experience numbness in your body. \u21B5"
+        value: You may experience numbness in your body. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -922,7 +922,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 80
-        y: 806
+        y: 804.7342
         width: 160
         height: 30
     - id: 12
@@ -948,7 +948,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Now go fix the roads using your head. \u21B5"
+        value: Now go fix the roads using your head. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1006,7 +1006,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Remember, no head, no move. \u21B5"
+        value: Remember, no head, no move. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1064,7 +1064,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Write down road recipes on your job sheet. \u21B5"
+        value: Write down road recipes on your job sheet. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1122,7 +1122,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Then, you can move your head around. \u21B5"
+        value: Then, you can move your head around. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1153,7 +1153,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
+        x: 78.73418
         y: 722
         width: 160
         height: 30
@@ -1180,7 +1180,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Those will be important company assets. \u21B5 "
+        value: Those will be important company assets. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1210,8 +1210,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 142.69965, y: 927.1089}
-    canvasZoom: 0.6099999
+    canvasScrollPosition: {x: 0, y: 383.72107}
+    canvasZoom: 0.4299999
   - id: 3
     fields:
     - title: Title
@@ -1654,7 +1654,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Great, you passed the training. \u21B5"
+        value: Great, you passed the training. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1712,7 +1712,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Pay is at the end of the day. \u21B5"
+        value: Pay is at the end of the day. [ENTER]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -1742,8 +1742,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 88.020065, y: 0}
-    canvasZoom: 0.7300002
+    canvasScrollPosition: {x: 53.50828, y: 42.904404}
+    canvasZoom: 0.73000014
   - id: 5
     fields:
     - title: Title

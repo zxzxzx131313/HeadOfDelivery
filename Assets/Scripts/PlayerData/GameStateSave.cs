@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
+public enum ExpenseType { Token, Elevator };
+
 [CreateAssetMenu(fileName = "GameState", menuName = "ScriptableObjects/GameSave", order = 0)]
 public class GameStateSave : ScriptableObject
 {
@@ -11,13 +13,29 @@ public class GameStateSave : ScriptableObject
     [Header("Game States")]
     private bool[] _level_complete_state;
     private bool[] _level_animation_state;
-    private List<Pickupable> _items;
+    private List<Interactable> _items;
     private int _money;
+    private int _tiles;
+
+    public int StampCount
+    {
+        get { return _tiles; }
+        set
+        {
+            if (value >= 0)
+                _tiles = value;
+        }
+    }
+    private Dictionary<ExpenseType, int> _transactions;
+    // Determined if any timeline is playing
+    private bool _playing;
 
     [SerializeField]
     private UnityAction<int> OnMoneyChanged;
     [SerializeField]
     private GameEvent OnEndingLevelComplete;
+
+    public UnityAction<int> OnLevelComplete;
 
     public void InitState(int levels)
     {
@@ -29,6 +47,7 @@ public class GameStateSave : ScriptableObject
 
         _items = new();
         _money = 0;
+        _transactions = new();
     }
 
     public bool IsLevelComplete(int level)
@@ -38,8 +57,10 @@ public class GameStateSave : ScriptableObject
 
     public void SetLevelComplete(int level)
     {
-        if (level == _level_complete_state.Length - 1)
+        if (level == _level_complete_state.Length - 2)
             OnEndingLevelComplete.Raise();
+        else
+            OnLevelComplete?.Invoke(level);
         _level_complete_state[level] = true;
     }
 
@@ -53,7 +74,7 @@ public class GameStateSave : ScriptableObject
         _level_animation_state[level] = true;
     }
 
-    public void AddPickupables(Pickupable item)
+    public void AddPickupables(Interactable item)
     {
         _items.Add(item);
     }
@@ -67,5 +88,30 @@ public class GameStateSave : ScriptableObject
                 OnMoneyChanged?.Invoke(_money);
             }
         }
+    }
+
+    public bool IsPlaying
+    {
+        get { return _playing; }
+        set
+        {
+            _playing = value;
+        }
+    }
+
+    public int TransactionsCount(ExpenseType type)
+    {
+        if (_transactions.ContainsKey(type))
+            return _transactions[type];
+        return 0;
+    }
+
+    public void AddTransaction(ExpenseType type, int value)
+    {
+        if (_transactions.ContainsKey(type))
+            _transactions[type] += value;
+        else
+            _transactions[type] = value;
+        _money += value;
     }
 }

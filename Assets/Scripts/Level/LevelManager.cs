@@ -19,12 +19,12 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (stats.Level < _beginAtLevel && _beginAtLevel > 0)
-        {
-            stats.Level = _beginAtLevel;
-            //Scene.PlayAnimation();
-            Invoke("RaiseNextLevelEvent", 1f);
-        }
+        //if (stats.Level < _beginAtLevel && _beginAtLevel > 0)
+        //{
+        //    stats.Level = _beginAtLevel;
+        //    //Scene.PlayAnimation();
+        //    Invoke("RaiseNextLevelEvent", 1f);
+        //}
     }
 
     void RaiseNextLevelEvent()

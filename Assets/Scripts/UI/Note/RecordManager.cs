@@ -124,7 +124,7 @@ public class RecordManager : MonoBehaviour
                 {
                     SaveRecord();
                 }
-                else
+                else if(!Keyboard.current.rKey.wasPressedThisFrame)
                 {
                     RestartCurrentRecord();
                 }
@@ -370,10 +370,13 @@ public class RecordManager : MonoBehaviour
             stepRecorder.EndRecord(ref entry);
 
             LastCompleteEntry = entry;
-            // for update in recorder to finish 
-            Invoke("CallCheckSaveResponse", 0.1f);
+            if (LastCompleteEntry != null)
+            {
+                // for update in recorder to finish 
+                Invoke("CallCheckSaveResponse", 0.1f);
 
-            OnCheckSaveResponse.Raise();
+                OnCheckSaveResponse.Raise();
+            }
         }
     }
 

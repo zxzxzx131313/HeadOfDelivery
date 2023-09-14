@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class TutotialManager : MonoBehaviour
+public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private PlayableDirector _director;
     [SerializeField] private PlayableDirector _complete_director;
@@ -33,10 +33,7 @@ public class TutotialManager : MonoBehaviour
         //    body.GetComponent<PlayerController>().enabled = false;
         //}
 
-        if (Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            _director.time = _director.duration;
-        }
+
     }
 
 

@@ -551,8 +551,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9002218320655429467}
-        m_TargetAssemblyTypeName: Pickupable, Assembly-CSharp
-        m_MethodName: OnPickup
+        m_TargetAssemblyTypeName: TokenBag, Assembly-CSharp
+        m_MethodName: OnInteract
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

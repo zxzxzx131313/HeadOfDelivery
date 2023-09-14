@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class LoadingSceneManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class LoadingSceneManager : MonoBehaviour
         var brain = (camera == null) ? null : camera.GetComponent<CinemachineBrain>();
         vcam = (brain == null) ? null : brain.ActiveVirtualCamera as CinemachineVirtualCamera;
     }
+
 
     private void OnEnable()
     {
@@ -56,20 +58,20 @@ public class LoadingSceneManager : MonoBehaviour
         End.Play();
     }
 
-    public void LoadScene(int id)
+    public void LoadScene()
     {
         //ZoomIn();
         Loop.extrapolationMode = DirectorWrapMode.None;
 
         Loading.SetActive(true);
-        StartCoroutine(LoadSceneAsync(id));
+        StartCoroutine(LoadSceneAsync());
 
         PlayAnimation();
     }
 
-    IEnumerator LoadSceneAsync(int id)
+    IEnumerator LoadSceneAsync()
     {
-        operation = SceneManager.LoadSceneAsync(id);
+        operation = SceneManager.LoadSceneAsync("Level");
         operation.allowSceneActivation = false;
 
         while (!operation.isDone && !loop_played)

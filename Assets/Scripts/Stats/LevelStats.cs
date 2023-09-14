@@ -8,7 +8,7 @@ public class LevelStats : ScriptableObject
 {
     [Header("Level Setting")]
     [SerializeField] private int _total_level = 5;
-    [SerializeField] private int[] _level_steps;
+    [SerializeField] private int[] _level_steps_set;
     [SerializeField] private DiceFaceCode[] _begin_level_color_face_position;
     // potential different level width setting
     [SerializeField] private int _levelPanningOffset = 2;
@@ -17,6 +17,7 @@ public class LevelStats : ScriptableObject
     private int _current_steps;
     private int _extra_steps_on_begin;
     private int _extra_steps;
+    private int[] _level_steps;
 
     // use these actions for UI events, other events are handled by GameEvent Objects
     public UnityAction<int> LevelChanged;
@@ -38,9 +39,10 @@ public class LevelStats : ScriptableObject
                 if (value > 0)
                 {
                     _extra_steps_on_begin = StepsLeft;
-                    _extra_steps = _extra_steps_on_begin;
+                    ExtraStepsLeft = _extra_steps_on_begin;
                 }
                 _current_steps = _level_steps[_current_level];
+                StepsLeft = _extra_steps_on_begin + _current_steps;
                 LevelChanged?.Invoke(_current_level);
             }
         }
@@ -98,6 +100,8 @@ public class LevelStats : ScriptableObject
 
     public void InitStats()
     {
+        _level_steps = new int[_level_steps_set.Length];
+        _level_steps_set.CopyTo(_level_steps, 0);
         _current_level = 0;
         _current_steps = _level_steps[0];
         _extra_steps = 0;
@@ -106,7 +110,13 @@ public class LevelStats : ScriptableObject
 
     public void RestartLevel()
     {
+        ExtraStepsLeft = _extra_steps_on_begin;
         StepsLeft = _level_steps[_current_level] + _extra_steps_on_begin;
+    }
+
+    public void ClearCurrentLevelSteps()
+    {
+        _level_steps[Level] = 0;
     }
 
 }
