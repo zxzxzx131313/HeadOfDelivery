@@ -31,8 +31,12 @@ public class LevelCompleteTrigger : MonoBehaviour
             //Vector3Int _tile = _tiles.WorldToCell(collision.transform.position);
 
             //_enter_on_tile = _tile;
-            state.SetLevelComplete(stats.Level);
-            stats.ClearCurrentLevelSteps();
+            if (!state.IsLevelComplete(stats.Level))
+            {
+
+                state.SetLevelComplete(stats.Level);
+                stats.ClearCurrentLevelSteps();
+            }
 
         }
     }

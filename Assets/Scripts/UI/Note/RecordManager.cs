@@ -23,7 +23,9 @@ public class RecordManager : MonoBehaviour
     [SerializeField] private GameEvent OnShowDeletePageHint;
     [SerializeField] private GameEvent OnCheckReplaceRecord;
     [SerializeField] private GameEvent OnCheckSaveResponse;
+    [SerializeField] private GameEvent OnSaveResponse;
     [SerializeField] private GameEvent OnCheckSaveResponseEnd;
+    [SerializeField] private GameEvent OnCheckDeleteReplaceResponse;
 
     DataFolderHelper folder;
     CubeController cubeController;
@@ -83,6 +85,7 @@ public class RecordManager : MonoBehaviour
             CopyInitialRecords();
         }
         FillPanels();
+        UpdateRecordPointer(0);
     }
 
     private void Awake()
@@ -120,7 +123,7 @@ public class RecordManager : MonoBehaviour
         {
             if (Keyboard.current.anyKey.wasPressedThisFrame)
             {
-                if (Keyboard.current.enterKey.wasPressedThisFrame)
+                if (Keyboard.current.spaceKey.wasPressedThisFrame)
                 {
                     SaveRecord();
                 }
@@ -319,18 +322,18 @@ public class RecordManager : MonoBehaviour
             Panels[i].SetToBackLayer();
             Panels[i].SetStepDisplay(entry.Steps.Count - 2);
         }
-        record_pointer = currentRecords.Records.Count - 1;
+        record_pointer = Math.Max(0, currentRecords.Records.Count - 1);
 
-        if (record_pointer < 0)
-        {
-            Panels[0].SetActive();
-            record_pointer = 0;
-        }
-        else
-        {
-            record_pointer = Mathf.Min(PanelsCount - 1, record_pointer + 1);
-            Panels[record_pointer].SetActive();
-        }
+        //if (record_pointer < 0)
+        //{
+        //    Panels[0].SetActive();
+        //    record_pointer = 0;
+        //}
+        //else
+        //{
+        //    record_pointer = Mathf.Min(PanelsCount - 1, record_pointer + 1);
+        //    Panels[record_pointer].SetActive();
+        //}
         UpdatePreviewSize();
     }
 
@@ -362,25 +365,34 @@ public class RecordManager : MonoBehaviour
 
     public void EndRecord()
     {
-        if (currentRecords.Records.Count < PanelsCount)
-        {
-            recording = false;
-            Debug.Log("end record: " + record_pointer);
-            RecordEntry entry = new();
-            stepRecorder.EndRecord(ref entry);
+        recording = false;
+        Debug.Log("end record: " + record_pointer);
+        RecordEntry entry = new();
+        stepRecorder.EndRecord(ref entry);
 
-            LastCompleteEntry = entry;
-            if (LastCompleteEntry != null)
+        LastCompleteEntry = entry;
+        if (LastCompleteEntry != null)
+        {
+            bool existed = false;
+            for (int i = 0; i < currentRecords.Records.Count; i++)
+            {
+                if (LastCompleteEntry.CompareTo(currentRecords.Records[i]))
+                {
+                    existed = true;
+                    break;
+                }
+            }
+            if (!existed)
             {
                 // for update in recorder to finish 
                 Invoke("CallCheckSaveResponse", 0.1f);
-
                 OnCheckSaveResponse.Raise();
             }
+
         }
     }
 
-    void SaveRecord()
+    public void SaveRecord()
     {
         Debug.Log("save record");
         if (currentRecords.Records.Count == 0)
@@ -391,28 +403,38 @@ public class RecordManager : MonoBehaviour
         }
         else
         {
-            int index = currentRecords.Records.Count;
-            for (int i = 0; i < currentRecords.Records.Count; i++)
+            if (currentRecords.Records.Count < PanelsCount)
             {
-                if (LastCompleteEntry.Steps.Count <= currentRecords.Records[i].Steps.Count)
+                int index = currentRecords.Records.Count;
+                for (int i = 0; i < currentRecords.Records.Count; i++)
                 {
-                    index = i;
-                    if (LastCompleteEntry.Steps.Count == currentRecords.Records[i].Steps.Count)
+                    if (LastCompleteEntry.Steps.Count <= currentRecords.Records[i].Steps.Count)
                     {
-                        WaitForPageExistResponse = true;
+                        index = i;
+                        if (LastCompleteEntry.Steps.Count == currentRecords.Records[i].Steps.Count)
+                        {
+                            WaitForPageExistResponse = true;
+                        }
+                        else
+                        {
+                            InsertRecord(index, LastCompleteEntry);
+                        }
+                        return;
                     }
-                    else
-                    {
-                        InsertRecord(index, LastCompleteEntry);
-                    }
-                    return;
                 }
-            }
-            AddRecord();
+                AddRecord();
 
-            UpdateRecordPointer(index);
+                UpdateRecordPointer(index);
+            }
+            else
+            {
+                OnCheckDeleteReplaceResponse.Raise();
+                
+            }
         }
+        OnSaveResponse.Raise();
     }
+
 
     void ReplaceRecord(int index, RecordEntry entry)
     {
@@ -470,13 +492,13 @@ public class RecordManager : MonoBehaviour
             Panels[i].SetStepDisplay(currentRecords.Records[i].Steps.Count - 2);
         }
         Panels[currentRecords.Records.Count].SetStepDisplay(-1);
-            Panels[currentRecords.Records.Count].Deactivate();
+        Panels[currentRecords.Records.Count].Deactivate();
         Panels[currentRecords.Records.Count].AddStepContainer();
 
         if (currentRecords.Records.Count == 0)
             Panels[0].SetActive();
 
-        UpdateRecordPointer(currentRecords.Records.Count);
+        UpdateRecordPointer(Math.Max(0, currentRecords.Records.Count -1));
         SaveToJson(data.SaveID);
     }
 

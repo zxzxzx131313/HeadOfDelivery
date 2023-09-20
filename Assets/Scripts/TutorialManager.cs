@@ -16,6 +16,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private HelpManager help;
     [SerializeField] private GameObject restartHint;
 
+
     PlayerController body;
 
     private void Start()
@@ -52,7 +53,7 @@ public class TutorialManager : MonoBehaviour
 
     void CheckForHideHint(int step)
     {
-        if (stats.StepsLeft == 0 && (stats.Level == 0 || stats.Level == 1))
+        if (stats.StepsLeft == 0 && (stats.Level == 0 ))
         {
             restartHint.SetActive(true);
             Invoke("HideHint", 3f);
@@ -75,7 +76,7 @@ public class TutorialManager : MonoBehaviour
             // same state as animation end in OnLevelBegin
             OnDetachHead.Raise();
             OnLevelAnimationEnd.Raise();
-            help.SetSelect();
+            //help.SetSelect();
         }
     }
 }

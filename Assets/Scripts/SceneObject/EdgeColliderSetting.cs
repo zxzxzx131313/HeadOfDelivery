@@ -57,7 +57,7 @@ public class EdgeColliderSetting : MonoBehaviour
         //stats.LevelChanged -= CollisionAndCameraPanToNextLevel;
     }
 
-    public void CollisionAndCameraPanToNextLevel(Vector2 direction)
+    public Vector3 CollisionAndCameraPanToNextLevel(Vector2 direction)
     {
         var cam = Camera.main;
 
@@ -71,7 +71,15 @@ public class EdgeColliderSetting : MonoBehaviour
 
         transform.position = cam_pos;
 
+        return cam_pos;
         //vcam_follow.m_TrackedObjectOffset = new Vector3(width * direction.x, halfHeight * 2 * direction.y, 0);
+    }
+
+    public void CameraToPos(Vector3 pos)
+    {
+        var cam = Camera.main;
+        LeanTween.move(Cam, pos, 0.5f).setEase(LeanTweenType.easeInQuad);
+
     }
 
     public void SetFramingOffsetBack()

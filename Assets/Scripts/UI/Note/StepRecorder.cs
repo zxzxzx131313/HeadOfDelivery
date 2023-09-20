@@ -14,6 +14,18 @@ public class RecordEntry
     public (Vector2Int start, Vector2Int end) Stamps = (Vector2Int.zero, Vector2Int.zero);
     public (Vector2 min, Vector2 max) Bounds = (new Vector2(5000, 5000), new Vector2(-5000, -5000));
     public Vector2 PanelAnchorPoint = Vector2.zero;
+
+    public bool CompareTo(RecordEntry other)
+    {
+        for(int i = 0; i < Steps.Count; i++)
+        {
+            if (!StepRecorder.DecodeStepKey(Steps[i].Key).prefabType.Equals(StepRecorder.DecodeStepKey(other.Steps[i].Key).prefabType))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 
@@ -95,7 +107,7 @@ public class StepRecorder : MonoBehaviour
         return new Vector3Int(position.x, position.y, prefab);
     }
 
-    public (Vector2Int position, Vector2Int prefabType) DecodeStepKey(Vector3Int key)
+    public static (Vector2Int position, Vector2Int prefabType) DecodeStepKey(Vector3Int key)
     {
         (int x, int y) = key.z switch
         {

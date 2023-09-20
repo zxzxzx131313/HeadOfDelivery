@@ -26,7 +26,7 @@ public class BucketUI : MonoBehaviour
         stats.StepsLeftChanged += UpdateStepDisplay;
         //stats.LevelChanged += UpdateLevelDisplay;
         // level passed in here as well
-        stats.LevelChanged += UpdateStepDisplay;
+        //stats.LevelChanged += UpdateStepDisplay;
         
     }
 
@@ -35,11 +35,11 @@ public class BucketUI : MonoBehaviour
 
         stats.StepsLeftChanged -= UpdateStepDisplay;
         //stats.LevelChanged -= UpdateLevelDisplay;
-        stats.LevelChanged -= UpdateStepDisplay;
+        //stats.LevelChanged -= UpdateStepDisplay;
         
     }
 
-    void UpdateStepDisplay(int step)
+    public void UpdateStepDisplay(int step)
     {
         stepCount.text = Mathf.Max(0, stats.StepsLeft - stats.ExtraStepLeftOnBegin).ToString();
         UpdateFillAmount();

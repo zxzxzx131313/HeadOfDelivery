@@ -1014,7 +1014,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 244912463}
-  - {fileID: 1721146085}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4114,11 +4113,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697780756}
   m_CullTransparentMesh: 1
---- !u!224 &1721146085 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3805153989680013408, guid: 13637506a655cce45afba9855b697d8d, type: 3}
-  m_PrefabInstance: {fileID: 1471705001220133420}
-  m_PrefabAsset: {fileID: 0}
 --- !u!223 &1721146088 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 6533293809926560957, guid: 13637506a655cce45afba9855b697d8d, type: 3}
@@ -5805,7 +5799,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 308208727}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 461564981275587221, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5857,7 +5851,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3805153989680013408, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3805153989680013408, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6007,13 +6001,21 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7077941772872429452, guid: 13637506a655cce45afba9855b697d8d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7133215345960589235, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 7234192368102710149, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: Setting
+      objectReference: {fileID: 0}
+    - target: {fileID: 7234192368102710149, guid: 13637506a655cce45afba9855b697d8d, type: 3}
+      propertyPath: m_TagString
+      value: Setting
       objectReference: {fileID: 0}
     - target: {fileID: 7741322424077648103, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6022,6 +6024,10 @@ PrefabInstance:
     - target: {fileID: 8252375612357478291, guid: 13637506a655cce45afba9855b697d8d, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8629848804119241483, guid: 13637506a655cce45afba9855b697d8d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6039,6 +6045,10 @@ PrefabInstance:
     - target: {fileID: 2547633870269077978, guid: 4446646ba9315eb4b990b1634260b58d, type: 3}
       propertyPath: m_Name
       value: Audio
+      objectReference: {fileID: 0}
+    - target: {fileID: 2547633870269077978, guid: 4446646ba9315eb4b990b1634260b58d, type: 3}
+      propertyPath: m_TagString
+      value: DontDestroy
       objectReference: {fileID: 0}
     - target: {fileID: 9052384485077515646, guid: 4446646ba9315eb4b990b1634260b58d, type: 3}
       propertyPath: m_RootOrder

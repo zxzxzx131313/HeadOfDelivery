@@ -10,9 +10,9 @@ public class MixerController : MonoBehaviour
     private void Start()
     {
 
-        Mixer.SetFloat("MasterVolume", 0.8f);
-        Mixer.SetFloat("BGMVolume", 0.8f);
-        Mixer.SetFloat("EffectVolume", 0.8f);
+        SetMasterVolume(0.8f);
+        SetEffectVolume(0.8f);
+        SetMBGMVolume(0.8f);
     }
 
     public void SetMasterVolume(float value)

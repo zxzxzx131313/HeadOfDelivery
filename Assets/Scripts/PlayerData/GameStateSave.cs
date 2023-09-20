@@ -17,6 +17,18 @@ public class GameStateSave : ScriptableObject
     private int _money;
     private int _tiles;
 
+    public float MasterVolume;
+    public float EffectVolume;
+    public float BGMVolume;
+
+    void Start()
+    {
+        MasterVolume = 0.8f;
+        EffectVolume = 0.8f;
+        BGMVolume = 0.8f;
+    }
+
+
     public int StampCount
     {
         get { return _tiles; }
@@ -27,6 +39,7 @@ public class GameStateSave : ScriptableObject
         }
     }
     private Dictionary<ExpenseType, int> _transactions;
+    private Dictionary<ExpenseType, int> _transactions_temp;
     // Determined if any timeline is playing
     private bool _playing;
 
@@ -47,7 +60,9 @@ public class GameStateSave : ScriptableObject
 
         _items = new();
         _money = 0;
+        _tiles = 0;
         _transactions = new();
+        _transactions_temp = new();
     }
 
     public bool IsLevelComplete(int level)
@@ -57,11 +72,19 @@ public class GameStateSave : ScriptableObject
 
     public void SetLevelComplete(int level)
     {
-        if (level == _level_complete_state.Length - 2)
+        if (level == _level_complete_state.Length - 3)
             OnEndingLevelComplete.Raise();
         else
             OnLevelComplete?.Invoke(level);
         _level_complete_state[level] = true;
+        _items = new();
+        foreach (var transaction in _transactions_temp)
+        {
+            if (_transactions.ContainsKey(transaction.Key))
+                _transactions[transaction.Key] += transaction.Value;
+            else
+                _transactions[transaction.Key] = transaction.Value;
+        }
     }
 
     public bool IsLevelAnimationPlayed(int level)
@@ -108,10 +131,19 @@ public class GameStateSave : ScriptableObject
 
     public void AddTransaction(ExpenseType type, int value)
     {
-        if (_transactions.ContainsKey(type))
-            _transactions[type] += value;
+        if (_transactions_temp.ContainsKey(type))
+            _transactions_temp[type] += value;
         else
-            _transactions[type] = value;
-        _money += value;
+            _transactions_temp[type] = value;
+        //_money += value;
+    }
+
+    public void RespawnItems()
+    {
+        foreach (var item in _items)
+        {
+            item.gameObject.SetActive(true);
+            _transactions_temp = new();
+        }
     }
 }

@@ -6,11 +6,21 @@ public class Elevator : Interactable
 {
     [SerializeField]
     private int value;
+    [SerializeField] private AudioClip sound;
+    [SerializeField] private AudioSource EffectPlayer;
+
 
     public override void OnInteract()
     {
-
-        //states.AddPickupables(this);
         states.AddTransaction(ExpenseType.Elevator, value);
     }
+
+    public void OnOpen()
+    {
+
+        EffectPlayer.clip = sound;
+        EffectPlayer.Play();
+    }
+
+
 }

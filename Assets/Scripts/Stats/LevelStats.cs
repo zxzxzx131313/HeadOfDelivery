@@ -19,6 +19,8 @@ public class LevelStats : ScriptableObject
     private int _extra_steps;
     private int[] _level_steps;
 
+    EdgeColliderSetting edgeCollider;
+
     // use these actions for UI events, other events are handled by GameEvent Objects
     public UnityAction<int> LevelChanged;
     public UnityAction<int> StepsLeftChanged;
@@ -39,14 +41,18 @@ public class LevelStats : ScriptableObject
                 if (value > 0)
                 {
                     _extra_steps_on_begin = StepsLeft;
-                    ExtraStepsLeft = _extra_steps_on_begin;
+                    _extra_steps = _extra_steps_on_begin;
                 }
                 _current_steps = _level_steps[_current_level];
-                StepsLeft = _extra_steps_on_begin + _current_steps;
+                //StepsLeft = _extra_steps_on_begin + _current_steps;
                 LevelChanged?.Invoke(_current_level);
             }
         }
     }
+
+    public Vector3 LastCamPos;
+
+    public bool IsInSublevel;
 
     public int StepsLeft { get
         {
@@ -106,12 +112,22 @@ public class LevelStats : ScriptableObject
         _current_steps = _level_steps[0];
         _extra_steps = 0;
         _extra_steps_on_begin = 0;
+        LastCamPos = new Vector3(0, 0, -10);
+        IsInSublevel = false;
+        edgeCollider = GameObject.FindGameObjectWithTag("EdgeCollider").GetComponent<EdgeColliderSetting>();
+    }
+
+    public void SetCameBeginPos(Vector3 pos)
+    {
+        LastCamPos = pos;
     }
 
     public void RestartLevel()
     {
         ExtraStepsLeft = _extra_steps_on_begin;
         StepsLeft = _level_steps[_current_level] + _extra_steps_on_begin;
+        edgeCollider.CameraToPos(LastCamPos);
+
     }
 
     public void ClearCurrentLevelSteps()

@@ -11,6 +11,8 @@ public class HelpManager : MonoBehaviour, IDeselectHandler
     [SerializeField] private GameObject NextButton;
     [SerializeField] private TMP_Text pageCount;
     [SerializeField] private GameObject[] pages;
+    [SerializeField] private AudioClip clip;
+    [SerializeField] private AudioSource Effect;
 
     public GameEvent OnShowHint;
 
@@ -28,7 +30,7 @@ public class HelpManager : MonoBehaviour, IDeselectHandler
     {
         ShowHelp();
         OnShowHint.Raise();
-        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-220f, 83f), 0.5f).setEaseOutCirc();
+        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-220f, 90f), 0.5f).setEaseOutCirc();
     }
 
 
@@ -88,8 +90,11 @@ public class HelpManager : MonoBehaviour, IDeselectHandler
 
     public void ShowHelp()
     {
+        Effect.clip = clip;
+        Effect.Play();
+        curr_page = 0;
         GetComponent<Canvas>().enabled = true;
-        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-220f, 83f), 0.5f).setEaseOutCirc();
+        LeanTween.move(GetComponent<RectTransform>(), new Vector2(-220f, 90f), 0.5f).setEaseOutCirc();
         pageCount.text = (curr_page + 1) + "/" + pages.Length;
         previousButton.SetActive(false);
         NextButton.SetActive(true);

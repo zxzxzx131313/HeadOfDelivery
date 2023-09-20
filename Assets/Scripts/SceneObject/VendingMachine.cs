@@ -25,9 +25,12 @@ public class VendingMachine : MonoBehaviour
 
     public void GetRandomDrop()
     {
-        EffectPlayer.clip = Insert;
-        EffectPlayer.Play();
-        StartCoroutine(WaitAnimation());
+        if (!AnimationTrigger)
+        {
+            EffectPlayer.clip = Insert;
+            EffectPlayer.Play();
+            StartCoroutine(WaitAnimation());
+        }
 
     }
 
@@ -44,6 +47,7 @@ public class VendingMachine : MonoBehaviour
             {
                 SpawnToken(false);
             }
+            stats.ExtraStepsLeft--;
         }
         else
         {
@@ -74,6 +78,6 @@ public class VendingMachine : MonoBehaviour
         else
             spawned = Instantiate(SpawnedBigToken);
         spawned.transform.position = SpawnPoint.position;
-        spawned.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1f, 1f), 1f));
+        spawned.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-10f, 10f), 10f));
     }
 }

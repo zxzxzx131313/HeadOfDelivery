@@ -29,7 +29,7 @@ public class ExtraBucketUI : MonoBehaviour
         
     }
 
-    void UpdateExtraStepDisplay(int step)
+    public void UpdateExtraStepDisplay(int step)
     {
         if (extra_bucket != null)
         {

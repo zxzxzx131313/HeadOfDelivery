@@ -256,6 +256,8 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: ea47d8a2af21d34489611d98fc8a8fad, type: 2}
   states: {fileID: 11400000, guid: 7feffe9d9a33d384eb1a9a1e847c3a91, type: 2}
   value: 0
+  sound: {fileID: 0}
+  EffectPlayer: {fileID: 0}
 --- !u!61 &6122395052750875028
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -771,7 +773,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 0}
   barkText:
     m_uiText: {fileID: 0}
-    m_textMeshProUGUI: {fileID: 3955330018207011754}
+    m_textMeshProUGUI: {fileID: 0}
   nameText:
     m_uiText: {fileID: 0}
     m_textMeshProUGUI: {fileID: 0}

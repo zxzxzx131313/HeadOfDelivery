@@ -1,0 +1,117 @@
+{
+  "Records": [
+    {
+      "Steps": [
+        {
+          "Key": {
+            "x": -16,
+            "y": -16,
+            "z": 4,
+            "magnitude": 22.97825,
+            "sqrMagnitude": 528
+          },
+          "Value": 2
+        },
+        {
+          "Key": {
+            "x": -16,
+            "y": -8,
+            "z": 2,
+            "magnitude": 18.0,
+            "sqrMagnitude": 324
+          },
+          "Value": 3
+        },
+        {
+          "Key": {
+            "x": -24,
+            "y": 0,
+            "z": 1,
+            "magnitude": 24.0208244,
+            "sqrMagnitude": 577
+          },
+          "Value": 4
+        },
+        {
+          "Key": {
+            "x": -32,
+            "y": -8,
+            "z": 3,
+            "magnitude": 33.12099,
+            "sqrMagnitude": 1097
+          },
+          "Value": 5
+        },
+        {
+          "Key": {
+            "x": -32,
+            "y": -16,
+            "z": 4,
+            "magnitude": 36.0,
+            "sqrMagnitude": 1296
+          },
+          "Value": 6
+        }
+      ],
+      "Stamps": {
+        "Item1": {
+          "x": -16,
+          "y": -16,
+          "magnitude": 22.6274166,
+          "sqrMagnitude": 512
+        },
+        "Item2": {
+          "x": -32,
+          "y": -16,
+          "magnitude": 35.77709,
+          "sqrMagnitude": 1280
+        }
+      },
+      "Bounds": {
+        "Item1": {
+          "x": -32.0,
+          "y": -16.0,
+          "normalized": {
+            "x": -0.8944272,
+            "y": -0.4472136,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 35.77709,
+          "sqrMagnitude": 1280.0
+        },
+        "Item2": {
+          "x": -16.0,
+          "y": 0.0,
+          "normalized": {
+            "x": -1.0,
+            "y": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 16.0,
+          "sqrMagnitude": 256.0
+        }
+      },
+      "PanelAnchorPoint": {
+        "x": 24.0,
+        "y": 8.0,
+        "normalized": {
+          "x": 0.948683262,
+          "y": 0.316227764,
+          "normalized": {
+            "x": 0.9486833,
+            "y": 0.3162278,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.00000012
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 25.2982216,
+        "sqrMagnitude": 640.0
+      }
+    }
+  ],
+  "SaveID": 0
+}

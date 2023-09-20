@@ -57,12 +57,14 @@ public class CubeController : MonoBehaviour
     {
         cubeControl.Enable();
         //stats.StepsLeftChanged += CheckStepLeft;
+        stats.LevelChanged += LevelBegin;
     }
 
     public void OnDisable()
     {
         cubeControl.Disable();
         //stats.StepsLeftChanged -= CheckStepLeft;
+        stats.LevelChanged -= LevelBegin;
     }
 
     private void Start()
@@ -166,6 +168,11 @@ public class CubeController : MonoBehaviour
             if (cubeControl.Gameplay.enabled) OnDisable();
             else OnEnable();
         }
+    }
+
+    public void LevelBegin(int level)
+    {
+        moved = false;
     }
 
     /**

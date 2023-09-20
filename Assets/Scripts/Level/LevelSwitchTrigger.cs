@@ -23,6 +23,7 @@ public class LevelSwitchTrigger : MonoBehaviour
     [SerializeField] private LevelStats stats;
     [SerializeField] private GameStateSave state;
     [SerializeField] private GameEvent OnLevelBegin;
+    [SerializeField] private GameEvent OnBeforeChangeLevel;
 
     EdgeColliderSetting edgeCollider;
     Tilemap _tiles;
@@ -30,6 +31,7 @@ public class LevelSwitchTrigger : MonoBehaviour
     Vector3Int _enter_on_tile;
     PhysicsCheck _player;
     GameObject _body;
+    Vector2 _last_cam_movement;
 
     // Start is called before the first frame update
     void Start()
@@ -83,14 +85,21 @@ public class LevelSwitchTrigger : MonoBehaviour
                     if (direction.x > 0 || direction.y > 0)
                     {
                     if (LevelConnection == LevelRelation.Independent)
+                        {
                             stats.Level = PositiveDirectionLevel;
+                        }
                     }
                     else if (direction.x < 0 || direction.y < 0)
                     {
                     if (LevelConnection == LevelRelation.Independent)
+                        {
                             stats.Level = NegativeDirectionLevel;
+                        }
                     }
-                    edgeCollider.CollisionAndCameraPanToNextLevel(direction + LevelOffset * (direction.x+direction.y));
+                    Vector3 cam_pos = edgeCollider.CollisionAndCameraPanToNextLevel(direction + LevelOffset * (direction.x+direction.y));
+
+                    if (LevelConnection == LevelRelation.Independent)
+                        stats.SetCameBeginPos(cam_pos);
                 }
                 else
                 {

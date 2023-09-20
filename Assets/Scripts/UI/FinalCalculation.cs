@@ -44,6 +44,8 @@ public class FinalCalculation : MonoBehaviour
 
         int total = tile_count * 1 + paint_left * 2 + token + elevator;
 
-        text.text += total;
+        text.text += total + "\n\n";
+
+        text.text += "[ENTER]";
     }
 }

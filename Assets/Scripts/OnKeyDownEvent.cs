@@ -13,7 +13,7 @@ public class OnKeyDownEvent : MonoBehaviour
         if (DialogueManager.IsConversationActive)
         {
             Debug.Log("active");
-            if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.numpadEnterKey.wasPressedThisFrame)
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 CloseSubtitle();
             }

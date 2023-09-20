@@ -14,7 +14,7 @@ public class Cutscene : MonoBehaviour
     public DropPoints points;
     public LevelStats stats;
     public GameStateSave state;
-
+    public GameEvent OnBeforeChangeLevel;
     GameObject _head;
 
     private void Start()
@@ -58,6 +58,7 @@ public class Cutscene : MonoBehaviour
 
             OnLevelAnimationEnd.Raise();
             state.IsPlaying = false;
+            OnBeforeChangeLevel.Raise();
         }
     }
 

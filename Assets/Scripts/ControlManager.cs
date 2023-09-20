@@ -22,11 +22,14 @@ public class ControlManager : MonoBehaviour
     [SerializeField] private PlayableDirector GameOpenDirector;
     [SerializeField] private Animator FinalBoard;
     [SerializeField] private LoadScene load;
+    private GameObject Setting;
     #endregion
 
     void Start()
     {
+        Setting = GameObject.FindGameObjectWithTag("Setting");
 
+        //Setting.GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -36,7 +39,7 @@ public class ControlManager : MonoBehaviour
 
         if (Keyboard.current.sKey.wasPressedThisFrame)
         {
-            GameOpenDirector.time = GameOpenDirector.duration;
+            GameOpenDirector.time = GameOpenDirector.duration-1f;
         }
         
 
@@ -48,14 +51,14 @@ public class ControlManager : MonoBehaviour
                 note.ToggleNote();
             }
 
-            if (Keyboard.current.rKey.wasPressedThisFrame && !state.IsLevelComplete(stats.Level))
+            if (Keyboard.current.rKey.wasPressedThisFrame && !state.IsLevelComplete(stats.Level) && state.IsLevelAnimationPlayed(stats.Level)) 
             {
                 OnRestartLevel.Raise();
             }
 
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
-                OnPaused.Raise();
+                Setting.GetComponent<Canvas>().enabled = true;
             }
         }
     }
@@ -67,7 +70,7 @@ public class ControlManager : MonoBehaviour
 
     IEnumerator WaitForResponse()
     {
-        while (!Keyboard.current.anyKey.wasPressedThisFrame)
+        while (!Keyboard.current.enterKey.wasPressedThisFrame)
         {
             yield return null;
         }
