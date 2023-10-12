@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum DiceFaceCode { Left, Right, Above, Bottom, Opposite, Top }
+public enum FaceAbilityCode { Base, Jump, Hammer}
 
 public class Diceface
 {
     public int Index = 0;
-    public bool IsColored = false;
+    //public bool IsColored = false;
+    public int FaceAbilityIndex = -1;
     public bool IsUp = false;
     public Diceface opposite = null;
 }
@@ -21,6 +23,7 @@ public class HeadDice : MonoBehaviour
     public Diceface right_face { get; private set; }
 
     public LevelStats stats;
+    public GameStateSave states;
 
     // Start is called before the first frame update
     void Start()
@@ -35,13 +38,23 @@ public class HeadDice : MonoBehaviour
 
     public void SetInitialState(int level)
     {
+        for (int i = 0; i < 6; i++)
+        {
+            Dicefaces[i].IsUp = false;
+        }
+
         top_face = Dicefaces[0];
         above_face = Dicefaces[4];
         down_face = Dicefaces[5];
         left_face = Dicefaces[3];
         right_face = Dicefaces[1];
-        top_face.IsColored = true;
         top_face.IsUp = true;
+        // face ability assign order: right, left, top, down, opposite
+        int[] face_ind = { 0, 1, 3, 4, 5, 2 };
+        for (int i = 0; i < states.GetAllAbilities().Length; i++)
+        {
+            Dicefaces[face_ind[i]].FaceAbilityIndex = GetAbilityIndexByName(states.GetAllAbilities()[i]);
+        }
 
         // set opposite faces;
         SetOpposite(Dicefaces[0], Dicefaces[2]);
@@ -53,21 +66,7 @@ public class HeadDice : MonoBehaviour
 
     public void Restart()
     {
-        for (int i = 0; i < 6; i++)
-        {
-            Dicefaces[i].IsUp = false;
-            Dicefaces[i].IsColored = false;
-        }
-
-        top_face = Dicefaces[0];
-        above_face = Dicefaces[4];
-        down_face = Dicefaces[5];
-        left_face = Dicefaces[3];
-        right_face = Dicefaces[1];
-        top_face.IsColored = true;
-        top_face.IsUp = true;
-
-        ColorDiceTo(stats.LevelBeginColorFacePosition(stats.Level));
+        SetInitialState(stats.Level);
     }
 
     void SetOpposite(Diceface d1, Diceface d2)
@@ -91,7 +90,6 @@ public class HeadDice : MonoBehaviour
             TurnUp();
             TurnUp();
         }
-            
     }
 
 
@@ -110,6 +108,36 @@ public class HeadDice : MonoBehaviour
                 return left_face;
             default:
                 return null;
+        }
+    }
+
+    public int GetAbilityIndexByName(FaceAbilityCode ability)
+    {
+        switch(ability)
+        {
+            case FaceAbilityCode.Base:
+                return 0;
+            case FaceAbilityCode.Jump:
+                return 1;
+            case FaceAbilityCode.Hammer:
+                return 2;
+            default:
+                return -1;
+        }
+    }
+
+    public FaceAbilityCode GetAbilityNameByIndex(float index)
+    {
+        switch (index)
+        {
+            case 0f:
+                return FaceAbilityCode.Base;
+            case 1f:
+                return FaceAbilityCode.Jump;
+            case 2f:
+                return FaceAbilityCode.Hammer;
+            default:
+                return FaceAbilityCode.Base;
         }
     }
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameEventListenerBool : MonoBehaviour
+public class GameEventListenerAbility : ScriptableObject
 {
-    public GameEventBool Event;
-    public UnityEvent<bool> Response;
+    public GameEventAbility Event;
+    public UnityEvent<FaceAbilityCode> Response;
 
     private void OnEnable()
     { Event.RegisterListener(this); }
@@ -14,6 +14,6 @@ public class GameEventListenerBool : MonoBehaviour
     private void OnDisable()
     { Event.UnregisterListener(this); }
 
-    public void OnEventRaised(bool value)
+    public void OnEventRaised(FaceAbilityCode value)
     { Response.Invoke(value); }
 }

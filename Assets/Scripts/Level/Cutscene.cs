@@ -62,7 +62,9 @@ public class Cutscene : MonoBehaviour
         }
     }
 
-    // called by signal object in cutscene timeline
+    /**
+     * <summary> after level change cutscene, move the head to designated drop points. </summary>
+     */
     public void MoveToDropPoint()
     {
         Vector2 point = points.GetDropPointInLevel(stats.Level);
@@ -78,8 +80,6 @@ public class Cutscene : MonoBehaviour
     {
 
         OnShowHint.Raise();
-        //_head.GetComponent<CubeController>().ResetHintTimer();
-        // keep showing hint until made the first move
     }
 
 }

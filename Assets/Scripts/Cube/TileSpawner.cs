@@ -7,7 +7,8 @@ using UnityEngine.Events;
 
 public class TileSpawner : MonoBehaviour
 {
-    [SerializeField] private RuleTile _tile;
+    // index in order of face ability index
+    [SerializeField] private List<RuleTile> _tile;
     [SerializeField] private LevelStats stats;
     [SerializeField] private GameStateSave states;
     private Tilemap _headTile;
@@ -38,13 +39,12 @@ public class TileSpawner : MonoBehaviour
      * <summary>Spawn a platform tile at the given position</summary>
      * <param name="position">the position to spawn the tile in cell space</param>
      */
-    public void SpawnTile(Vector3Int position, float inkLeft)
+    public void SpawnTile(Vector3Int position, float inkLeft, int ability)
     {
 
         if (!_headTile.HasTile(position))
         {
-            //_tile.color = new Vector4(1, 1, 1, 1f*inkLeft);
-            _headTile.SetTile(position, _tile);
+            _headTile.SetTile(position, _tile[ability]);
             tiles_count++;
         }
     }

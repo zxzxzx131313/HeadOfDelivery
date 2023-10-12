@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using System.Linq;
 
 public enum ExpenseType { Token, Elevator };
 
@@ -14,8 +16,9 @@ public class GameStateSave : ScriptableObject
     private bool[] _level_complete_state;
     private bool[] _level_animation_state;
     private List<Interactable> _items;
-    private int _money;
     private int _tiles;
+    private int _money;
+    private List<FaceAbilityCode> _abilities;
 
     public float MasterVolume;
     public float EffectVolume;
@@ -41,7 +44,7 @@ public class GameStateSave : ScriptableObject
     private Dictionary<ExpenseType, int> _transactions;
     private Dictionary<ExpenseType, int> _transactions_temp;
     // Determined if any timeline is playing
-    private bool _playing;
+    public bool _playing;
 
     [SerializeField]
     private UnityAction<int> OnMoneyChanged;
@@ -49,6 +52,11 @@ public class GameStateSave : ScriptableObject
     private GameEvent OnEndingLevelComplete;
 
     public UnityAction<int> OnLevelComplete;
+
+    public void InitGame()
+    {
+        _money = 0;
+    }
 
     public void InitState(int levels)
     {
@@ -59,10 +67,34 @@ public class GameStateSave : ScriptableObject
         Array.Fill<bool>(_level_animation_state, false);
 
         _items = new();
-        _money = 0;
         _tiles = 0;
         _transactions = new();
         _transactions_temp = new();
+        if (_abilities.Count == 0)
+        { 
+            _abilities = new();
+            _abilities.Add(FaceAbilityCode.Base);
+        }
+    }
+
+    public bool HasAbility(FaceAbilityCode ability)
+    {
+        return _abilities.Contains(ability);
+    }
+
+    public void AddNewAbility(FaceAbilityCode ability)
+    {
+        if (!_abilities.Contains(ability))
+            _abilities.Add(ability);
+        else
+            Debug.LogWarning("Try to add existing ability.");
+    }
+
+    public FaceAbilityCode[] GetAllAbilities()
+    {
+        FaceAbilityCode[] ability = new FaceAbilityCode[_abilities.Count];
+        _abilities.CopyTo(ability);
+        return ability;
     }
 
     public bool IsLevelComplete(int level)
@@ -103,13 +135,12 @@ public class GameStateSave : ScriptableObject
     }
 
     public int Money { 
-        get { return _money; }
-        set { 
-            if (value != _money)
-            {
-                _money = value;
-                OnMoneyChanged?.Invoke(_money);
-            }
+        get {
+            return _transactions.Values.ToList().Sum();
+        }
+        set
+        {
+            _money = Money;
         }
     }
 

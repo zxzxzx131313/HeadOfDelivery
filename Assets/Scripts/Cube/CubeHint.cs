@@ -15,9 +15,13 @@ public class CubeHint : MonoBehaviour
     Image RightImage;
 
     [SerializeField]
+    Sprite _empty;
+    [SerializeField]
     Sprite _base;
     [SerializeField]
-    Sprite _colored;
+    Sprite _up_ability;
+    [SerializeField]
+    Sprite _hammer_ability;
 
     HeadDice _dice;
 
@@ -25,7 +29,7 @@ public class CubeHint : MonoBehaviour
     void Start()
     {
         _dice = GetComponentInParent<HeadDice>();
-        //_base = Resources.Load<Sprite>("Art/tilemap01for_unity_40");
+        //_empty = Resources.Load<Sprite>("Art/tilemap01for_unity_40");
         //_colored = Resources.Load<Sprite>("Art/rolling01_8");
 
         RightImage.enabled = false;
@@ -45,16 +49,26 @@ public class CubeHint : MonoBehaviour
 
     void ShowFace(Diceface face, Image image)
     {
-        if (face.IsColored)
+        if (face.FaceAbilityIndex != -1)
         {
-
-            image.sprite = _colored;
+            switch (face.FaceAbilityIndex)
+            {
+                case 0:
+                    image.sprite = _base;
+                    break;
+                case 1:
+                    image.sprite = _up_ability;
+                    break;
+                case 2:
+                    image.sprite = _hammer_ability;
+                    break;
+            }
             image.color = new Vector4(1f, 1f, 1f, 0.8f);
         }
         else
         {
 
-            image.sprite = _base;
+            image.sprite = _empty;
             image.color = new Vector4(1f, 1f, 1f, 0.5f);
         }
 

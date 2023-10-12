@@ -42,6 +42,7 @@ public class TutorialManager : MonoBehaviour
     {
         _director.stopped += StartTutorialLevel;
         stats.StepsLeftChanged += CheckForHideHint;
+        state.IsPlaying = true;
     }
 
     private void OnDisable()
@@ -49,14 +50,20 @@ public class TutorialManager : MonoBehaviour
 
         _director.stopped -= StartTutorialLevel;
         stats.StepsLeftChanged -= CheckForHideHint;
+        state.IsPlaying = false;
+    }
+    
+    public void ShowRestartHint()
+    {
+        restartHint.SetActive(true);
+        Invoke("HideHint", 3f);
     }
 
     void CheckForHideHint(int step)
     {
         if (stats.StepsLeft == 0 && (stats.Level == 0 ))
         {
-            restartHint.SetActive(true);
-            Invoke("HideHint", 3f);
+            ShowRestartHint();
         }
     }
 

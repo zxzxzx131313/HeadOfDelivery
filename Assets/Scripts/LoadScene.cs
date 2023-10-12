@@ -8,8 +8,14 @@ using UnityEngine.Playables;
 public class LoadScene : MonoBehaviour
 {
     [SerializeField] private PlayableDirector end_director;
+    [SerializeField] private GameObject end_veil;
 
     AsyncOperation operation;
+
+    private void Start()
+    {
+
+    }
 
     private void OnEnable()
     {
@@ -29,13 +35,25 @@ public class LoadScene : MonoBehaviour
 
     public void BackToTitle()
     {
-        StartCoroutine(LoadSceneAsync());
+        StartCoroutine(LoadSceneAsync(0));
         end_director.Play();
     }
 
-    IEnumerator LoadSceneAsync()
+    public void ToLevel(int id)
     {
-        operation = SceneManager.LoadSceneAsync("Title");
+        StartCoroutine(LoadSceneAsync(id));
+        end_director.Play();
+    }
+
+    public void ToNextLevel()
+    {
+        int next = SceneManager.GetActiveScene().buildIndex + 1;
+        ToLevel(next);
+    }
+
+    IEnumerator LoadSceneAsync(int id)
+    {
+        operation = SceneManager.LoadSceneAsync(id);
         operation.allowSceneActivation = false;
 
         while (!operation.isDone)
@@ -47,4 +65,6 @@ public class LoadScene : MonoBehaviour
             yield return null;
         }
     }
+
+
 }

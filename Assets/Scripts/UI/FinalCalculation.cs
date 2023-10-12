@@ -42,10 +42,10 @@ public class FinalCalculation : MonoBehaviour
         }
         text.text += elevator + "\n\n";
 
-        int total = tile_count * 1 + paint_left * 2 + token + elevator;
+        int total = tile_count * 1 + paint_left * 2 + states.Money;
 
-        text.text += total + "\n\n";
+        text.text += total ;
 
-        text.text += "[ENTER]";
+        states.Money = total;
     }
 }

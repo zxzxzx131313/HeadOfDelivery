@@ -96,10 +96,10 @@ public class LevelSwitchTrigger : MonoBehaviour
                             stats.Level = NegativeDirectionLevel;
                         }
                     }
-                    Vector3 cam_pos = edgeCollider.CollisionAndCameraPanToNextLevel(direction + LevelOffset * (direction.x+direction.y));
+                    //Vector3 cam_pos = edgeCollider.CollisionAndCameraPanToNextLevel(direction + LevelOffset * (direction.x+direction.y));
 
-                    if (LevelConnection == LevelRelation.Independent)
-                        stats.SetCameBeginPos(cam_pos);
+                    //if (LevelConnection == LevelRelation.Independent)
+                      //  stats.SetCameBeginPos(cam_pos);
                 }
                 else
                 {

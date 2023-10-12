@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LevelManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameStateSave state;
     [SerializeField] private Cutscene Scene;
     [SerializeField] private GameEvent OnNextLevelStart;
+    [SerializeField] private GameEvent OnEnterStore;
     void Start()
     {
         
@@ -36,5 +38,27 @@ public class LevelManager : MonoBehaviour
     public void SetCurrentLevelAnimationPlayed()
     {
         state.SetLevelAnimationPlayed(stats.Level);
+    }
+
+    public void CheckEndingSummaryResponse()
+    {
+        Invoke("DelayCallWait", 0.5f);
+    }
+
+    void DelayCallWait()
+    {
+        StartCoroutine("WaitForResponse");
+    }
+
+    IEnumerator WaitForResponse()
+    {
+        
+        while (!Keyboard.current.anyKey.wasPressedThisFrame)
+        {
+            yield return null;
+        }
+        //FinalBoard.SetTrigger("End");
+        //OnEnterStore.Raise();
+        //load.BackToTitle();
     }
 }

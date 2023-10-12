@@ -62,19 +62,5 @@ public class ControlManager : MonoBehaviour
             }
         }
     }
-
-    public void CheckEndingResponse()
-    {
-        StartCoroutine("WaitForResponse");
-    }
-
-    IEnumerator WaitForResponse()
-    {
-        while (!Keyboard.current.enterKey.wasPressedThisFrame)
-        {
-            yield return null;
-        }
-        FinalBoard.SetTrigger("End");
-        load.BackToTitle();
-    }
+    
 }

@@ -6,7 +6,6 @@ using TMPro;
 public class TokenUtiles : MonoBehaviour
 {
     [SerializeField] private TMP_Text display;
-    [SerializeField] private NoteData stats;
     [SerializeField] private GameStateSave states;
     public void TokenDisplayer()
     {

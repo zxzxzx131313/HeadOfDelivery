@@ -20,7 +20,7 @@ public class MixerController : MonoBehaviour
         float volume;
         if (value == 1f)
             volume = 20f;
-        else if (value == 0f)
+        else if (value <= 0.05f)
             volume = -50f;
         else
             volume = (-20f * Mathf.Log(10, value / 10f) -10f);
@@ -33,7 +33,7 @@ public class MixerController : MonoBehaviour
         float volume;
         if (value == 1f)
             volume = 20f;
-        else if (value == 0f)
+        else if (value <= 0.05f)
             volume = -50f;
         else
             volume = (-20f * Mathf.Log(10, value / 10f) - 10f);
@@ -46,7 +46,7 @@ public class MixerController : MonoBehaviour
         float volume;
         if (value == 1f)
             volume = 20f;
-        else if (value == 0f)
+        else if (value <= 0.05f)
             volume = -50f;
         else
             volume = (-20f * Mathf.Log(10, value / 10f) - 10f);

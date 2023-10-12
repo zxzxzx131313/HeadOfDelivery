@@ -138,7 +138,7 @@ public class CubeController : MonoBehaviour
             LeanTween.move(gameObject, _begin_pos, 0.5f).setEaseInOutQuad();
 
             _dice.Restart();
-            if (_dice.top_face.IsColored)
+            if (_dice.top_face.FaceAbilityIndex != -1)
             {
 
                 anim.SetBool("IsColored", true);
@@ -247,7 +247,7 @@ public class CubeController : MonoBehaviour
             anim.SetFloat("Horizontal", direction.x);
             anim.SetFloat("Vertical", direction.y);
             anim.SetFloat("Speed", direction.sqrMagnitude);
-
+            anim.SetFloat("FaceAbilityIndex", _dice.top_face.FaceAbilityIndex);
             transform.position += (Vector3)direction;
             Vector3 world_pos = transform.position;
 
@@ -256,7 +256,7 @@ public class CubeController : MonoBehaviour
 
             Vector3Int pos = _platformTilemap.WorldToCell(world_pos);
             Vector3Int detach = _platformTilemap.WorldToCell(_detach_pos);
-            if (_dice.top_face.IsColored)
+            if (_dice.top_face.FaceAbilityIndex != -1)
             {
 
                 anim.SetBool("IsColored", true);
@@ -266,14 +266,14 @@ public class CubeController : MonoBehaviour
                 anim.SetBool("IsColored", false);
             }
 
-            if (_dice.top_face.opposite.IsColored && stats.StepsLeft > 0)
+            if (_dice.top_face.opposite.FaceAbilityIndex != -1 && stats.StepsLeft > 0)
             {
                 // do not spawn tile at body and original head location
                 if (pos != detach && pos != detach + Vector3Int.up && !_spawner.HasHeadTile(pos))
                 {
                     // for turning animation to complete;
                     current_step = stats.StepsLeft;
-                    Spawntile(pos);
+                    Spawntile(pos, _dice.top_face.opposite.FaceAbilityIndex);
                     //Invoke("Spawntile", 0.2f);
                     stamped = true;
                     tile_sound.PlaySingle();
@@ -311,9 +311,9 @@ public class CubeController : MonoBehaviour
         return _spawner.HasHeadTile(cell_pos); 
     } 
 
-    private void Spawntile(Vector3Int cell_pos)
+    private void Spawntile(Vector3Int cell_pos, int ability)
     {
-        _spawner.SpawnTile(cell_pos, (float)current_step / stats.LevelSteps[stats.Level]);
+        _spawner.SpawnTile(cell_pos, (float)current_step / stats.LevelSteps[stats.Level], ability);
         _spawner.HideTile(cell_pos);
         TileSpawned?.Invoke();
         ShowTileAfterAnimation(cell_pos);

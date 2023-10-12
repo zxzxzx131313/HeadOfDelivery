@@ -44,7 +44,6 @@ public class LevelStats : ScriptableObject
                     _extra_steps = _extra_steps_on_begin;
                 }
                 _current_steps = _level_steps[_current_level];
-                //StepsLeft = _extra_steps_on_begin + _current_steps;
                 LevelChanged?.Invoke(_current_level);
             }
         }
@@ -126,7 +125,7 @@ public class LevelStats : ScriptableObject
     {
         ExtraStepsLeft = _extra_steps_on_begin;
         StepsLeft = _level_steps[_current_level] + _extra_steps_on_begin;
-        edgeCollider.CameraToPos(LastCamPos);
+        //edgeCollider.CameraToPos(LastCamPos);
 
     }
 
